@@ -1,4 +1,4 @@
-; aimbot for krnl
+; aimbot for arsenal
 init:
 #NoEnv
 #SingleInstance, Force
