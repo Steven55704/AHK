@@ -1,3 +1,4 @@
+; aimbot for krnl
 init:
 #NoEnv
 #SingleInstance, Force
