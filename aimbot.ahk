@@ -1,4 +1,3 @@
-; aimbot for arsenal
 init:
 #NoEnv
 #SingleInstance, Force
@@ -8,7 +7,7 @@ init:
 #KeyHistory, 0
 #HotKeyInterval 1
 #MaxHotkeysPerInterval 127
-version = 2.5
+version = 2.6
 traytip, %version%, Running!, 1, 1
 Menu, tray, NoStandard
 Menu, tray, Tip, Sharpshooter %version%
@@ -30,8 +29,8 @@ Process, Priority, %PID%, High
 EMCol := 0xE600E6
 CenterX := (A_ScreenWidth // 2)
 CenterY := (A_ScreenHeight // 2)
-CFovX := (A_ScreenWidth // 5)
-CFovY := (A_ScreenHeight // 7)
+CFovX := (A_ScreenWidth // 7)
+CFovY := (A_ScreenHeight // 6)
 ScanL := CenterX - CFovX
 ScanT := CenterY - CFovY // 3
 ScanR := CenterX + CFovX
@@ -50,7 +49,7 @@ Loop, {
 			PixelSearch, AimPixelX, AimPixelY, ScanL, ScanT, ScanR, ScanB, EMCol, 1, Fast RGB
 			AimX := AimPixelX - CenterX
 			AimY := AimPixelY - CenterY + 15
-			if( Abs(AimX) > 15){
+			if( Abs(AimX) > 20){
 				intensity := 1.35
 			}
 			DirX := -1
