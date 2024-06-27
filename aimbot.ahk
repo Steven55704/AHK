@@ -6,13 +6,12 @@ init:
 #UseHook
 #KeyHistory, 0
 #HotKeyInterval 1
-#MaxHotkeysPerInterval 127
-version = 2.6
+#MaxHotkeysPerInterval 256
+version = 2.7
 traytip, %version%, Running!, 1, 1
 Menu, tray, NoStandard
 Menu, tray, Tip, Sharpshooter %version%
 Menu, tray, Add, Sharpshooter %version%, return
-Menu, tray, Add
 Menu, tray, Add, Exit, exit
 SetKeyDelay,-1, 1
 SetControlDelay, -1
@@ -41,6 +40,7 @@ NearAimScanR := CenterX
 NearAimScanB := CenterY
 intensity := 1.5
 running := false
+updateStatus(false)
 Loop, {
 	if(running){
 		PixelSearch, AimPixelX, AimPixelY, NearAimScanL, NearAimScanT, NearAimScanR, NearAimScanB, EMCol, 1, Fast RGB
@@ -49,8 +49,11 @@ Loop, {
 			PixelSearch, AimPixelX, AimPixelY, ScanL, ScanT, ScanR, ScanB, EMCol, 1, Fast RGB
 			AimX := AimPixelX - CenterX
 			AimY := AimPixelY - CenterY + 15
-			if( Abs(AimX) > 20){
-				intensity := 1.35
+			if( Abs(AimX) > 100){
+				intensity := 1.4
+			}
+			if( Abs(AimX) > 10 && intensity > 2.4){
+				intensity -= .5
 			}
 			DirX := -1
 			DirY := -1
@@ -67,7 +70,7 @@ Loop, {
 			if( Abs(MoveX) < 1.75 ){
 				MoveX := 0
 			}else{
-				if( intensity < 4 ) {
+				if( intensity < 5 ) {
 					intensity += 0.05
 				}
 			}
