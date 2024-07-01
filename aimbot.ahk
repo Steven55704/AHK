@@ -1,10 +1,10 @@
 init:
 #NoEnv
-#SingleInstance, Force
+#SingleInstance Force
 #Persistent	
 #HotKeyInterval 1
 #MaxHotkeysPerInterval 256
-ver = 2.73
+ver = 2.74
 traytip, %ver%, Running, 1, 1
 Menu, tray, NoStandard
 Menu, tray, Tip, Sharpshooter %ver%
@@ -25,10 +25,10 @@ Process, Priority, %PID%, High
 EnCol = 0xE600E6
 CenterX := A_ScreenWidth // 2
 CenterY := A_ScreenHeight // 2
-FovX := A_ScreenWidth // 8
+FovX := A_ScreenWidth // 10
 FovY := A_ScreenHeight // 6
 ScanL := CenterX - FovX
-ScanT := CenterY - FovY // 3
+ScanT := CenterY - FovY // 4
 ScanR := CenterX + FovX
 ScanB := CenterY + FovY
 intensity = 1.5
@@ -70,6 +70,7 @@ Loop{
 	}
 }
 updateStatus(r){
+	global ScanL, ScanT, ScanR, ScanB
 	color = 0x00ff00
 	if !r{
 		color = 0xff0000
@@ -79,6 +80,26 @@ updateStatus(r){
 	Gui, 1:-Caption +AlwaysOnTop +ToolWindow
 	Gui, 1:Color, %color%
 	Gui, 1:Show, x0 y%gy% w5 h5
+	w := ScanR - ScanL
+	rfx := ScanL+w
+	h := ScanB - ScanT
+	bfy := ScanT+h
+	Gui, lf:Destroy
+	Gui, lf:-Caption +AlwaysOnTop +ToolWindow
+	Gui, lf:Color, Yellow
+	Gui, lf:Show, x%ScanL% y%ScanT% w2 h%h%
+	Gui, tf:Destroy
+	Gui, tf:-Caption +AlwaysOnTop +ToolWindow
+	Gui, tf:Color, Yellow
+	Gui, tf:Show, x%ScanL% y%ScanT% w%w% h2
+	Gui, rf:Destroy
+	Gui, rf:-Caption +AlwaysOnTop +ToolWindow
+	Gui, rf:Color, Yellow
+	Gui, rf:Show, x%rfx% y%ScanT% w2 h%h%
+	Gui, bf:Destroy
+	Gui, bf:-Caption +AlwaysOnTop +ToolWindow
+	Gui, bf:Color, Yellow
+	Gui, bf:Show, x%ScanL% y%bfy% w%w% h2
 }
 `::
 	updateStatus(toggle := !toggle)
