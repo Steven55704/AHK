@@ -4,7 +4,7 @@ init:
 #Persistent	
 #HotKeyInterval 1
 #MaxHotkeysPerInterval 256
-ver = 2.75
+ver = 2.77
 traytip, %ver%, Running, 1, 1
 Menu, tray, NoStandard
 Menu, tray, Tip, Sharpshooter %ver%
@@ -36,7 +36,7 @@ toggle = 0
 updateStatus(0)
 Loop{
 	if toggle{
-		PixelSearch, AimPixelX, AimPixelY, CenterX - 2, CenterY - 2, CenterX, CenterY, EnCol, 1, Fast
+		PixelSearch, AimPixelX, AimPixelY, CenterX - 2, CenterY - 2, CenterX + 1, CenterY + 1, EnCol, 1, Fast
 
 		if ErrorLevel{
 			PixelSearch, AimPixelX, AimPixelY, ScanL, ScanT, ScanR, ScanB, EnCol, 1, Fast
@@ -60,7 +60,7 @@ Loop{
 			AimOffsetY := AimY * DirY
 			MoveX := Floor(AimOffsetX ** ( 1 / intensity )) * DirX * 1.5
 			MoveY := Floor(AimOffsetY ** ( 1 / 2 )) * DirY
-			if(Abs(MoveX) < 1){
+			if(Abs(MoveX) < 1.45){
 				MoveX := 0
 			}else if(Abs(MoveX) > 7.5){
 				Sign := MoveX/Abs(MoveX)
@@ -88,25 +88,25 @@ updateStatus(r){
 	h := ScanB - ScanT
 	bfy := ScanT+h
 	Gui, lf:Destroy
-	Gui, lf:-Caption +AlwaysOnTop +ToolWindow
-	Gui, lf:Color, Yellow
-	Gui, lf:Show, x%ScanL% y%ScanT% w2 h%h%
 	Gui, tf:Destroy
-	Gui, tf:-Caption +AlwaysOnTop +ToolWindow
-	Gui, tf:Color, Yellow
-	Gui, tf:Show, x%ScanL% y%ScanT% w%w% h2
 	Gui, rf:Destroy
-	Gui, rf:-Caption +AlwaysOnTop +ToolWindow
-	Gui, rf:Color, Yellow
-	Gui, rf:Show, x%rfx% y%ScanT% w2 h%h%
 	Gui, bf:Destroy
+	Gui, lf:-Caption +AlwaysOnTop +ToolWindow
+	Gui, tf:-Caption +AlwaysOnTop +ToolWindow
+	Gui, rf:-Caption +AlwaysOnTop +ToolWindow
 	Gui, bf:-Caption +AlwaysOnTop +ToolWindow
+	Gui, lf:Color, Yellow
+	Gui, tf:Color, Yellow
+	Gui, rf:Color, Yellow
 	Gui, bf:Color, Yellow
+	Gui, lf:Show, x%ScanL% y%ScanT% w2 h%h%
+	Gui, tf:Show, x%ScanL% y%ScanT% w%w% h2
+	Gui, rf:Show, x%rfx% y%ScanT% w2 h%h%
 	Gui, bf:Show, x%ScanL% y%bfy% w%w% h2
 }
 `::
 	updateStatus(toggle := !toggle)
-	Sleep, 50
+	Sleep, 25
 	Click
 return
 Pause:: pause
