@@ -32,6 +32,7 @@ ScanT := CenterY - FovY // 4
 ScanR := CenterX + FovX
 ScanB := CenterY + FovY
 intensity = 1.5
+tolerance = 7
 toggle = 0
 updateStatus(0)
 Loop{
@@ -40,13 +41,14 @@ Loop{
 
 		if ErrorLevel{
 			PixelSearch, AimPixelX, AimPixelY, ScanL, ScanT, ScanR, ScanB, EnCol, 1, Fast
-			AimX := AimPixelX - CenterX
+			AimX := AimPixelX - CenterX + 5
 			AimY := AimPixelY - CenterY + 15
-			if(Abs(AimX) > 100){
+			if(Abs(AimX) > 30){
 				intensity := 1.4
+				tolerance := 7
 			}
 			if(Abs(AimX) > 10 && intensity > 2.4){
-				intensity -= .5
+				intensity -= .25
 			}
 			DirX := -1
 			DirY := -1
@@ -60,11 +62,14 @@ Loop{
 			AimOffsetY := AimY * DirY
 			MoveX := Floor(AimOffsetX ** ( 1 / intensity )) * DirX * 1.5
 			MoveY := Floor(AimOffsetY ** ( 1 / 2 )) * DirY
-			if(Abs(MoveX) < 1.45){
-				MoveX := 0
-			}else if(Abs(MoveX) > 7.5){
+			if(tolerance > 2){
+				tolerance*=.85
+			}
+			if(Abs(MoveX) < .1){
+				MoveX := .1
+			}else if(Abs(MoveX) > tolerance){
 				Sign := MoveX/Abs(MoveX)
-				MoveX := 5 * Sign
+				MoveX := tolerance * Sign
 			}else{
 				intensity += 0.05
 			}
