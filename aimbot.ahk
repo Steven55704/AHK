@@ -4,7 +4,7 @@ init:
 #Persistent	
 #HotKeyInterval 1
 #MaxHotkeysPerInterval 256
-ver = 2.77
+ver = 3.0
 traytip, %ver%, Running, 1, 1
 Menu, tray, NoStandard
 Menu, tray, Tip, Sharpshooter %ver%
@@ -40,40 +40,43 @@ Loop{
 		PixelSearch, AimPixelX, AimPixelY, CenterX - 2, CenterY - 2, CenterX + 1, CenterY + 1, EnCol, 1, Fast
 
 		if ErrorLevel{
-			PixelSearch, AimPixelX, AimPixelY, ScanL, ScanT, ScanR, ScanB, EnCol, 1, Fast
-			AimX := AimPixelX - CenterX + 5
-			AimY := AimPixelY - CenterY + 15
-			if(Abs(AimX) > 30){
-				intensity := 1.4
-				tolerance := 7
-			}
-			if(Abs(AimX) > 10 && intensity > 2.4){
-				intensity -= .25
-			}
-			DirX := -1
-			DirY := -1
-			if(AimX > 0){
-				DirX := 1
-			}
-			if(AimY > 0){
-				DirY := 1
-			}
-			AimOffsetX := AimX * DirX
-			AimOffsetY := AimY * DirY
-			MoveX := Floor(AimOffsetX ** ( 1 / intensity )) * DirX * 1.5
-			MoveY := Floor(AimOffsetY ** ( 1 / 2 )) * DirY
-			if(tolerance > 2){
-				tolerance*=.85
-			}
-			if(Abs(MoveX) < .1){
-				MoveX := .1
-			}else if(Abs(MoveX) > tolerance){
+			Loop, 10{
+				PixelSearch, AimPixelX, AimPixelY, ScanL, ScanT, ScanR, ScanB, EnCol, 1, Fast
+				AimX := AimPixelX - CenterX + 3
+				AimY := AimPixelY - CenterY + 9
+				if(Abs(AimX) > 20){
+					intensity := 1.4
+					tolerance := 7
+				}
+				if(Abs(AimX) > 10 && intensity > 2.24){
+					intensity -= .25
+				}
+				DirX := -1
+				DirY := -1
+				if(AimX > 0){
+					DirX := 1
+				}
+				if(AimY > 0){
+					DirY := 1
+				}
+				AimOffsetX := AimX * DirX
+				AimOffsetY := AimY * DirY
+				MoveX := Floor(AimOffsetX ** ( 1 / intensity )) * DirX * 1.5
+				MoveY := Floor(AimOffsetY ** ( 1 / 2 )) * DirY
+				if(tolerance > 1.6){
+					tolerance*=.7
+				}
 				Sign := MoveX/Abs(MoveX)
-				MoveX := tolerance * Sign
-			}else{
-				intensity += 0.05
+				if(Abs(MoveX) < .1){
+					MoveX := .1 * Sign
+				}else if(Abs(MoveX) > tolerance){
+					MoveX := tolerance * Sign
+				}else{
+					intensity += 0.05
+				}
+				DllCall("mouse_event", uint, 1, int, MoveX, int, MoveY, uint, 0, int, 0)
+				Sleep, 1
 			}
-			DllCall("mouse_event", uint, 1, int, MoveX, int, MoveY, uint, 0, int, 0)
 		}
 	}
 }
@@ -111,7 +114,7 @@ updateStatus(r){
 }
 `::
 	updateStatus(toggle := !toggle)
-	Sleep, 25
+	Sleep, 5
 	Click
 return
 Pause:: pause
