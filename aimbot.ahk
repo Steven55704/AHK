@@ -34,21 +34,29 @@ ScanB := CenterY + FovY
 intensity = 1.5
 tolerance = 7
 toggle = 0
+createGui(1,0,A_ScreenHeight-5,5,5,0xff0000)
+createGui(2,5,A_ScreenHeight-5,5,5,0xff0000)
+w := ScanR - ScanL
+h := ScanB - ScanT
+createGui("lf",ScanL,ScanT,2,h,0xffff00)
+createGui("tf",ScanL,ScanT,w,2,0xffff00)
+createGui("rf",ScanL+w,ScanT,2,h,0xffff00)
+createGui("bf",ScanL,ScanT+h,w,2,0xffff00)
 updateStatus(0)
 Loop{
 	if toggle{
 		PixelSearch, AimPixelX, AimPixelY, CenterX - 2, CenterY - 2, CenterX + 1, CenterY + 1, EnCol, 1, Fast
-
 		if ErrorLevel{
 			Loop, 10{
 				PixelSearch, AimPixelX, AimPixelY, ScanL, ScanT, ScanR, ScanB, EnCol, 1, Fast
 				AimX := AimPixelX - CenterX + 3
 				AimY := AimPixelY - CenterY + 9
-				if(Abs(AimX) > 20){
+				pAimX := Abs(AimX)
+				if(pAimX> 20){
 					intensity := 1.4
 					tolerance := 7
 				}
-				if(Abs(AimX) > 10 && intensity > 2.24){
+				if(pAimX > 10 && intensity > 2.24){
 					intensity -= .25
 				}
 				DirX := -1
@@ -69,10 +77,14 @@ Loop{
 				Sign := MoveX/Abs(MoveX)
 				if(Abs(MoveX) < .1){
 					MoveX := .1 * Sign
+					Gui, 2:Color, Red
 				}else if(Abs(MoveX) > tolerance){
 					MoveX := tolerance * Sign
-				}else{
-					intensity += 0.05
+					Gui, 2:Color, Lime
+					CL = 1
+				}
+				if(intensity < 6){
+					intensity += 0.1
 				}
 				DllCall("mouse_event", uint, 1, int, MoveX, int, MoveY, uint, 0, int, 0)
 				Sleep, 1
@@ -80,37 +92,21 @@ Loop{
 		}
 	}
 }
+createGui(id,x,y,w,h,c){
+	Gui, %id%:Destroy
+	Gui, %id%:-Caption +AlwaysOnTop +ToolWindow
+	Gui, %id%:Color,%c%
+	Gui, %id%:Show, x%x% y%y% w%w% h%h%
+}
 updateStatus(r){
 	global ScanL, ScanT, ScanR, ScanB
 	color = 0x00ff00
 	if !r{
 		color = 0xff0000
+		Gui, 2:Color, %color%
+		Gui, 3:Color, %color%
 	}
-	gy := A_ScreenHeight - 5
-	Gui, 1:Destroy
-	Gui, 1:-Caption +AlwaysOnTop +ToolWindow
 	Gui, 1:Color, %color%
-	Gui, 1:Show, x0 y%gy% w5 h5
-	w := ScanR - ScanL
-	rfx := ScanL+w
-	h := ScanB - ScanT
-	bfy := ScanT+h
-	Gui, lf:Destroy
-	Gui, tf:Destroy
-	Gui, rf:Destroy
-	Gui, bf:Destroy
-	Gui, lf:-Caption +AlwaysOnTop +ToolWindow
-	Gui, tf:-Caption +AlwaysOnTop +ToolWindow
-	Gui, rf:-Caption +AlwaysOnTop +ToolWindow
-	Gui, bf:-Caption +AlwaysOnTop +ToolWindow
-	Gui, lf:Color, Yellow
-	Gui, tf:Color, Yellow
-	Gui, rf:Color, Yellow
-	Gui, bf:Color, Yellow
-	Gui, lf:Show, x%ScanL% y%ScanT% w2 h%h%
-	Gui, tf:Show, x%ScanL% y%ScanT% w%w% h2
-	Gui, rf:Show, x%rfx% y%ScanT% w2 h%h%
-	Gui, bf:Show, x%ScanL% y%bfy% w%w% h2
 }
 `::
 	updateStatus(toggle := !toggle)
