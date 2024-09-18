@@ -4,7 +4,7 @@ init:
 #Persistent	
 #HotKeyInterval 1
 #MaxHotkeysPerInterval 256
-ver = 3.26
+ver = 3.27
 traytip, %ver%, Running, 1, 1
 Menu, tray, NoStandard
 Menu, tray, Tip, Sharpshooter %ver%
@@ -21,34 +21,34 @@ CoordMode, Pixel, Screen
 CoordMode, Mouse, Screen
 PID := DllCall("GetCurrentProcessId")
 Process, Priority, %PID%, High
-EnCol = 0xE600E6
-CenterX := A_ScreenWidth / 2
-CenterY := A_ScreenHeight / 2
-FovX := A_ScreenWidth // 14
-FovY := A_ScreenHeight // 9
-ScanL := CenterX - FovX
-ScanT := CenterY - FovY // 3
-ScanR := CenterX + FovX
-ScanB := CenterY + FovY
+eCol = 0xE600E6
+CX := A_ScreenWidth / 2
+CY := A_ScreenHeight / 2
+FX := A_ScreenWidth // 14
+FY := A_ScreenHeight // 9
+SL := CX - FX
+ST := CY - FY // 3
+SR := CX + FX
+SB := CY + FY
 intensity = 1.5
 tolerance = 7
 toggle = 0
 createGui(1,0,A_ScreenHeight-5,5,5,0xff0000)
 createGui(2,5,A_ScreenHeight-5,5,5,0xff0000)
-w := ScanR - ScanL
-h := ScanB - ScanT
-createGui("lf",ScanL,ScanT,2,h,0xffff00)
-createGui("tf",ScanL,ScanT,w,2,0xffff00)
-createGui("rf",ScanL+w,ScanT,2,h,0xffff00)
-createGui("bf",ScanL,ScanT+h,w,2,0xffff00)
+w := SR - SL
+h := SB - ST
+createGui("lf",SL,ST,2,h,0xffff00)
+createGui("tf",SL,ST,w,2,0xffff00)
+createGui("rf",SL+w,ST,2,h,0xffff00)
+createGui("bf",SL,ST+h,w,2,0xffff00)
 updateStatus(0)
 Loop{
 	if toggle{
-		PixelSearch, AimPixelX, AimPixelY, CenterX - 4, CenterY - 1, CenterX - 2, CenterY + 1, EnCol, 1, Fast
+		PixelSearch, AimPixelX, AimPixelY, CX - 4, CY - 1, CX - 2, CY + 1, eCol, 1, Fast
 		if ErrorLevel{
-			PixelSearch, AimPixelX, AimPixelY, ScanL, ScanT, ScanR, ScanB, EnCol, 1, Fast
-			AimX := AimPixelX - CenterX + 2
-			AimY := AimPixelY - CenterY + 7
+			PixelSearch, AimPixelX, AimPixelY, SL, ST, SR, SB, eCol, 1, Fast
+			AimX := AimPixelX - CX + 2
+			AimY := AimPixelY - CY + 7
 			if(Abs(AimX) > 4){
 				intensity := 1.5
 				tolerance := 10
@@ -74,6 +74,7 @@ Loop{
 			if(pMoveX < .1 && pMoveX > 0){
 				Gui, 2:Color, Yellow
 				MoveX := .1 * Sign
+				MsgBox, Is this condition even used?
 			}else if(pMoveX > tolerance){
 				Gui, 2:Color, Lime
 				intensity += 0.125
