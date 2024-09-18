@@ -1,7 +1,7 @@
 init:
 #NoEnv
 #SingleInstance Force
-#Persistent	
+#Persistent
 #HotKeyInterval 1
 #MaxHotkeysPerInterval 256
 ver = 3.27
@@ -33,14 +33,14 @@ SB := CY + FY
 intensity = 1.5
 tolerance = 7
 toggle = 0
-createGui(1,0,A_ScreenHeight-5,5,5,0xff0000)
-createGui(2,5,A_ScreenHeight-5,5,5,0xff0000)
+createGui(1,0,A_ScreenHeight-5,5,5,0xFF0000)
+createGui(2,5,A_ScreenHeight-5,5,5,0xFF0000)
 w := SR - SL
 h := SB - ST
-createGui("lf",SL,ST,2,h,0xffff00)
-createGui("tf",SL,ST,w,2,0xffff00)
-createGui("rf",SL+w,ST,2,h,0xffff00)
-createGui("bf",SL,ST+h,w,2,0xffff00)
+createGui("lf",SL,ST,2,h,0xFFFF00)
+createGui("tf",SL,ST,w,2,0xFFFF00)
+createGui("rf",SL+w,ST,2,h,0xFFFF00)
+createGui("bf",SL,ST+h,w,2,0xFFFF00)
 updateStatus(0)
 Loop{
 	if toggle{
@@ -71,11 +71,7 @@ Loop{
 			pMoveX := Abs(MoveX)
 			Sign := MoveX/pMoveX
 			Gui, 2:Color, Red
-			if(pMoveX < .1 && pMoveX > 0){
-				Gui, 2:Color, Yellow
-				MoveX := .1 * Sign
-				MsgBox, Is this condition even used?
-			}else if(pMoveX > tolerance){
+			if(pMoveX > tolerance){
 				Gui, 2:Color, Lime
 				intensity += 0.125
 				MoveX := tolerance * Sign
@@ -92,9 +88,9 @@ createGui(id,x,y,w,h,c){
 	Gui, %id%:Show, x%x% y%y% w%w% h%h%
 }
 updateStatus(r){
-	color = 0x00ff00
+	color = 0x00FF00
 	if !r{
-		color = 0xff0000
+		color = 0xFF0000
 		Gui, 2:Color, %color%
 	}
 	Gui, 1:Color, %color%
