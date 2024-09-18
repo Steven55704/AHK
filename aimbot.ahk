@@ -4,7 +4,7 @@ init:
 #Persistent
 #HotKeyInterval 1
 #MaxHotkeysPerInterval 256
-ver = 3.27
+ver = 3.28
 traytip, %ver%, Running, 1, 1
 Menu, tray, NoStandard
 Menu, tray, Tip, Sharpshooter %ver%
@@ -44,14 +44,14 @@ createGui("bf",SL,ST+h,w,2,0xFFFF00)
 updateStatus(0)
 Loop{
 	if toggle{
-		PixelSearch, AimPixelX, AimPixelY, CX - 4, CY - 1, CX - 2, CY + 1, eCol, 1, Fast
+		PixelSearch, AimPixelX, AimPixelY, CX - 3, CY - 1, CX, CY + 1, eCol, 1, Fast
 		if ErrorLevel{
 			PixelSearch, AimPixelX, AimPixelY, SL, ST, SR, SB, eCol, 1, Fast
 			AimX := AimPixelX - CX + 2
 			AimY := AimPixelY - CY + 7
 			if(Abs(AimX) > 4){
 				intensity := 1.5
-				tolerance := 10
+				tolerance := 15
 			}
 			DirX := -1
 			DirY := -1
@@ -65,8 +65,8 @@ Loop{
 			AimOffsetY := AimY * DirY
 			MoveX := (AimOffsetX ** ( 1 / intensity )) * DirX
 			MoveY := (AimOffsetY ** ( 1 / 1.7 )) * DirY
-			if(tolerance * .7 > .5){
-				tolerance*=.7
+			if(tolerance * .65 > .3){
+				tolerance*=.695
 			}
 			pMoveX := Abs(MoveX)
 			Sign := MoveX/pMoveX
@@ -77,7 +77,6 @@ Loop{
 				MoveX := tolerance * Sign
 			}
 			DllCall("mouse_event", uint, 1, int, MoveX, int, MoveY, uint, 0, int, 0)
-			Sleep, 5
 		}
 	}
 }
