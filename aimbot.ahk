@@ -4,7 +4,7 @@ init:
 #Persistent	
 #HotKeyInterval 1
 #MaxHotkeysPerInterval 256
-ver = 3.0
+ver = 3.26
 traytip, %ver%, Running, 1, 1
 Menu, tray, NoStandard
 Menu, tray, Tip, Sharpshooter %ver%
@@ -21,14 +21,13 @@ CoordMode, Pixel, Screen
 CoordMode, Mouse, Screen
 PID := DllCall("GetCurrentProcessId")
 Process, Priority, %PID%, High
-;0x0BD700
 EnCol = 0xE600E6
-CenterX := A_ScreenWidth // 2
-CenterY := A_ScreenHeight // 2
-FovX := A_ScreenWidth // 10
-FovY := A_ScreenHeight // 6
+CenterX := A_ScreenWidth / 2
+CenterY := A_ScreenHeight / 2
+FovX := A_ScreenWidth // 14
+FovY := A_ScreenHeight // 9
 ScanL := CenterX - FovX
-ScanT := CenterY - FovY // 4
+ScanT := CenterY - FovY // 3
 ScanR := CenterX + FovX
 ScanB := CenterY + FovY
 intensity = 1.5
@@ -45,50 +44,43 @@ createGui("bf",ScanL,ScanT+h,w,2,0xffff00)
 updateStatus(0)
 Loop{
 	if toggle{
-		PixelSearch, AimPixelX, AimPixelY, CenterX - 2, CenterY - 2, CenterX + 1, CenterY + 1, EnCol, 1, Fast
+		PixelSearch, AimPixelX, AimPixelY, CenterX - 4, CenterY - 1, CenterX - 2, CenterY + 1, EnCol, 1, Fast
 		if ErrorLevel{
-			Loop, 10{
-				PixelSearch, AimPixelX, AimPixelY, ScanL, ScanT, ScanR, ScanB, EnCol, 1, Fast
-				AimX := AimPixelX - CenterX + 3
-				AimY := AimPixelY - CenterY + 9
-				pAimX := Abs(AimX)
-				if(pAimX> 20){
-					intensity := 1.4
-					tolerance := 7
-				}
-				if(pAimX > 10 && intensity > 2.24){
-					intensity -= .25
-				}
-				DirX := -1
-				DirY := -1
-				if(AimX > 0){
-					DirX := 1
-				}
-				if(AimY > 0){
-					DirY := 1
-				}
-				AimOffsetX := AimX * DirX
-				AimOffsetY := AimY * DirY
-				MoveX := Floor(AimOffsetX ** ( 1 / intensity )) * DirX * 1.5
-				MoveY := Floor(AimOffsetY ** ( 1 / 2 )) * DirY
-				if(tolerance > 1.6){
-					tolerance*=.7
-				}
-				Sign := MoveX/Abs(MoveX)
-				if(Abs(MoveX) < .1){
-					MoveX := .1 * Sign
-					Gui, 2:Color, Red
-				}else if(Abs(MoveX) > tolerance){
-					MoveX := tolerance * Sign
-					Gui, 2:Color, Lime
-					CL = 1
-				}
-				if(intensity < 6){
-					intensity += 0.1
-				}
-				DllCall("mouse_event", uint, 1, int, MoveX, int, MoveY, uint, 0, int, 0)
-				Sleep, 1
+			PixelSearch, AimPixelX, AimPixelY, ScanL, ScanT, ScanR, ScanB, EnCol, 1, Fast
+			AimX := AimPixelX - CenterX + 2
+			AimY := AimPixelY - CenterY + 7
+			if(Abs(AimX) > 4){
+				intensity := 1.5
+				tolerance := 10
 			}
+			DirX := -1
+			DirY := -1
+			if(AimX > 0){
+				DirX := 1
+			}
+			if(AimY > 0){
+				DirY := 1
+			}
+			AimOffsetX := AimX * DirX
+			AimOffsetY := AimY * DirY
+			MoveX := (AimOffsetX ** ( 1 / intensity )) * DirX
+			MoveY := (AimOffsetY ** ( 1 / 1.7 )) * DirY
+			if(tolerance * .7 > .5){
+				tolerance*=.7
+			}
+			pMoveX := Abs(MoveX)
+			Sign := MoveX/pMoveX
+			Gui, 2:Color, Red
+			if(pMoveX < .1 && pMoveX > 0){
+				Gui, 2:Color, Yellow
+				MoveX := .1 * Sign
+			}else if(pMoveX > tolerance){
+				Gui, 2:Color, Lime
+				intensity += 0.125
+				MoveX := tolerance * Sign
+			}
+			DllCall("mouse_event", uint, 1, int, MoveX, int, MoveY, uint, 0, int, 0)
+			Sleep, 5
 		}
 	}
 }
@@ -99,23 +91,15 @@ createGui(id,x,y,w,h,c){
 	Gui, %id%:Show, x%x% y%y% w%w% h%h%
 }
 updateStatus(r){
-	global ScanL, ScanT, ScanR, ScanB
 	color = 0x00ff00
 	if !r{
 		color = 0xff0000
 		Gui, 2:Color, %color%
-		Gui, 3:Color, %color%
 	}
 	Gui, 1:Color, %color%
 }
-`::
-	updateStatus(toggle := !toggle)
-	Sleep, 5
-	Click
-return
-Pause:: pause
+`::updateStatus(toggle := !toggle)
 r:
 goto, init
- 
 exit:
 ExitApp
