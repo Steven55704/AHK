@@ -4,7 +4,7 @@ init:
 #Persistent
 #HotKeyInterval 1
 #MaxHotkeysPerInterval 256
-ver = 3.28
+ver = 3.29
 traytip, %ver%, Running, 1, 1
 Menu, tray, NoStandard
 Menu, tray, Tip, Sharpshooter %ver%
@@ -25,9 +25,9 @@ eCol = 0xE600E6
 CX := A_ScreenWidth / 2
 CY := A_ScreenHeight / 2
 FX := A_ScreenWidth // 14
-FY := A_ScreenHeight // 9
+FY := A_ScreenHeight // 8
 SL := CX - FX
-ST := CY - FY // 3
+ST := CY - FY / 2.5
 SR := CX + FX
 SB := CY + FY
 intensity = 1.5
@@ -44,36 +44,36 @@ createGui("bf",SL,ST+h,w,2,0xFFFF00)
 updateStatus(0)
 Loop{
 	if toggle{
-		PixelSearch, AimPixelX, AimPixelY, CX - 3, CY - 1, CX, CY + 1, eCol, 1, Fast
+		PixelSearch, AimPixelX, AimPixelY, CX - 2, CY - 1, CX, CY + 2, eCol, 1, Fast
 		if ErrorLevel{
 			PixelSearch, AimPixelX, AimPixelY, SL, ST, SR, SB, eCol, 1, Fast
-			AimX := AimPixelX - CX + 2
-			AimY := AimPixelY - CY + 7
-			if(Abs(AimX) > 4){
-				intensity := 1.5
-				tolerance := 15
+			AimX := AimPixelX - CX + 3
+			AimY := AimPixelY - CY + 5
+			if(Abs(AimX) > 5){
+				intensity = 1.5
+				tolerance = 15
 			}
-			DirX := -1
-			DirY := -1
+			DirX = -1
+			DirY = -1
 			if(AimX > 0){
-				DirX := 1
+				DirX = 1
 			}
 			if(AimY > 0){
-				DirY := 1
+				DirY = 1
 			}
 			AimOffsetX := AimX * DirX
 			AimOffsetY := AimY * DirY
-			MoveX := (AimOffsetX ** ( 1 / intensity )) * DirX
-			MoveY := (AimOffsetY ** ( 1 / 1.7 )) * DirY
+			MoveX := AimOffsetX ** ( 1 / intensity ) * DirX
+			MoveY := AimOffsetY ** ( 1 / 2 ) * DirY
 			if(tolerance * .65 > .3){
-				tolerance*=.695
+				tolerance *= .65
 			}
 			pMoveX := Abs(MoveX)
 			Sign := MoveX/pMoveX
 			Gui, 2:Color, Red
 			if(pMoveX > tolerance){
 				Gui, 2:Color, Lime
-				intensity += 0.125
+				intensity += .2
 				MoveX := tolerance * Sign
 			}
 			DllCall("mouse_event", uint, 1, int, MoveX, int, MoveY, uint, 0, int, 0)
