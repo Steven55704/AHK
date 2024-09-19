@@ -4,7 +4,7 @@ init:
 #Persistent
 #HotKeyInterval 1
 #MaxHotkeysPerInterval 256
-ver = 3.29
+ver = 3.3
 traytip, %ver%, Running, 1, 1
 Menu, tray, NoStandard
 Menu, tray, Tip, Sharpshooter %ver%
@@ -51,7 +51,7 @@ Loop{
 			AimY := AimPixelY - CY + 5
 			if(Abs(AimX) > 5){
 				intensity = 1.5
-				tolerance = 15
+				tolerance = 12
 			}
 			DirX = -1
 			DirY = -1
@@ -65,7 +65,7 @@ Loop{
 			AimOffsetY := AimY * DirY
 			MoveX := AimOffsetX ** ( 1 / intensity ) * DirX
 			MoveY := AimOffsetY ** ( 1 / 2 ) * DirY
-			if(tolerance * .65 > .3){
+			if(tolerance * .65 > 0){
 				tolerance *= .65
 			}
 			pMoveX := Abs(MoveX)
@@ -73,7 +73,7 @@ Loop{
 			Gui, 2:Color, Red
 			if(pMoveX > tolerance){
 				Gui, 2:Color, Lime
-				intensity += .2
+				intensity += .02
 				MoveX := tolerance * Sign
 			}
 			DllCall("mouse_event", uint, 1, int, MoveX, int, MoveY, uint, 0, int, 0)
