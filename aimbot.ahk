@@ -4,7 +4,7 @@ init:
 #Persistent
 #HotKeyInterval 1
 #MaxHotkeysPerInterval 256
-ver = 3.31
+ver = 3.32
 traytip, %ver%, Running, 1, 1
 Menu, tray, NoStandard
 Menu, tray, Tip, Sharpshooter %ver%
@@ -27,7 +27,7 @@ CY := A_ScreenHeight / 2
 FX := A_ScreenWidth // 14
 FY := A_ScreenHeight // 8
 SL := CX - FX
-ST := CY - FY / 2.5
+ST := CY - FY / 2.7
 SR := CX + FX
 SB := CY + FY
 intensity = 1.5
@@ -77,7 +77,10 @@ Loop{
 				intensity += .02
 				MoveX := tolerance * Sign
 			}
-			DllCall("mouse_event", uint, 1, int, MoveX, int, MoveY, uint, 0, int, 0)
+			MouseGetPos X,Y
+			if(Y > CY/2){
+				DllCall("mouse_event", uint, 1, int, MoveX, int, MoveY, uint, 0, int, 0)
+			}
 		}
 	}
 }
