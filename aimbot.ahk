@@ -4,7 +4,7 @@ init:
 #Persistent
 #HotKeyInterval 1
 #MaxHotkeysPerInterval 256
-ver = 3.3
+ver = 3.31
 traytip, %ver%, Running, 1, 1
 Menu, tray, NoStandard
 Menu, tray, Tip, Sharpshooter %ver%
@@ -51,7 +51,7 @@ Loop{
 			AimY := AimPixelY - CY + 5
 			if(Abs(AimX) > 5){
 				intensity = 1.5
-				tolerance = 12
+				tolerance = 50
 			}
 			DirX = -1
 			DirY = -1
@@ -64,9 +64,10 @@ Loop{
 			AimOffsetX := AimX * DirX
 			AimOffsetY := AimY * DirY
 			MoveX := AimOffsetX ** ( 1 / intensity ) * DirX
-			MoveY := AimOffsetY ** ( 1 / 2 ) * DirY
-			if(tolerance * .65 > 0){
-				tolerance *= .65
+			MoveY := AimOffsetY ** ( 1 / intensity ) * DirY
+			scale = .45
+			if(tolerance * scale > 0){
+				tolerance *= scale
 			}
 			pMoveX := Abs(MoveX)
 			Sign := MoveX/pMoveX
