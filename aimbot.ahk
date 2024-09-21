@@ -4,102 +4,96 @@ init:
 #Persistent
 #HotKeyInterval 1
 #MaxHotkeysPerInterval 256
-ver = 3.32
-traytip, %ver%, Running, 1, 1
-Menu, tray, NoStandard
-Menu, tray, Tip, Sharpshooter %ver%
-Menu, tray, Add, Sharpshooter %ver%, r
-Menu, tray, Add, Exit, exit
-SetKeyDelay,-1, 1
+V=3.35
+traytip,%V%,Running,1,1
+Menu,tray,NoStandard
+Menu,tray,Tip,Sharpshooter %V%
+Menu,tray,Add,Sharpshooter %V%,r
+Menu,tray,Add,Exit,exit
+SetKeyDelay,-1,1
 SetControlDelay,-1
 SetMouseDelay,-1
 SetWinDelay,-1
 SendMode, InputThenPlay
 SetBatchLines,-1
 ListLines 0
-CoordMode, Pixel, Screen
-CoordMode, Mouse, Screen
-PID := DllCall("GetCurrentProcessId")
-Process, Priority, %PID%, High
-eCol = 0xE600E6
-CX := A_ScreenWidth / 2
-CY := A_ScreenHeight / 2
-FX := A_ScreenWidth // 14
-FY := A_ScreenHeight // 8
-SL := CX - FX
-ST := CY - FY / 2.7
-SR := CX + FX
-SB := CY + FY
-intensity = 1.5
-tolerance = 7
-toggle = 0
-createGui(1,0,A_ScreenHeight-5,5,5,0xFF0000)
-createGui(2,5,A_ScreenHeight-5,5,5,0xFF0000)
-w := SR - SL
-h := SB - ST
-createGui("lf",SL,ST,2,h,0xFFFF00)
-createGui("tf",SL,ST,w,2,0xFFFF00)
-createGui("rf",SL+w,ST,2,h,0xFFFF00)
-createGui("bf",SL,ST+h,w,2,0xFFFF00)
-updateStatus(0)
+CoordMode,Pixel,Screen
+CoordMode,Mouse,Screen
+PID:=DllCall("GetCurrentProcessId")
+Process,Priority,%PID%,High
+EC=0xE600E6
+CX:=A_ScreenWidth/2
+CY:=A_ScreenHeight/2
+FX:=A_ScreenWidth//24
+FY:=A_ScreenHeight//16
+SL:=CX-FX
+ST:=CY-FY/2.3
+SR:=CX+FX
+SB:=CY+FY
+S=1.5
+T=50
+TG=0
+CG(1,CX-2.5,CY+7.5,5,5,"Red")
+CG(2,SL,ST,2,SB-ST,"Yellow")
+CG(3,SL,ST,SR-SL,2,"Yellow")
+CG(4,SR,ST,2,SB-ST,"Yellow")
+CG(5,SL,SB,SR-SL,2,"Yellow")
+US(0)
 Loop{
-	if toggle{
-		PixelSearch, AimPixelX, AimPixelY, CX - 2, CY - 1, CX, CY + 2, eCol, 1, Fast
+	if TG{
+		PixelSearch,APX,APY,CX-2,CY-1,CX,CY+2,EC,1,Fast
 		if ErrorLevel{
-			PixelSearch, AimPixelX, AimPixelY, SL, ST, SR, SB, eCol, 1, Fast
-			AimX := AimPixelX - CX + 3
-			AimY := AimPixelY - CY + 5
-			if(Abs(AimX) > 5){
-				intensity = 1.5
-				tolerance = 50
+			PixelSearch,APX,APY,SL,ST,SR,SB,EC,1,Fast
+			AX:=APX-CX+3
+			AY:=APY-CY+5
+			if(Abs(AX)>5){
+				S=1.5
+				T=50
 			}
-			DirX = -1
-			DirY = -1
-			if(AimX > 0){
-				DirX = 1
+			DX=-1
+			DY=-1
+			if(AX>0){
+				DX=1
 			}
-			if(AimY > 0){
-				DirY = 1
+			if(AY>0){
+				DY=1
 			}
-			AimOffsetX := AimX * DirX
-			AimOffsetY := AimY * DirY
-			MoveX := AimOffsetX ** ( 1 / intensity ) * DirX
-			MoveY := AimOffsetY ** ( 1 / intensity ) * DirY
-			scale = .45
-			if(tolerance * scale > 0){
-				tolerance *= scale
+			AOX:=AX*DX
+			AOY:=AY*DY
+			MX:=AOX**(1/S)*DX
+			MY:=AOY**(1/S)*DY
+			scale=.45
+			if(T*scale>0){
+				T*=scale
 			}
-			pMoveX := Abs(MoveX)
-			Sign := MoveX/pMoveX
-			Gui, 2:Color, Red
-			if(pMoveX > tolerance){
-				Gui, 2:Color, Lime
-				intensity += .02
-				MoveX := tolerance * Sign
+			pMX:=Abs(MX)
+			Sign:=MX/pMX
+			if(pMX>T){
+				S+=.02
+				MX:=T*Sign
 			}
 			MouseGetPos X,Y
-			if(Y > CY/2){
-				DllCall("mouse_event", uint, 1, int, MoveX, int, MoveY, uint, 0, int, 0)
+			if(Y>CY/2){
+				DllCall("mouse_event",uint,1,int,MX,int,MY,uint,0,int,0)
 			}
 		}
 	}
 }
-createGui(id,x,y,w,h,c){
-	Gui, %id%:Destroy
-	Gui, %id%:-Caption +AlwaysOnTop +ToolWindow
-	Gui, %id%:Color,%c%
-	Gui, %id%:Show, x%x% y%y% w%w% h%h%
+CG(n,x,y,w,h,c){
+	Gui,%n%:Destroy
+	Gui,%n%:-Caption +AlwaysOnTop +ToolWindow
+	Gui,%n%:Color,%c%
+	Gui,%n%:Show,x%x% y%y% w%w% h%h%
 }
-updateStatus(r){
-	color = 0x00FF00
+US(r){
+	c=Lime
 	if !r{
-		color = 0xFF0000
-		Gui, 2:Color, %color%
+		c=Red
 	}
-	Gui, 1:Color, %color%
+	Gui,1:Color,%c%
 }
-`::updateStatus(toggle := !toggle)
+`::US(TG:=!TG)
 r:
-goto, init
+goto,init
 exit:
 ExitApp
