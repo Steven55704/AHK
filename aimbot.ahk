@@ -52,20 +52,17 @@ Loop{
 			}
 			DX=-1
 			DY=-1
-			if(AX>0){
+			if(AX>0)
 				DX=1
-			}
-			if(AY>0){
+			if(AY>0)
 				DY=1
-			}
 			AOX:=AX*DX
 			AOY:=AY*DY
 			MX:=AOX**(1/S)*DX
 			MY:=AOY**(1/S)*DY
 			scale=.45
-			if(T*scale>0){
+			if(T*scale>0)
 				T*=scale
-			}
 			pMX:=Abs(MX)
 			Sign:=MX/pMX
 			if(pMX>T){
@@ -73,9 +70,8 @@ Loop{
 				MX:=T*Sign
 			}
 			MouseGetPos X,Y
-			if(Y>CY/2){
+			if(Y>CY/2)
 				DllCall("mouse_event",uint,1,int,MX,int,MY,uint,0,int,0)
-			}
 		}
 	}
 }
@@ -87,9 +83,8 @@ CG(n,x,y,w,h,c){
 }
 US(r){
 	c=Lime
-	if !r{
+	if !r
 		c=Red
-	}
 	Gui,1:Color,%c%
 }
 `::US(TG:=!TG)
