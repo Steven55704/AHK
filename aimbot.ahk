@@ -4,7 +4,7 @@ init:
 #Persistent
 #HotKeyInterval 1
 #MaxHotkeysPerInterval 256
-V=3.35
+V=3.37
 traytip,%V%,Running,1,1
 Menu,tray,NoStandard
 Menu,tray,Tip,Sharpshooter %V%
@@ -14,7 +14,7 @@ SetKeyDelay,-1,1
 SetControlDelay,-1
 SetMouseDelay,-1
 SetWinDelay,-1
-SendMode, InputThenPlay
+SendMode,InputThenPlay
 SetBatchLines,-1
 ListLines 0
 CoordMode,Pixel,Screen
@@ -24,15 +24,17 @@ Process,Priority,%PID%,High
 EC=0xE600E6
 CX:=A_ScreenWidth/2
 CY:=A_ScreenHeight/2
-FX:=A_ScreenWidth//24
-FY:=A_ScreenHeight//16
+FX:=A_ScreenWidth/30
+FY:=A_ScreenHeight/24
 SL:=CX-FX
-ST:=CY-FY/2.3
+ST:=CY-FY/2
 SR:=CX+FX
 SB:=CY+FY
 S=1.5
 T=50
 TG=0
+SC=.46
+INC=.055
 CG(1,CX-2.5,CY+7.5,5,5,"Red")
 CG(2,SL,ST,2,SB-ST,"Yellow")
 CG(3,SL,ST,SR-SL,2,"Yellow")
@@ -44,11 +46,11 @@ Loop{
 		PixelSearch,APX,APY,CX-2,CY-1,CX,CY+2,EC,1,Fast
 		if ErrorLevel{
 			PixelSearch,APX,APY,SL,ST,SR,SB,EC,1,Fast
-			AX:=APX-CX+3
-			AY:=APY-CY+5
-			if(Abs(AX)>5){
+			AX:=APX-CX+2
+			AY:=APY-CY+3
+			if(Abs(AX)>6){
 				S=1.5
-				T=50
+				T=70
 			}
 			DX=-1
 			DY=-1
@@ -56,21 +58,18 @@ Loop{
 				DX=1
 			if(AY>0)
 				DY=1
-			AOX:=AX*DX
-			AOY:=AY*DY
-			MX:=AOX**(1/S)*DX
-			MY:=AOY**(1/S)*DY
-			scale=.45
-			if(T*scale>0)
-				T*=scale
+			MX:=(AX*DX)**(1/S)*DX
+			MY:=(AY*DY)**(1/S)*DY
+			if(T>0)
+				T*=SC
 			pMX:=Abs(MX)
-			Sign:=MX/pMX
+			SG:=MX/pMX
 			if(pMX>T){
-				S+=.02
-				MX:=T*Sign
+				S+=INC
+				MX:=T*SG
 			}
 			MouseGetPos X,Y
-			if(Y>CY/2)
+			if(Y>CY/2-5)
 				DllCall("mouse_event",uint,1,int,MX,int,MY,uint,0,int,0)
 		}
 	}
