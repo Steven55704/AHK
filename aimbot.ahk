@@ -34,7 +34,7 @@ S=1.5
 T=50
 TG=0
 SC=.46
-INC=.055
+INC=.01
 CG(1,CX-2.5,CY+7.5,5,5,"Red")
 CG(2,SL,ST,2,SB-ST,"Yellow")
 CG(3,SL,ST,SR-SL,2,"Yellow")
@@ -47,7 +47,7 @@ Loop{
 		if ErrorLevel{
 			PixelSearch,APX,APY,SL,ST,SR,SB,EC,1,Fast
 			AX:=APX-CX+2
-			AY:=APY-CY+3
+			AY:=APY-CY+2.5
 			if(Abs(AX)>6){
 				S=1.5
 				T=70
