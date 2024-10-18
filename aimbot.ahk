@@ -4,7 +4,7 @@ init:
 #Persistent
 #HotKeyInterval 1
 #MaxHotkeysPerInterval 256
-V=3.37
+V=3.4
 traytip,%V%,Running,1,1
 Menu,tray,NoStandard
 Menu,tray,Tip,Sharpshooter %V%
@@ -33,8 +33,8 @@ SB:=CY+FY
 S=1.5
 T=50
 TG=0
-SC=.46
-INC=.01
+SC=.4
+INC=.0025
 CG(1,CX-2.5,CY+7.5,5,5,"Red")
 CG(2,SL,ST,2,SB-ST,"Yellow")
 CG(3,SL,ST,SR-SL,2,"Yellow")
@@ -46,8 +46,8 @@ Loop{
 		PixelSearch,APX,APY,CX-2,CY-1,CX,CY+2,EC,1,Fast
 		if ErrorLevel{
 			PixelSearch,APX,APY,SL,ST,SR,SB,EC,1,Fast
-			AX:=APX-CX+2
-			AY:=APY-CY+2.5
+			AX:=APX-CX+1.7
+			AY:=APY-CY+3.5
 			if(Abs(AX)>6){
 				S=1.5
 				T=70
