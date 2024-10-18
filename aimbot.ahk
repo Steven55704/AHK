@@ -3,8 +3,8 @@ init:
 #SingleInstance Force
 #Persistent
 #HotKeyInterval 1
-#MaxHotkeysPerInterval 256
-V=3.4
+#MaxHotkeysPerInterval 512
+V=3.41
 traytip,%V%,Running,1,1
 Menu,tray,NoStandard
 Menu,tray,Tip,Sharpshooter %V%
@@ -31,10 +31,10 @@ ST:=CY-FY/2
 SR:=CX+FX
 SB:=CY+FY
 S=1.5
-T=50
+T=100
 TG=0
-SC=.4
-INC=.0025
+SC=.36
+INC=.001
 CG(1,CX-2.5,CY+7.5,5,5,"Red")
 CG(2,SL,ST,2,SB-ST,"Yellow")
 CG(3,SL,ST,SR-SL,2,"Yellow")
