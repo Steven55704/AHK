@@ -31,9 +31,9 @@ ST:=CY-FY/2
 SR:=CX+FX
 SB:=CY+FY
 S=1.5
-T=100
+T=75
 TG=0
-SC=.36
+SC=.365
 INC=.001
 CG(1,CX-2.5,CY+7.5,5,5,"Red")
 CG(2,SL,ST,2,SB-ST,"Yellow")
