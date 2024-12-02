@@ -30,11 +30,11 @@ SL:=CX-FX
 ST:=CY-FY/2
 SR:=CX+FX
 SB:=CY+FY
-S=1.5
-T=75
 TG=0
+S=1.5
+T=70
 SC=.365
-INC=.001
+INC=.00125
 CG(1,CX-2.5,CY+7.5,5,5,"Red")
 CG(2,SL,ST,2,SB-ST,"Yellow")
 CG(3,SL,ST,SR-SL,2,"Yellow")
@@ -69,8 +69,8 @@ Loop{
 				MX:=T*SG
 			}
 			MouseGetPos X,Y
-			if(Y>CY/2-5)
-				DllCall("mouse_event",uint,1,int,MX,int,MY,uint,0,int,0)
+			if(Y>CY/2-2)
+				DllCall("mouse_event",uint,1,int,MX,int,MY)
 		}
 	}
 }
