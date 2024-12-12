@@ -10,8 +10,6 @@ Menu,tray,NoStandard
 Menu,tray,Tip,Sharpshooter %V%
 Menu,tray,Add,Sharpshooter %V%,r
 Menu,tray,Add,Exit,exit
-SetKeyDelay,-1,1
-SetControlDelay,-1
 SetMouseDelay,-1
 SetWinDelay,-1
 SendMode,InputThenPlay
