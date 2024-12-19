@@ -297,7 +297,7 @@ CShakeMode:
 	Loop{
 		If ForceReset
 			Goto RestartMacro
-		Sleep ClickScanDelay
+		Sleep ShakeDelay
 		PixelSearch,,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,FishColor,0,Fast
 		If !ErrorLevel{
 			SetTimer,Failsafe1,Off
@@ -310,7 +310,7 @@ CShakeMode:
 					CShakeRepeatBypassCounter:=0
 					ClickCount++
 					MouseMove,ClickX,ClickY
-					Sleep ClickScanDelay
+					Sleep ShakeDelay
 					Click,ClickX+10,ClickY
 					MemoryX:=ClickX
 					MemoryY:=ClickY
