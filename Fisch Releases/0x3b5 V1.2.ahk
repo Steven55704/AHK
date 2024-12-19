@@ -94,7 +94,6 @@ SendStatus(st,info:=0){
 	Global WebhookURL,NotifyOnFailsafe,runtime2
 	Try{
 		If StrLen(WebhookURL)>100{
-			Return
 			payload:=""
 			FormatTime,ct,,hh:mm:ss
 			elapsed:=GetTime(runtime2)
