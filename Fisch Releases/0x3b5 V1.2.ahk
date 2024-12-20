@@ -559,8 +559,8 @@ Calculations:
 	LookDownX:=WW/2
 	LookDownY:=WH/4
 	Scale(x){
-		c:=1.86998
-		e:=0.823735
+		c:=2.53266
+		e:=0.747526
 		Return c*x**e
 	}
 Return
