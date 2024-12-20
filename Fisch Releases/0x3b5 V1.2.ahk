@@ -195,7 +195,7 @@ StartMacro:
 		AutoZoomDelay*=5
 		Sleep AutoZoomDelay
 	}
-	PixelSearch,,,CameraCheckLeft,CameraCheckTop,CameraCheckRight,CameraCheckBottom,0xFFFFFF,0,Fast
+	PixelSearch,,,CameraCheckLeft,CameraCheckTop,CameraCheckRight,CameraCheckBottom,0xFFFFFF,5,Fast
 	UpdateTask("Current Task: Enable Camera Mode")
 	If !ErrorLevel{
 		Sleep AutoCameraDelay
@@ -280,7 +280,7 @@ Return
 Track:
 	FishX:=GetFishPos()
 	If FishX&&!WasFishCaught{
-		PixelSearch,,,WW/1.65,WH/1.1024,WW/1.644,WH/1.1,0xCECECE,99,Fast
+		PixelSearch,,,WW/1.6525,WH/1.1024,WW/1.644,WH/1.1,0xCECECE,98,Fast
 		WasFishCaught:=!ErrorLevel
 	}
 Return
@@ -540,10 +540,10 @@ MinigameLoop:
 Return
 Calculations:
 	WinGetActiveStats,T,WW,WH,WL,WT
-	CameraCheckLeft:=WW/2.8444
-	CameraCheckRight:=WW/1.5421
-	CameraCheckTop:=WH/1.28
-	CameraCheckBottom:=WH
+	CameraCheckLeft:=WW/2.15
+	CameraCheckRight:=WW/1.85
+	CameraCheckTop:=WH/1.105
+	CameraCheckBottom:=WH/1.077
 	CShakeLeft:=WW/4.6545
 	CShakeRight:=WW/1.2736
 	CShakeTop:=WH/14.08
