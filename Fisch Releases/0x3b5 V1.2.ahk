@@ -280,8 +280,7 @@ Return
 Track:
 	FishX:=GetFishPos()
 	If FishX&&!WasFishCaught{
-		PixelSearch,,,WW/1.647325,WH/1.102,WW/1.644,WH/1.1,0xCECECE,99,Fast
-		CTS:=A_TickCount
+		PixelSearch,,,WW/1.65,WH/1.1024,WW/1.644,WH/1.1,0xCECECE,99,Fast
 		WasFishCaught:=!ErrorLevel
 	}
 Return
@@ -449,8 +448,6 @@ MinigameLoop:
 	Sleep 1
 	FishX:=GetFishPos()
 	If FishX{
-		If(A_TickCount-CTS)>2500&&WasFishCaught
-			WasFishCaught:=False
 		If ShakeOnly
 			Goto MinigameLoop
 		FailsInARow:=0
