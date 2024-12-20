@@ -616,7 +616,7 @@ InitGui:
 	Gui Add,Link,x6 y22 w259 h14,This macro is based on <a href="https://www.youtube.com/@AsphaltCake">AsphaltCake</a> Fisch Macro V11
 	Gui Add,Text,x6 y40 w257 h14 +0x200,Gui, modified minigame, polishing, and webhook by me.
 	Gui Add,Link,x6 y58 w102 h14,Check out my <a href="https://github.com/LopenaFollower">GitHub</a>
-	Gui Show,w450 h175,Fisch V1 by 0x3b5
+	Gui Show,w450 h175,Fisch V1.1 by 0x3b5
 	Return
 	SubAll:
 		Gui Submit,NoHide
