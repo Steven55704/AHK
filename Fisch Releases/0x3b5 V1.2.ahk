@@ -280,7 +280,7 @@ Return
 Track:
 	FishX:=GetFishPos()
 	If FishX&&!WasFishCaught{
-		PixelSearch,,,WW/1.6525,WH/1.1024,WW/1.644,WH/1.1,0xCECECE,98,Fast
+		PixelSearch,,,WW/1.655,WH/1.1024,WW/1.644,WH/1.1,0xCECECE,98,Fast
 		WasFishCaught:=!ErrorLevel
 	}
 Return
