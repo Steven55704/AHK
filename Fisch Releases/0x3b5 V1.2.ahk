@@ -161,7 +161,7 @@ Return
 MoveGui:
 	x:=WW-455
 	y:=WH-200
-	WinMove,Fisch V1 by 0x3b5,,%x%,%y%
+	WinMove,Fisch V1.2 by 0x3b5,,%x%,%y%
 Return
 StartMacro:
 	WinActivate,Roblox
