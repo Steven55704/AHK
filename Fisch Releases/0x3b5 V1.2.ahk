@@ -195,8 +195,8 @@ StartMacro:
 		AutoZoomDelay*=5
 		Sleep AutoZoomDelay
 	}
-	PixelSearch,,,CameraCheckLeft,CameraCheckTop,CameraCheckRight,CameraCheckBottom,0xFFFFFF,5,Fast
 	UpdateTask("Current Task: Enable Camera Mode")
+	PixelSearch,,,CameraCheckLeft,CameraCheckTop,CameraCheckRight,CameraCheckBottom,0xFFFFFF,1,Fast
 	If !ErrorLevel{
 		Sleep AutoCameraDelay
 		Send 2
@@ -559,8 +559,8 @@ Calculations:
 	LookDownX:=WW/2
 	LookDownY:=WH/4
 	Scale(x){
-		c:=2.53266
-		e:=0.747526
+		c:=2.79046
+		e:=0.745648
 		Return c*x**e
 	}
 Return
