@@ -15,10 +15,13 @@ defConfg:="0 0 0" recConfg
 DirPath:=A_MyDocuments "\Macro Settings"
 SettingsPath:=DirPath "\general.txt"
 MinigamePath:=DirPath "\minigame.txt"
+VersionPath:=DirPath "\ver.txt"
 If !FileExist(DirPath)
 	FileCreateDir,%DirPath%
 If !FileExist(SettingsPath)
 	FileAppend,%defConfg%,%SettingsPath%
+If !FileExist(VersionPath)
+	FileAppend,1.2 1,%SettingsPath%
 FileRead,configs,%SettingsPath%
 ar:=parseSettings(configs)
 If(ar[25]!=configFooter){
