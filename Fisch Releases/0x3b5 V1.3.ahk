@@ -21,8 +21,8 @@ recConfg:=" F1 F2 F3 \ Click 1 1 1 1 1 1 1 0 800 750 100 300 35 0 1 1 10 default
 defConfg:="0 0 0" recConfg
 defMGConfig:="[Values]`nStabilizerLoop=16`nSideBarRatio=0.8`nSideBarWait=1.84`nRightMult=2.5821`nRightDiv=1.8961`nRightAnkleMult=1.36`nLeftMult=2.9892`nLeftDiv=4.6235"
 DirPath:=A_MyDocuments "\Macro Settings"
-DllCall("LoadLibrary","Str",DirPath "\SkinHu.dll")
 LibPath:=DirPath "\Lib"
+DllCall("LoadLibrary","Str",LibPath "\SkinHu.dll")
 MGPath:=DirPath "\Minigame"
 SkinsPath:=DirPath "\skins"
 SettingsPath:=DirPath "\general.txt"
