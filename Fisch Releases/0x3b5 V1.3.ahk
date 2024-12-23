@@ -40,7 +40,7 @@ If !FileExist(DefMGPath)
 If !FileExist(SettingsPath)
 	FileAppend,%defConfg%,%SettingsPath%
 If !FileExist(VersionPath)
-	FileAppend,1.3 1,%SettingsPath%
+	FileAppend,1.3 2,%SettingsPath%
 FileRead,configs,%SettingsPath%
 ar:=parseSettings(configs)
 If(ar[30]!=configFooter){
@@ -658,8 +658,8 @@ InitGui:
 	Gui Add,CheckBox,vCBLG gSubAll x148 y35 w96 h14 %ALG%,Lower Graphics
 	Gui Add,CheckBox,vCBZC gSubAll x148 y50 w98 h14 %AZC%,Zoom In Camera
 	Gui Add,CheckBox,vCBLD gSubAll x148 y65 w98 h14 %ALD%,Look Down
-	Gui Add,CheckBox,vCBBS gSubAll x148 y80 w103 h14 %ABlS%,Blur When Shake
-	Gui Add,CheckBox,vCBBM gSubAll x148 y95 w116 h14 %ABlM%,Blur When Minigame
+	Gui Add,CheckBox,vCBBS gSubAll x148 y80 w104 h14 %ABlS%,Blur When Shake
+	Gui Add,CheckBox,vCBBM gSubAll x148 y95 w118 h14 %ABlM%,Blur When Minigame
 	Gui Add,CheckBox,vCBSF gSubAll x148 y110 w128 h14 %ASF%,ShutdownAfterFailLimit
 	Gui Font,w600
 	Gui Add,GroupBox,x144 y126 w134 h48,Game
@@ -703,7 +703,7 @@ InitGui:
 	Gui Add,DropDownList,vDDSS gSubAll x129 y66 w42,%ListVal%
 	Gui Add,Text,x174 y70 w84 h14 +0x200,Notify on level up
 	Gui Add,Text,x129 y87 w62 h13 +0x200,Check every
-	Gui Add,Edit,vCLEN gSubAll x190 y85 w26 h18,%CheckLvlEveryN%
+	Gui Add,Edit,vCLEN gSubAll x190 y85 w26 h18 Number,%CheckLvlEveryN%
 	Gui Add,Text,x218 y87 w40 h13 +0x200,catches.
 	Gui Tab,4
 	cnfgoptions:=ScanForConfigs(curMGFile)
@@ -717,26 +717,26 @@ InitGui:
 	Gui Font
 	Gui Add,Text,x9 y58 w42 h14 0x200,Multiplier
 	Gui Add,Text,x9 y77 w32 h14 0x200,Divisor
-	Gui Add,Edit,vMGLM x68 y56 w52 h17 Number,%LeftMult%
-	Gui Add,Edit,vMGLD x68 y76 w52 h17 Number,%LeftDiv%
+	Gui Add,Edit,vMGLM x68 y56 w52 h17 gNumberEdit,%LeftMult%
+	Gui Add,Edit,vMGLD x68 y76 w52 h17 gNumberEdit,%LeftDiv%
 	Gui Font,w600
 	Gui Add,GroupBox,x2 y98 w120 h76,Right
 	Gui Font
 	Gui Add,Text,x9 y111 w42 h14 0x200,Multiplier
 	Gui Add,Text,x9 y130 w32 h14 0x200,Divisor
 	Gui Add,Text,x9 y150 w50 h14 0x200,Ankle Mult
-	Gui Add,Edit,vMGRM x68 y108 w52 h17 Number,%RightMult%
-	Gui Add,Edit,vMGRD x68 y128 w52 h17 Number,%RightDiv%
-	Gui Add,Edit,vMGAM x68 y148 w52 h17 Number,%RightAnkleMult%
+	Gui Add,Edit,vMGRM x68 y108 w52 h17 gNumberEdit,%RightMult%
+	Gui Add,Edit,vMGRD x68 y128 w52 h17 gNumberEdit,%RightDiv%
+	Gui Add,Edit,vMGAM x68 y148 w52 h17 gNumberEdit,%RightAnkleMult%
 	Gui Font,w600
 	Gui Add,GroupBox,x124 y46 w128 h128,Other
 	Gui Font
 	Gui Add,Text,x128 y58 w68 h14 0x200,Stabilizer Loop
 	Gui Add,Text,x128 y78 w64 h14 0x200,Sidebar Ratio
 	Gui Add,Text,x128 y98 w62 h14 0x200,Sidebar Wait
-	Gui Add,Edit,vMGSL x198 y56 w52 h17 Number,%StabilizerLoop%
-	Gui Add,Edit,vMGSR x198 y76 w52 h17 Number,%SideBarRatio%
-	Gui Add,Edit,vMGSW x198 y96 w52 h17 Number,%SideBarWait%
+	Gui Add,Edit,vMGSL x198 y56 w52 h17 gNumberEdit,%StabilizerLoop%
+	Gui Add,Edit,vMGSR x198 y76 w52 h17 gNumberEdit,%SideBarRatio%
+	Gui Add,Edit,vMGSW x198 y96 w52 h17 gNumberEdit,%SideBarWait%
 	Gui Add,Text,x135 y116 w115 h55,Note: Make sure to `nselect the desired file`nname before changing`nany of these values.
 	Gui Tab,5
 	AOT:=Chkd(GuiAlwaysOnTop)
@@ -755,11 +755,23 @@ InitGui:
 	Return
 	ChangeTheme:
 		Gui Submit,NoHide
-		If Trim(DDSL)!=""{
+		If(Trim(DDSL)!=""){
 			sl:=SkinsPath "\"DDSL
 			If FileExist(sl)
 				DllCall("SkinHu\SkinH_AttachEx","Str",sl)
 		}
+	Return
+	NumberEdit:
+		c:=A_GuiControl
+		GuiControlGet,inp,,%c%
+		If !RegExMatch(inp,"^[0-9]*\.?[0-9]*$"){
+			inp:=RegExReplace(inp,"[^0-9.]")
+			parts:=StrSplit(inp,".")
+			If(parts.MaxIndex()>2)
+				inp:=parts[1] "."parts[2]
+			GuiControl,,%c%,%inp%
+		}
+		Goto SubAll
 	Return
 	SubAll:
 		Gui Submit,NoHide
