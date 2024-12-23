@@ -724,7 +724,7 @@ InitGui:
 		ShakeOnly:=CBSO
 		AutosaveSettings:=CBAS
 		GuiAlwaysOnTop:=CBOT
-		WinSet,AlwaysOnTop,%CBOT%,Fisch V1 by 0x3b5
+		WinSet,AlwaysOnTop,%CBOT%,Fisch V1.2 by 0x3b5
 		If CBAS{
 			FileDelete,%SettingsPath%
 			s:=""
