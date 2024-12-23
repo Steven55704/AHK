@@ -40,7 +40,7 @@ If !FileExist(DefMGPath)
 If !FileExist(SettingsPath)
 	FileAppend,%defConfg%,%SettingsPath%
 If !FileExist(VersionPath)
-	FileAppend,1.3 2,%SettingsPath%
+	FileAppend,1.3 3,%SettingsPath%
 FileRead,configs,%SettingsPath%
 ar:=parseSettings(configs)
 If(ar[30]!=configFooter){
@@ -1018,7 +1018,6 @@ Chkd(b){
 SendStatus(st,info:=0){
 	Global WebhookURL,NotifyOnFailsafe,runtime2,SendScreenshotFL
 	If StrLen(WebhookURL)>100{
-		return
 		payload:=""
 		FormatTime,ct,,hh:mm:ss
 		elapsed:=GetTime(runtime2)
