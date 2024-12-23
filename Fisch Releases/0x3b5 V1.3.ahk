@@ -33,7 +33,7 @@ If !FileExist(DefMGPath)
 If !FileExist(SettingsPath)
 	FileAppend,%defConfg%,%SettingsPath%
 If !FileExist(VersionPath)
-	FileAppend,1.2 1,%SettingsPath%
+	FileAppend,1.3 1,%SettingsPath%
 FileRead,configs,%SettingsPath%
 ar:=parseSettings(configs)
 If(ar[30]!=configFooter){
