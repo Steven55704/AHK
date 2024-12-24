@@ -892,7 +892,7 @@ InitGui:
 		Gui Submit,NoHide
 		isvalid:=True
 		Gui +OwnDialogs
-		InputBox,FileName,File name,Enter file name.,,170,140
+		InputBox,FileName,File name,Enter config name.,,170,140
 		chars:="\\/:*?""<>| "
 		Loop,Parse,chars
 			If InStr(FileName,A_LoopField)
