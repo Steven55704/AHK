@@ -532,6 +532,7 @@ MinigameLoop:
 		}
 		Goto MinigameLoop
 	}Else{
+		Duration:=A_TickCount
 		CatchCount++
 		If WasFishCaught
 			FishCaught++
@@ -545,7 +546,7 @@ MinigameLoop:
 			caught:="Spent "RegExReplace(d,"(?<=\.\d{3}).*$") "s trying to catch the fish."
 			CS2DC(0,0,A_ScreenWidth,A_ScreenHeight,"{""embeds"":[{""image"":{""url"":""attachment://screenshot.png""},""color"":15258703,""fields"":[{""name"":""Catch Rate"",""value"":"""ratio """},{""name"":""Fish was Lost."",""value"":"""caught """},{""name"":""Runtime"",""value"": """elapsed """}],""footer"":{""text"":"""ct """}}]}")
 		}Else If(UseWebhook&&Mod(CatchCount,NotifEveryN)=0)
-			SendStatus(3,[FishCaught,FishLost,(A_TickCount-MinigameStart)/1000,WasFishCaught])
+			SendStatus(3,[FishCaught,FishLost,(Duration-MinigameStart)/1000,WasFishCaught])
 		If(LvlUpMode!="Off"&&Mod(CatchCount,CheckLvlEveryN)=0)
 			Gosub CheckStatistics
 		Goto RestartMacro
