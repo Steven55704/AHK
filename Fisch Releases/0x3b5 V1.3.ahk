@@ -280,7 +280,7 @@ Return
 Track:
 	If GetFishPos(){
 		If GetBarPos()&&!WasFishCaught{
-			PixelSearch,,,WW/1.6545,WH/1.1024,WW/1.644,WH/1.1,0xCECECE,99,Fast
+			PixelSearch,,,WW/1.655,WH/1.1024,WW/1.644,WH/1.1,0xCECECE,99,Fast
 			WasFishCaught:=!ErrorLevel
 		}
 	}Else
@@ -577,7 +577,7 @@ CheckStatistics:
 		LastLvl:=lvl
 		FileDelete,%SettingsPath%
 		s:=""
-		For i,v In [PrivateServer,WebhookURL,UseWebhook,StartHotkey,ReloadHotkey,ExitHotkey,NavigationKey,ShakeMode,NotifyOnFailsafe,NotifEveryN,AutoLowerGraphics,AutoZoomInCamera,AutoLookDownCamera,AutoBlurShake,AutoBlurMinigame,ShutdownAfterFailLimit,RestartDelay,RodCastDuration,CastRandomization,WaitForBobber,ShakeDelay,ShakeOnly,AutosaveSettings,GuiAlwaysOnTop,CheckLvlEveryN,curMGFile,SendScreenshotFL,LvlUpMode,LastLvl,configFooter]
+		For i,v In [PrivateServer,WebhookURL,UseWebhook,StartHotkey,ReloadHotkey,ExitHotkey,NavigationKey,ShakeMode,NotifyOnFailsafe,NotifEveryN,AutoLowerGraphics,AutoZoomInCamera,AutoLookDownCamera,AutoBlurShake,AutoBlurMinigame,ShutdownAfterFailLimit,RestartDelay,RodCastDuration,CastRandomization,WaitForBobber,ShakeDelay,ShakeOnly,AutosaveSettings,GuiAlwaysOnTop,CheckLvlEveryN,curMGFile,SendScreenshotFL,LvlUpMode,LastLvl,SelectedSkin,configFooter]
 			s.=v " "
 		FileAppend,%s%,%SettingsPath%
 		If(LvlUpMode=="Txt")
@@ -892,7 +892,7 @@ InitGui:
 		Gui Submit,NoHide
 		isvalid:=True
 		Gui +OwnDialogs
-		InputBox,FileName,File name,Enter config name.,,170,140
+		InputBox,FileName,File name,Enter file name.,,170,140
 		chars:="\\/:*?""<>| "
 		Loop,Parse,chars
 			If InStr(FileName,A_LoopField)
