@@ -40,7 +40,7 @@ If !FileExist(DefMGPath)
 If !FileExist(SettingsPath)
 	FileAppend,%defConfg%,%SettingsPath%
 If !FileExist(VersionPath)
-	FileAppend,1.3 5,%VersionPath%
+	FileAppend,1.3 6,%VersionPath%
 FileRead,configs,%SettingsPath%
 ar:=parseSettings(configs)
 If(ar[31]!=configFooter){
@@ -278,13 +278,14 @@ Failsafe3:
 	runtime2++
 Return
 Track:
-	If GetFishPos(){
-		If GetBarPos()&&!WasFishCaught{
-			PixelSearch,,,WW/1.655,WH/1.1024,WW/1.644,WH/1.1,0xCECECE,99,Fast
-			WasFishCaught:=!ErrorLevel
-		}
-	}Else
-		SetTimer,Track,Off
+	PixelSearch,x,,WW/1.644,WH/1.1024,WW/2.54,WH/1.0965,0xFFFFFF,3,Fast
+	If !ErrorLevel
+		ProgressX:=x
+	Else{
+		PixelSearch,x,,WW/1.644,WH/1.1024,WW/2.54,WH/1.0965,0x9F9F9F,3,Fast
+		If !ErrorLevel
+			ProgressX:=x
+	}
 Return
 CShakeMode:
 	FailsafeCount:=0
@@ -387,7 +388,7 @@ BarMinigame:
 	DirectionalToggle:="Disabled"
 	MaxLeftToggle:=False
 	MaxRightToggle:=False
-	WasFishCaught:=False
+	ProgressX:=0
 	MaxLeftBar:=FishBarLeft+WhiteBarSize*SideBarRatio
 	MaxRightBar:=FishBarRight-WhiteBarSize*SideBarRatio
 	GetFishPos(){
@@ -532,7 +533,9 @@ MinigameLoop:
 		}
 		Goto MinigameLoop
 	}Else{
-		Duration:=A_TickCount
+		Duration:=(A_TickCount-MinigameStart)/1000
+		WasFishCaught:=ProgressX>WW/2
+		SetTimer,Track,Off
 		CatchCount++
 		If WasFishCaught
 			FishCaught++
@@ -543,10 +546,10 @@ MinigameLoop:
 			FormatTime,ct,,hh:mm:ss
 			elapsed:=GetTime(runtime2)
 			ratio:=FishCaught " / "FishLost " ("RegExReplace(FishCaught/CatchCount*100,"(?<=\.\d{3}).*$") "%)"
-			caught:="Spent "RegExReplace(d,"(?<=\.\d{3}).*$") "s trying to catch the fish."
+			caught:="Spent "RegExReplace(Duration,"(?<=\.\d{3}).*$") "s trying to catch the fish."
 			CS2DC(0,0,A_ScreenWidth,A_ScreenHeight,"{""embeds"":[{""image"":{""url"":""attachment://screenshot.png""},""color"":15258703,""fields"":[{""name"":""Catch Rate"",""value"":"""ratio """},{""name"":""Fish was Lost."",""value"":"""caught """},{""name"":""Runtime"",""value"": """elapsed """}],""footer"":{""text"":"""ct """}}]}")
 		}Else If(UseWebhook&&Mod(CatchCount,NotifEveryN)=0)
-			SendStatus(3,[FishCaught,FishLost,(Duration-MinigameStart)/1000,WasFishCaught])
+			SendStatus(3,[FishCaught,FishLost,Duration,WasFishCaught])
 		If(LvlUpMode!="Off"&&Mod(CatchCount,CheckLvlEveryN)=0)
 			Gosub CheckStatistics
 		Goto RestartMacro
