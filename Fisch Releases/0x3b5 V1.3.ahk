@@ -16,13 +16,13 @@ CoordMode,Pixel,Relative
 CoordMode,Mouse,Relative
 #Include %A_MyDocuments%\Macro Settings\Lib\Gdip_All.ahk
 GuiTitle:="Fisch V1.3 by 0x3b5"
-configFooter:="sv03"
-recConfg:=" F1 F2 F3 \ Click 1 1 1 1 1 1 1 0 800 750 100 300 35 0 1 1 10 default.txt 0 Off 0 "configFooter
+configFooter:="sv04"
+recConfg:=" F1 F2 F3 \ Click 1 1 1 1 1 1 1 0 800 750 100 300 35 0 1 1 10 default.txt 0 Off 0 none "configFooter
 defConfg:="0 0 0" recConfg
 defMGConfig:="[Values]`nStabilizerLoop=16`nSideBarRatio=0.8`nSideBarWait=1.84`nRightMult=2.5821`nRightDiv=1.8961`nRightAnkleMult=1.36`nLeftMult=2.9892`nLeftDiv=4.6235"
 DirPath:=A_MyDocuments "\Macro Settings"
 LibPath:=DirPath "\Lib"
-DllCall("LoadLibrary","Str",DirPath "\SkinHu.dll")
+DllCall("LoadLibrary","Str",LibPath "\SkinHu.dll")
 MGPath:=DirPath "\Minigame"
 SkinsPath:=DirPath "\skins"
 SettingsPath:=DirPath "\general.txt"
@@ -40,10 +40,10 @@ If !FileExist(DefMGPath)
 If !FileExist(SettingsPath)
 	FileAppend,%defConfg%,%SettingsPath%
 If !FileExist(VersionPath)
-	FileAppend,1.3 4,%VersionPath%
+	FileAppend,1.3 5,%VersionPath%
 FileRead,configs,%SettingsPath%
 ar:=parseSettings(configs)
-If(ar[30]!=configFooter){
+If(ar[31]!=configFooter){
 	AskUser("Settings file outdated","Regenerate settings file?")
 	IfMsgBox Yes
 	{
@@ -89,6 +89,12 @@ curMGFile:=ar[26]
 SendScreenshotFL:=ar[27]
 LvlUpMode:=ar[28]
 LastLvl:=ar[29]
+SelectedSkin:=ar[30]
+If(SelectedSkin!="none"){
+	sl:=SkinsPath "\"SelectedSkin
+	If FileExist(sl)
+		DllCall("SkinHu\SkinH_AttachEx","Str",sl)
+}
 If !FileExist(MGPath "\"curMGFile)
 	curMGFile:="default.txt"
 curMGConfig:=ImportMinigameConfig(curMGFile)
@@ -757,8 +763,10 @@ InitGui:
 		Gui Submit,NoHide
 		If(Trim(DDSL)!=""){
 			sl:=SkinsPath "\"DDSL
-			If FileExist(sl)
+			If FileExist(sl){
+				SelectedSkin:=DDSL
 				DllCall("SkinHu\SkinH_AttachEx","Str",sl)
+			}
 		}
 	Return
 	NumberEdit:
@@ -861,7 +869,7 @@ InitGui:
 	UPDSV:
 		FileDelete,%SettingsPath%
 		s:=""
-		For i,v In [PrivateServer,WebhookURL,UseWebhook,StartHotkey,ReloadHotkey,ExitHotkey,NavigationKey,ShakeMode,NotifyOnFailsafe,NotifEveryN,AutoLowerGraphics,AutoZoomInCamera,AutoLookDownCamera,AutoBlurShake,AutoBlurMinigame,ShutdownAfterFailLimit,RestartDelay,RodCastDuration,CastRandomization,WaitForBobber,ShakeDelay,ShakeOnly,AutosaveSettings,GuiAlwaysOnTop,CheckLvlEveryN,curMGFile,SendScreenshotFL,LvlUpMode,LastLvl,configFooter]
+		For i,v In [PrivateServer,WebhookURL,UseWebhook,StartHotkey,ReloadHotkey,ExitHotkey,NavigationKey,ShakeMode,NotifyOnFailsafe,NotifEveryN,AutoLowerGraphics,AutoZoomInCamera,AutoLookDownCamera,AutoBlurShake,AutoBlurMinigame,ShutdownAfterFailLimit,RestartDelay,RodCastDuration,CastRandomization,WaitForBobber,ShakeDelay,ShakeOnly,AutosaveSettings,GuiAlwaysOnTop,CheckLvlEveryN,curMGFile,SendScreenshotFL,LvlUpMode,LastLvl,SelectedSkin,configFooter]
 			s.=v " "
 		FileAppend,%s%,%SettingsPath%
 	Return
@@ -1065,7 +1073,7 @@ downloadTesseract(){
 		}
 		WinSet,AlwaysOnTop,0,%GuiTitle%
 		RunWait,%InstallerPath% /SILENT,,Hide
-		WinSet,AlwaysOnTop,%CBOT%,%GuiTitle%
+		WinSet,AlwaysOnTop,%GuiAlwaysOnTop%,%GuiTitle%
 		If FileExist("C:\Program Files\Tesseract-OCR\tesseract.exe")
 			MsgBox,64,Installation Complete,Tesseract OCR has been successfully installed!
 		Else{
