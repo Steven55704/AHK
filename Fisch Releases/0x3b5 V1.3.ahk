@@ -305,7 +305,7 @@ CShakeMode:
 			Sleep 200
 			Goto BarMinigame
 		}Else{
-			PixelSearch,ClickX,ClickY,CShakeLeft,CShakeTop,CShakeRight,CShakeBottom,0xFFFFFF,1,Fast
+			PixelSearch,ClickX,ClickY,CShakeRight,CShakeTop,CShakeLeft,CShakeBottom,0xFFFFFF,1,Fast
 			If !ErrorLevel{
 				If(ClickX!=MemoryX&&ClickY!=MemoryY){
 					CShakeRepeatBypassCounter:=0
@@ -393,7 +393,7 @@ BarMinigame:
 	MaxRightBar:=FishBarRight-WhiteBarSize*SideBarRatio
 	GetFishPos(){
 		Global FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,FishColor,ResolutionScaling
-		PixelSearch,FishX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,FishColor,2,Fast
+		PixelSearch,FishX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,FishColor,0,Fast
 		If ErrorLevel
 			Return False
 		Else
