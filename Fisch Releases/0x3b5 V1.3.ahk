@@ -571,7 +571,7 @@ CheckStatistics:
 	x:=WW-455
 	WinMove,%GuiTitle%,,%x%,0
 	Sleep 500
-	if !CaptureScreen("capture.png",1820,995,95,30)
+	If !CaptureScreen("capture.png",1820,995,95,30)
 		RunWait,% TesseractPath " ""capture.png"" ""capture.png_out""",,Hide
 	FileRead,lvl,capture.png_out.txt
 	FileDelete,capture.png
