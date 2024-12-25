@@ -762,7 +762,7 @@ InitGui:
 	Loop,%SkinsPath%\*.she
 		GuiControl,,DDSL,% A_LoopFileName
 	Gui Tab,6
-	Gui Add,Link,x6 y22 w270 h14,This macro is based on the <a href="https://www.youtube.com/@AsphaltCake">AsphaltCake</a> Fisch Macro V11
+	Gui Add,Link,x6 y22 w276 h14,This macro is based on the <a href="https://www.youtube.com/@AsphaltCake">AsphaltCake</a> Fisch Macro V11
 	Gui Add,Text,x6 y+4 w257 h14 0x200,Gui, modified minigame, polishing, and webhook by me.
 	Gui Add,Text,x6 y+4 w257 h14 0x200,Image webhook provided by @lunarosity
 	Gui Add,Text,x6 y+4 w257 h14 0x200,Themes and Lvl checker provided by @toxgt
