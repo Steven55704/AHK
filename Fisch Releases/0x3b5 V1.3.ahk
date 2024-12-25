@@ -40,7 +40,7 @@ If !FileExist(DefMGPath)
 If !FileExist(SettingsPath)
 	FileAppend,%defConfg%,%SettingsPath%
 If !FileExist(VersionPath)
-	FileAppend,1.3 6,%VersionPath%
+	FileAppend,1.3 7,%VersionPath%
 FileRead,configs,%SettingsPath%
 ar:=parseSettings(configs)
 If(ar[31]!=configFooter){
@@ -278,11 +278,11 @@ Failsafe3:
 	runtime2++
 Return
 Track:
-	PixelSearch,x,,WW/1.644,WH/1.1024,WW/2.54,WH/1.0965,0xFFFFFF,3,Fast
+	PixelSearch,x,,ProgBarRight,ProgBarTop,ProgBarLeft,ProgBarBottom,0xFFFFFF,3,Fast
 	If !ErrorLevel
 		ProgressX:=x
 	Else{
-		PixelSearch,x,,WW/1.644,WH/1.1024,WW/2.54,WH/1.0965,0x9F9F9F,3,Fast
+		PixelSearch,x,,ProgBarRight,ProgBarTop,ProgBarLeft,ProgBarBottom,0x9F9F9F,3,Fast
 		If !ErrorLevel
 			ProgressX:=x
 	}
@@ -599,6 +599,8 @@ CheckStatistics:
 Return
 Calculations:
 	WinGetActiveStats,T,WW,WH,WL,WT
+	If(WW+WH-A_ScreenWidth-A_ScreenHeight)
+		Send {F11}
 	CameraCheckLeft:=WW/2.15
 	CameraCheckRight:=WW/1.85
 	CameraCheckTop:=WH/1.105
@@ -615,6 +617,10 @@ Calculations:
 	ResolutionScaling:=2560/WW
 	UnstableColorX:=WW/3.463
 	UnstableColorY:=WH/1.168
+	ProgBarLeft:=WW/2.547
+	ProgBarRight:=WW/1.644
+	ProgBarTop:=WH/1.1
+	ProgBarBottom:=WH/1.0965
 	LookDownX:=WW/2
 	LookDownY:=WH/4
 	Scale(x){
