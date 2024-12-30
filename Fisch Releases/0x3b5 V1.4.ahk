@@ -34,7 +34,7 @@ If !FileExist(MGPath)
 If !FileExist(DefMGPath)
 	FileAppend,[Values]`nStabilizerLoop=40`nSideBarRatio=0.8`nSideBarWait=1.84`nRightMult=2.5821`nRightDiv=1.8961`nRightAnkleMult=1.36`nLeftMult=2.9892`nLeftDiv=4.6235,%DefMGPath%
 If !FileExist(VersionPath)
-	FileAppend,1.4 1,%VersionPath%
+	FileAppend,1.4 2,%VersionPath%
 IniRead,configFooter,%SettingsPath%,.,v,NotFound
 If(configFooter=="NotFound"){
 	Gosub DefaultSettings
@@ -146,7 +146,7 @@ DefaultSettings:
 	WriteGen("LookDown",1)
 	WriteGen("BlurShake",1)
 	WriteGen("BlurMinigame",1)
-	WriteGen("ShutdownAfterFailLimit",1)
+	WriteGen("ShutdownAfterFailLimit",0)
 	WriteGen("PrivateServer","")
 	WriteGen("RestartDelay",800)
 	WriteGen("CastDelay",750)
