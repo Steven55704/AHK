@@ -146,7 +146,7 @@ DefaultSettings:
 	WriteGen("LookDown",1)
 	WriteGen("BlurShake",1)
 	WriteGen("BlurMinigame",1)
-	WriteGen("ShutdownAfterFailLimit",0)
+	WriteGen("ShutdownAfterFailLimit",1)
 	WriteGen("PrivateServer","")
 	WriteGen("RestartDelay",800)
 	WriteGen("CastDelay",750)
@@ -191,8 +191,8 @@ SaveSettings:
 	WriteGen("WebhookURL",WebhookURL)
 	WriteGen("WebhookEnabled",UseWebhook)
 	WriteGen("WebhookNotifyInterval",NotifEveryN)
-	WriteGen("WebhookSendImg",0)
-	WriteGen("WebhookImgNotifyInterval",10)
+	WriteGen("WebhookSendImg",NotifImg)
+	WriteGen("WebhookImgNotifyInterval",ImgNotifEveryN)
 	WriteGen("NotifyOnFailsafe",NotifyOnFailsafe)
 	WriteGen("NotifyOnFishLost",SendScreenshotFL)
 	WriteGen("LvlNotifyMode",LvlUpMode)
@@ -280,7 +280,7 @@ RestartMacro:
 	If(cryoCanal.farm&&!cryoCanal.CFatC){
 		UpdateTask("Current Task: Walking To Cryogenic Canal")
 		Click 0,500
-		Loop,5{
+		Loop,6{
 			Send {WheelDown}
 			Sleep AutoZoomDelay
 		}
@@ -326,13 +326,17 @@ RestartMacro:
 		Send {w down}
 		Sleep 200
 		Send {w up}
-		Sleep 5300
-		Send {w down}
-		Sleep 100
+		Sleep 3800
+		Send {s down}
+		Sleep 200
 		Send {a up}
-		Sleep 2650
-		Send {w up}
 		Sleep 500
+		Send {a down}{w down}{s up}
+		Sleep 650
+		Send {a up}
+		Sleep 2630
+		Send {w up}
+		Sleep 300
 		Loop,25{
 			Send {WheelUp}
 			Sleep AutoZoomDelay
@@ -707,7 +711,7 @@ backUp:
 	Sleep 200
 	If buyConch{
 		Send {s down}
-		Sleep 400
+		Sleep 600
 		Send {s up}{d down}
 		Sleep 1500
 		Send {d up}
@@ -715,7 +719,7 @@ backUp:
 		Send {Space down}
 		Sleep 400
 		Send {d down}
-		Sleep 1000
+		Sleep 900
 		Send {Space up}{d up}{s down}e
 		Sleep 200
 		Send {s up}e
