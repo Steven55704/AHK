@@ -34,7 +34,7 @@ If !FileExist(MGPath)
 If !FileExist(DefMGPath)
 	FileAppend,[Values]`nStabilizerLoop=40`nSideBarRatio=0.8`nSideBarWait=1.84`nRightMult=2.5821`nRightDiv=1.8961`nRightAnkleMult=1.36`nLeftMult=2.9892`nLeftDiv=4.6235,%DefMGPath%
 If !FileExist(VersionPath)
-	FileAppend,1.4 3,%VersionPath%
+	FileAppend,1.4 4,%VersionPath%
 IniRead,configFooter,%SettingsPath%,.,v,NotFound
 If(configFooter=="NotFound"){
 	Gosub DefaultSettings
@@ -673,7 +673,7 @@ MinigameLoop:
 			FishLost++
 		Sleep RestartDelay
 		If UseWebhook{
-			If(!WasFishCaught&&SendScreenshotFL)||(WasFishCaught&&Mod(CatchCount,SendScreenshotEveryN)=0){
+			If(!WasFishCaught&&SendScreenshotFL)||(WasFishCaught&&Mod(CatchCount,SendScreenshotEveryN)=0&&NotifImg){
 				FormatTime,ct,,hh:mm:ss
 				elapsed:=GetTime(runtime2)
 				ratio:=FishCaught " / "FishLost " ("RegExReplace(FishCaught/CatchCount*100,"(?<=\.\d{3}).*$") "%)"
