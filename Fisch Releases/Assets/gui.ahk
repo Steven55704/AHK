@@ -1,4 +1,4 @@
-	;1
+;2
 #Include %A_MyDocuments%\Macro Settings\main.ahk
 InitGui:
 	Gui -MinimizeBox -MaximizeBox +AlwaysOnTop
