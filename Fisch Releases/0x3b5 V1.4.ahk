@@ -34,7 +34,7 @@ If !FileExist(MGPath)
 If !FileExist(DefMGPath)
 	FileAppend,[Values]`nStabilizerLoop=20`nSideBarRatio=0.8`nSideBarWait=1.72`nRightMult=2.6329`nRightDiv=1.8961`nRightAnkleMult=1.36`nLeftMult=2.9892`nLeftDiv=4.6235,%DefMGPath%
 If !FileExist(VersionPath)
-	FileAppend,1.4 5,%VersionPath%
+	FileAppend,1.4 6,%VersionPath%
 IniRead,configFooter,%SettingsPath%,.,v,NotFound
 If(configFooter=="NotFound"){
 	Gosub DefaultSettings
@@ -335,9 +335,9 @@ RestartMacro:
 		Send {a up}
 		Sleep 500
 		Send {a down}{w down}{s up}
-		Sleep 650
+		Sleep 1250
 		Send {a up}
-		Sleep 2630
+		Sleep 1930
 		Send {w up}
 		Sleep 300
 		Loop,25{
