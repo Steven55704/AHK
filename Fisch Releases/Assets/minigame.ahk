@@ -1,4 +1,4 @@
-;1
+;2
 #Include %A_MyDocuments%\Macro Settings\main.ahk
 Track:
 	PixelSearch,x,,ProgBarRight,ProgBarTop,ProgBarLeft,ProgBarBottom,0xFFFFFF,3,Fast
@@ -217,4 +217,42 @@ MinigameLoop:
 			Gosub backUp
 		Goto RestartMacro
 	}
+Return
+CheckStatistics:
+	PixelSearch,,,CameraCheckLeft,CameraCheckTop,CameraCheckRight,CameraCheckBottom,0xFFFFFF,1,Fast
+	If ErrorLevel{
+		Sleep AutoCameraDelay
+		Send {%NavigationKey%}
+		Sleep AutoCameraDelay
+		Loop,10{
+			Send d
+			Sleep AutoCameraDelay
+		}
+		Send {Enter}
+		Sleep AutoCameraDelay
+	}
+	x:=WW-455
+	WinMove,%GuiTitle%,,%x%,0
+	Sleep 500
+	If !CaptureScreen("capture.png",1820,995,95,30)
+		RunWait,% TesseractPath " ""capture.png"" ""capture.png_out""",,Hide
+	FileRead,lvl,capture.png_out.txt
+	FileDelete,capture.png
+	FileDelete,capture.png_out.txt
+	lvl:=RegExReplace(lvl,"[^0-9]")
+	If(lvl!=""&&lvl!=LastLvl){
+		LastLvl:=lvl
+		Gosub SaveSettings
+		If(LvlUpMode=="Txt")
+			SendStatus(5,[lvl])
+		Else
+			CS2DC(1844,995,1915,1025,"{""embeds"":[{""image"":{""url"":""attachment://screenshot.png""},""color"":4848188,""title"":""Level Up"",""footer"":{""text"":"""ct """}}]}")
+	}
+	Gosub MoveGui
+	Sleep 250
+	WinActivate,Roblox
+	WinMaximize,Roblox
+	Sleep AutoCameraDelay
+	Send {Enter}
+	Sleep AutoCameraDelay
 Return
