@@ -1,5 +1,5 @@
-1.4 7
+1.4 8
 shake.ahk - 1
-minigame.ahk - 1
+minigame.ahk - 2
 gui.ahk - 2
 other.ahk - 1
