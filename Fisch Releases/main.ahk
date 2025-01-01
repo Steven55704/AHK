@@ -35,7 +35,7 @@ If !FileExist(MGPath)
 If !FileExist(DefMGPath)
 	FileAppend,[Values]`nStabilizerLoop=20`nSideBarRatio=0.8`nSideBarWait=1.72`nRightMult=2.6329`nRightDiv=1.8961`nRightAnkleMult=1.36`nLeftMult=2.9892`nLeftDiv=4.6235,%DefMGPath%
 If !FileExist(VersionPath)
-	FileAppend,1.4 7,%VersionPath%
+	FileAppend,1.4 8,%VersionPath%
 FileRead,configVersion,%VersionPath%
 IniRead,curVer,%SettingsPath%,.,v
 If(curVer!=configVersion){
@@ -482,48 +482,6 @@ backUp:
 	}
 	Click 0,500
 	Sleep 4000
-Return
-CheckStatistics:
-	PixelSearch,,,CameraCheckLeft,CameraCheckTop,CameraCheckRight,CameraCheckBottom,0xFFFFFF,1,Fast
-	If ErrorLevel{
-		Sleep AutoCameraDelay
-		Send {%NavigationKey%}
-		Sleep AutoCameraDelay
-		Loop,10{
-			Send d
-			Sleep AutoCameraDelay
-		}
-		Send {Enter}
-		Sleep AutoCameraDelay
-	}
-	x:=WW-455
-	WinMove,%GuiTitle%,,%x%,0
-	Sleep 500
-	If !CaptureScreen("capture.png",1820,995,95,30)
-		RunWait,% TesseractPath " ""capture.png"" ""capture.png_out""",,Hide
-	FileRead,lvl,capture.png_out.txt
-	FileDelete,capture.png
-	FileDelete,capture.png_out.txt
-	lvl:=RegExReplace(lvl,"[^0-9]")
-	If(lvl!=""&&lvl!=LastLvl){
-		LastLvl:=lvl
-		FileDelete,%SettingsPath%
-		s:=""
-		For i,v In [PrivateServer,WebhookURL,UseWebhook,StartHotkey,ReloadHotkey,ExitHotkey,NavigationKey,ShakeMode,NotifyOnFailsafe,NotifEveryN,AutoLowerGraphics,AutoZoomInCamera,AutoLookDownCamera,AutoBlurShake,AutoBlurMinigame,ShutdownAfterFailLimit,RestartDelay,RodCastDuration,CastRandomization,WaitForBobber,ShakeDelay,ShakeOnly,AutosaveSettings,GuiAlwaysOnTop,CheckLvlEveryN,curMGFile,SendScreenshotFL,LvlUpMode,LastLvl,SelectedSkin,configFooter]
-			s.=v " "
-		FileAppend,%s%,%SettingsPath%
-		If(LvlUpMode=="Txt")
-			SendStatus(5,[lvl])
-		Else
-			CS2DC(1844,995,1915,1025,"{""embeds"":[{""image"":{""url"":""attachment://screenshot.png""},""color"":4848188,""title"":""Level Up"",""footer"":{""text"":"""ct """}}]}")
-	}
-	Gosub MoveGui
-	Sleep 250
-	WinActivate,Roblox
-	WinMaximize,Roblox
-	Sleep AutoCameraDelay
-	Send {Enter}
-	Sleep AutoCameraDelay
 Return
 Calculations:
 	WinGetActiveStats,T,WW,WH,WL,WT
