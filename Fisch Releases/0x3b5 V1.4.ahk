@@ -32,9 +32,9 @@ If !FileExist(LibPath)
 If !FileExist(MGPath)
 	FileCreateDir,%MGPath%
 If !FileExist(DefMGPath)
-	FileAppend,[Values]`nStabilizerLoop=40`nSideBarRatio=0.8`nSideBarWait=1.84`nRightMult=2.5821`nRightDiv=1.8961`nRightAnkleMult=1.36`nLeftMult=2.9892`nLeftDiv=4.6235,%DefMGPath%
+	FileAppend,[Values]`nStabilizerLoop=20`nSideBarRatio=0.8`nSideBarWait=1.72`nRightMult=2.6329`nRightDiv=1.8961`nRightAnkleMult=1.36`nLeftMult=2.9892`nLeftDiv=4.6235,%DefMGPath%
 If !FileExist(VersionPath)
-	FileAppend,1.4 4,%VersionPath%
+	FileAppend,1.4 5,%VersionPath%
 IniRead,configFooter,%SettingsPath%,.,v,NotFound
 If(configFooter=="NotFound"){
 	Gosub DefaultSettings
@@ -62,7 +62,7 @@ ReadGen(AutosaveSettings,"AutoSave")
 ReadGen(WebhookURL,"WebhookURL")
 ReadGen(UseWebhook,"WebhookEnabled")
 ReadGen(NotifEveryN,"WebhookNotifyInterval")
-ReadGen(NotifImg,"WebhookSendImg")
+ReadGen(NotifyImg,"WebhookSendImg")
 ReadGen(ImgNotifEveryN,"WebhookImgNotifyInterval")
 ReadGen(NotifyOnFailsafe,"NotifyOnFailsafe")
 ReadGen(SendScreenshotFL,"NotifyOnFishLost")
@@ -71,6 +71,7 @@ ReadGen(LastLvl,"LastLvl")
 ReadGen(CheckLvlEveryN,"WebhookLvlNotifyInterval")
 ReadGen(curMGFile,"SelectedConfig")
 ReadGen(SelectedSkin,"SelectedTheme")
+ReadGen(FarmLocation,"FarmLocation")
 ReadGen(buyConch,"PurchaseConch")
 ReadGen(GuiAlwaysOnTop,"AlwaysOnTop")
 AutoGraphicsDelay:=50
@@ -96,10 +97,10 @@ RightAnkleMult:=curMGConfig[6]
 LeftMult:=curMGConfig[7]
 LeftDiv:=curMGConfig[8]
 LeftDeviation:=50
-ShakeFailsafe:=8
+ShakeFailsafe:=15
 BarDetectionFailsafe:=3
 FailsInARow:=0
-RepeatBypassLimit:=15
+RepeatBypassLimit:=10
 BarColor:=0xF8F8F8
 BarCalcColor:=0xF0F0F0
 ArrowColor:=0x868483
@@ -115,7 +116,7 @@ FishLost:=0
 CatchCount:=0
 runtime1:=0
 runtime2:=0
-cryoCanal:={farm:False,CFatC:False}
+cryoCanal:={CFatC:False}
 XOdebounce:=True
 instructions:=FetchInstructions()
 SetTimer,GuiRuntime,1000
@@ -165,6 +166,7 @@ DefaultSettings:
 	WriteGen("WebhookLvlNotifyInterval",1)
 	WriteGen("SelectedConfig","default.txt")
 	WriteGen("SelectedTheme","none")
+	WriteGen("FarmLocation","none")
 	WriteGen("PurchaseConch",1)
 	WriteGen("AlwaysOnTop",1)
 Return
@@ -191,7 +193,7 @@ SaveSettings:
 	WriteGen("WebhookURL",WebhookURL)
 	WriteGen("WebhookEnabled",UseWebhook)
 	WriteGen("WebhookNotifyInterval",NotifEveryN)
-	WriteGen("WebhookSendImg",NotifImg)
+	WriteGen("WebhookSendImg",NotifyImg)
 	WriteGen("WebhookImgNotifyInterval",ImgNotifEveryN)
 	WriteGen("NotifyOnFailsafe",NotifyOnFailsafe)
 	WriteGen("NotifyOnFishLost",SendScreenshotFL)
@@ -200,6 +202,7 @@ SaveSettings:
 	WriteGen("WebhookLvlNotifyInterval",CheckLvlEveryN)
 	WriteGen("SelectedConfig",curMGFile)
 	WriteGen("SelectedTheme",SelectedSkin)
+	WriteGen("FarmLocation",FarmLocation)
 	WriteGen("PurchaseConch",buyConch)
 	WriteGen("AlwaysOnTop",GuiAlwaysOnTop)
 Return
@@ -277,7 +280,7 @@ StartMacro:
 	Goto RestartMacro
 Return
 RestartMacro:
-	If(cryoCanal.farm&&!cryoCanal.CFatC){
+	If(FarmLocation=="cryo"&&!cryoCanal.CFatC){
 		UpdateTask("Current Task: Walking To Cryogenic Canal")
 		Click 0,500
 		Loop,6{
@@ -430,7 +433,7 @@ CShakeMode:
 	SetTimer,Failsafe1,1000
 	Loop{
 		If ForceReset{
-			If(cryoCanal.farm&&A_TickCount>=StopFarmingAt)
+			If(FarmLocation=="cryo"&&A_TickCount>=StopFarmingAt)
 				Gosub backUp
 			Goto RestartMacro
 		}
@@ -468,7 +471,7 @@ NShakeMode:
 	Send {%NavigationKey%}
 	Loop{
 		If ForceReset{
-			If(cryoCanal.farm&&A_TickCount>=StopFarmingAt)
+			If(FarmLocation=="cryo"&&A_TickCount>=StopFarmingAt)
 				Gosub backUp
 			Goto RestartMacro
 		}
@@ -492,7 +495,7 @@ BarMinigame:
 		Sleep 1
 		UpdateTask("Current Task: Calculating Bar Size")
 		If ForceReset{
-			If(cryoCanal.farm&&A_TickCount>=StopFarmingAt)
+			If(FarmLocation=="cryo"&&A_TickCount>=StopFarmingAt)
 				Gosub backUp
 			Goto RestartMacro
 		}
@@ -673,7 +676,7 @@ MinigameLoop:
 			FishLost++
 		Sleep RestartDelay
 		If UseWebhook{
-			If(!WasFishCaught&&SendScreenshotFL)||(WasFishCaught&&Mod(CatchCount,SendScreenshotEveryN)=0&&NotifImg){
+			If(!WasFishCaught&&SendScreenshotFL)||(WasFishCaught&&Mod(CatchCount,SendScreenshotEveryN)=0&&NotifyImg){
 				FormatTime,ct,,hh:mm:ss
 				elapsed:=GetTime(runtime2)
 				ratio:=FishCaught " / "FishLost " ("RegExReplace(FishCaught/CatchCount*100,"(?<=\.\d{3}).*$") "%)"
@@ -685,7 +688,7 @@ MinigameLoop:
 			If(LvlUpMode!="Off"&&Mod(CatchCount,CheckLvlEveryN)=0)
 				Gosub CheckStatistics
 		}
-		If(cryoCanal.farm&&A_TickCount>=StopFarmingAt)
+		If(FarmLocation=="cryo"&&A_TickCount>=StopFarmingAt)
 			Gosub backUp
 		Goto RestartMacro
 	}
@@ -824,8 +827,8 @@ Calculations:
 	LookDownX:=WW/2
 	LookDownY:=WH/4
 	Scale(x){
-		c:=1.53519
-		e:=0.867626
+		c:=1.97109
+		e:=0.810929
 		Return c*x**e
 	}
 Return
@@ -960,7 +963,7 @@ InitGui:
 	Gui Add,Text,x135 y116 w115 h55,Note: Make sure to `nselect the desired file`nname before changing`nany of these values.
 	Gui Tab,5
 	Gui Add,GroupBox,x2 y21 w223 h77,Cryogenic Canal
-	CFH:=Chkd(cryoCanal.farm),CBC:=Chkd(buyConch)
+	CFH:=Chkd(FarmLocation=="cryo"),CBC:=Chkd(buyConch)
 	Gui Add,CheckBox,vCBCF gSubAll x7 y36 w64 h18 %CFH%,Farm here
 	Gui Add,CheckBox,vCBBC gSubAll x7 y53 w70 h18 %CBC%,Buy Conch
 	Gui Add,Text,x105 y29 w38 h14,Setup:
@@ -990,9 +993,9 @@ InitGui:
 	Gui Tab,7
 	Gui Add,Link,x6 y22 w276 h14,This macro is based on the <a href="https://www.youtube.com/@AsphaltCake">AsphaltCake</a> Fisch Macro V11
 	Gui Add,Text,x6 y+4 w257 h14,Gui, modified minigame, polishing, and webhook by me.
-	Gui Add,Text,x6 y+4 w257 h14,Image webhook provided by @lunarosity
+	Gui Add,Text,x6 y+4 w257 h14,Image webhook provided by @lunarosity, embed by me.
 	Gui Add,Text,x6 y+4 w257 h14,Themes and Lvl checker provided by @toxgt
-	Gui Add,Link,x6 y+4 w102 h14,Check out my <a href="https://github.com/LopenaFollower">GitHub</a>
+	Gui Add,Link,x6 y+4 w102 h14,Check out my <a href="https://github.com/LopenaFollower">GitHub</a> and <a href="https://discord.gg/Fh5rmgg27X">Discord Server</a>
 	Gui Show,w450 h175,%GuiTitle%
 	Return
 	TTT:
@@ -1126,10 +1129,13 @@ InitGui:
 		GuiAlwaysOnTop:=CBOT
 		CheckLvlEveryN:=Max(5,CLEN)
 		SendScreenshotFL:=CBSS
-		NotifImg:=CBSI
+		NotifyImg:=CBSI
 		ImgNotifEveryN:=SIEN
 		LvlUpMode:=DDSS
-		cryoCanal.farm:=CBCF
+		If CBCF
+			FarmLocation:="cryo"
+		Else
+			FarmLocation:="none"
 		buyConch:=CBBC
 		If(DDSS!="Off")
 			downloadTesseract()
