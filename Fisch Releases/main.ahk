@@ -35,7 +35,7 @@ If !FileExist(MGPath)
 If !FileExist(DefMGPath)
 	FileAppend,[Values]`nStabilizerLoop=20`nSideBarRatio=0.8`nSideBarWait=1.72`nRightMult=2.6329`nRightDiv=1.8961`nRightAnkleMult=1.36`nLeftMult=2.9892`nLeftDiv=4.6235,%DefMGPath%
 If !FileExist(VersionPath)
-	FileAppend,1.4 6,%VersionPath%
+	FileAppend,1.4 7,%VersionPath%
 FileRead,configVersion,%VersionPath%
 IniRead,curVer,%SettingsPath%,.,v
 If(curVer!=configVersion){
