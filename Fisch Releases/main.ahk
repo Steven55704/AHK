@@ -101,9 +101,8 @@ LeftDiv:=curMGConfig[8]
 Coefficient:=curMGConfig[9]
 Exponent:=curMGConfig[10]
 Scale(x){
-	c:=1.97109
-	e:=0.810929
-	Return c*x**e
+	Global Coefficient,Exponent
+	Return Coefficient*x**Exponent
 }
 LeftDeviation:=50
 ShakeFailsafe:=15
