@@ -1,4 +1,4 @@
-;2
+;3
 #Include %A_MyDocuments%\Macro Settings\main.ahk
 InitGui:
 	Gui -MinimizeBox -MaximizeBox +AlwaysOnTop
@@ -125,10 +125,13 @@ InitGui:
 	Gui Add,Text,x128 y58 w68 h14,Stabilizer Loop
 	Gui Add,Text,x128 y78 w64 h14,Sidebar Ratio
 	Gui Add,Text,x128 y98 w62 h14,Sidebar Wait
+	Gui Add,Text,x128 y118 w82 h14,Scale Coeff
+	Gui Add,Text,x128 y138 w82 h14,Scale Exp
 	Gui Add,Edit,vMGSL x198 y56 w52 h17 gNumberEdit,%StabilizerLoop%
 	Gui Add,Edit,vMGSR x198 y76 w52 h17 gNumberEdit,%SideBarRatio%
 	Gui Add,Edit,vMGSW x198 y96 w52 h17 gNumberEdit,%SideBarWait%
-	Gui Add,Text,x135 y116 w115 h55,Note: Make sure to `nselect the desired file`nname before changing`nany of these values.
+	Gui Add,Edit,vMGCO x198 y116 w52 h17 gNumberEdit,%Coefficient%
+	Gui Add,Edit,vMGXP x198 y136 w52 h17 gNumberEdit,%Exponent%
 	Gui Tab,5
 	Gui Add,GroupBox,x2 y21 w223 h77,Cryogenic Canal
 	CFH:=Chkd(FarmLocation=="cryo"),CBC:=Chkd(buyConch)
@@ -330,7 +333,7 @@ InitGui:
 	MGSave:
 		Gui Submit,NoHide
 		SplitPath,MGCF,,,,FileName
-		MGConfig:="[Values]`nStabilizerLoop="MGSL "`nSideBarRatio="MGSR "`nSideBarWait="MGSW "`nRightMult="MGRM "`nRightDiv="MGRD "`nRightAnkleMult="MGAM "`nLeftMult="MGLM "`nLeftDiv="MGLD
+		MGConfig:="[Values]`nStabilizerLoop="MGSL "`nSideBarRatio="MGSR "`nSideBarWait="MGSW "`nRightMult="MGRM "`nRightDiv="MGRD "`nRightAnkleMult="MGAM "`nLeftMult="MGLM "`nLeftDiv="MGLD "`nCoefficient="MGCO "`nExponent"MGXP
 		path:=DirPath "\Minigame\"FileName ".txt"
 		FileDelete,%path%
 		FileAppend,%MGConfig%,%path%
@@ -356,7 +359,7 @@ InitGui:
 				If(n==FileName)
 					isdupe:=True
 			}
-			MGConfig:="[Values]`nStabilizerLoop=10`nSideBarRatio=0.8`nSideBarWait=2`nRightMult=2.6`nRightDiv=1.4`nRightAnkleMult=1.2`nLeftMult=2.6`nLeftDiv=1.4"
+			MGConfig:="[Values]`nStabilizerLoop=10`nSideBarRatio=0.8`nSideBarWait=2`nRightMult=2.6`nRightDiv=1.4`nRightAnkleMult=1.2`nLeftMult=2.6`nLeftDiv=1.4`nCoeff=1`nExp=1"
 			path:=DirPath "\Minigame\"FileName ".txt"
 			If isdupe{
 				AskUser("Duplicate Found","Overwrite this file?")

@@ -240,6 +240,7 @@ CheckStatistics:
 	FileDelete,capture.png
 	FileDelete,capture.png_out.txt
 	lvl:=RegExReplace(lvl,"[^0-9]")
+	FormatTime,ct,,hh:mm:ss
 	If(lvl!=""&&lvl!=LastLvl){
 		LastLvl:=lvl
 		Gosub SaveSettings

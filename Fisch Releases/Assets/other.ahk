@@ -1,4 +1,4 @@
-;1
+;2
 #Include %A_MyDocuments%\Macro Settings\main.ahk
 ImportMinigameConfig(name){
 	Global MGPath
@@ -11,7 +11,9 @@ ImportMinigameConfig(name){
 	IniRead,RightAnkleMult,%path%,Values,RightAnkleMult
 	IniRead,LeftMult,%path%,Values,LeftMult
 	IniRead,LeftDiv,%path%,Values,LeftDiv
-	Return [StabilizerLoop,SideBarRatio,SideBarWait,RightMult,RightDiv,RightAnkleMult,LeftMult,LeftDiv]
+	IniRead,Coefficient,%path%,Values,Coefficient
+	IniRead,Exponent,%path%,Values,Exponent
+	Return [StabilizerLoop,SideBarRatio,SideBarWait,RightMult,RightDiv,RightAnkleMult,LeftMult,LeftDiv,Coefficient,Exponent]
 }
 ScanForConfigs(cur){
 	Global MGPath
