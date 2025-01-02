@@ -352,7 +352,7 @@ RestartMacro:
 			Send {WheelUp}
 			Sleep AutoZoomDelay
 		}
-		Loop,3{
+		Loop,2{
 			Send {WheelDown}
 			Sleep AutoZoomDelay
 		}
