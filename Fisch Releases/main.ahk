@@ -33,14 +33,14 @@ If !FileExist(LibPath)
 If !FileExist(MGPath)
 	FileCreateDir,%MGPath%
 If !FileExist(DefMGPath)
-	FileAppend,[Values]`nStabilizerLoop=20`nSideBarRatio=0.8`nSideBarWait=1.72`nRightMult=2.6329`nRightDiv=1.8961`nRightAnkleMult=1.36`nLeftMult=2.9892`nLeftDiv=4.6235,%DefMGPath%
+	FileAppend,[Values]`nStabilizerLoop=20`nSideBarRatio=0.8`nSideBarWait=1.72`nRightMult=2.6329`nRightDiv=1.8961`nRightAnkleMult=1.36`nLeftMult=2.9892`nLeftDiv=4.6235`nCoeff=1.97109`nExp=0.810929,%DefMGPath%
 If !FileExist(VersionPath)
-	FileAppend,1.4 8,%VersionPath%
-FileRead,configVersion,%VersionPath%
+	FileAppend,1.4 9,%VersionPath%
 IniRead,curVer,%SettingsPath%,.,v
-If(curVer!=configVersion){
+configVer:="9"
+If(curVer!=configVer){
 	Gosub DefaultSettings
-	IniWrite,%configVersion%,%SettingsPath%,.,v
+	IniWrite,%configVer%,%SettingsPath%,.,v
 }
 ReadGen(ShakeMode,"ShakeMode")
 ReadGen(NavigationKey,"NavKey")
@@ -98,6 +98,13 @@ RightDiv:=curMGConfig[5]
 RightAnkleMult:=curMGConfig[6]
 LeftMult:=curMGConfig[7]
 LeftDiv:=curMGConfig[8]
+Coefficient:=curMGConfig[9]
+Exponent:=curMGConfig[10]
+Scale(x){
+	c:=1.97109
+	e:=0.810929
+	Return c*x**e
+}
 LeftDeviation:=50
 ShakeFailsafe:=15
 BarDetectionFailsafe:=3
@@ -509,11 +516,6 @@ Calculations:
 	ProgBarBottom:=WH/1.0965
 	LookDownX:=WW/2
 	LookDownY:=WH/4
-	Scale(x){
-		c:=1.97109
-		e:=0.810929
-		Return c*x**e
-	}
 Return
 #Include gui.ahk
 #Include other.ahk
