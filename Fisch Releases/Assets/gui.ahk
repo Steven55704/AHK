@@ -1,4 +1,4 @@
-;3
+;4
 #Include %A_MyDocuments%\Macro Settings\main.ahk
 InitGui:
 	Gui -MinimizeBox -MaximizeBox +AlwaysOnTop
@@ -221,6 +221,7 @@ InitGui:
 			If FileExist(sl){
 				SelectedSkin:=DDSL
 				DllCall("SkinHu\SkinH_AttachEx","Str",sl)
+				Goto SaveSettings
 			}
 		}
 	Return
