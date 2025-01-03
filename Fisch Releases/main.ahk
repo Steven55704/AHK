@@ -1,14 +1,24 @@
 #NoEnv
 #SingleInstance Force
 #Persistent
+SetWinDelay,-1
 If !(A_IsUnicode=1&&A_PtrSize=4){
 	SplitPath,A_AhkPath,,dir
 	Run,%dir%\AutoHotkeyU32.exe "%A_ScriptFullPath%" 
 	ExitApp
 }
+WinActivate,Roblox
+If WinActive("Roblox"){
+	WinMaximize,Roblox
+	Send {LButton up}
+	Send {RButton up}
+	Send {Shift up}
+}Else{
+	Msgbox Roblox Not Found
+	ExitApp
+}
 SetKeyDelay,-1
 SetMouseDelay,-1
-SetWinDelay,-1
 SetBatchLines,-1
 ListLines 0
 SetTitleMatchMode 2
@@ -23,6 +33,7 @@ DllCall("LoadLibrary","Str",LibPath "\SkinHu.dll")
 MGPath:=DirPath "\Minigame"
 SkinsPath:=DirPath "\skins"
 SettingsPath:=DirPath "\general.txt"
+BoundsPath:=DirPath "\bounds.txt"
 DefMGPath:=DirPath "\Minigame\default.txt"
 TesseractPath:="C:\Program Files\Tesseract-OCR\tesseract.exe"
 VersionPath:=DirPath "\ver.txt"
@@ -35,7 +46,7 @@ If !FileExist(MGPath)
 If !FileExist(DefMGPath)
 	FileAppend,[Values]`nStabilizerLoop=20`nSideBarRatio=0.8`nSideBarWait=1.72`nRightMult=2.6329`nRightDiv=1.8961`nRightAnkleMult=1.36`nLeftMult=2.9892`nLeftDiv=4.6235`nCoeff=1.97109`nExp=0.810929,%DefMGPath%
 If !FileExist(VersionPath)
-	FileAppend,1.4 9,%VersionPath%
+	FileAppend,1.4 10,%VersionPath%
 IniRead,curVer,%SettingsPath%,.,v
 configVer:="9"
 If(curVer!=configVer){
@@ -101,8 +112,9 @@ LeftDiv:=curMGConfig[8]
 Coefficient:=curMGConfig[9]
 Exponent:=curMGConfig[10]
 Scale(x){
-	Global Coefficient,Exponent
-	Return Coefficient*x**Exponent
+	c:=1.97109
+	e:=0.810929
+	Return c*x**e
 }
 LeftDeviation:=50
 ShakeFailsafe:=15
@@ -126,17 +138,12 @@ runtime1:=0
 runtime2:=0
 cryoCanal:={CFatC:False}
 XOdebounce:=True
+SelectedBound:=""
 instructions:=FetchInstructions()
 SetTimer,GuiRuntime,1000
+Gosub Calculations
 Gosub InitGui
 GuiControl,Choose,Tabs,2
-WinActivate,Roblox
-If WinActive("Roblox"){
-	WinMaximize,Roblox
-	Send {LButton up}
-	Send {RButton up}
-	Send {Shift up}
-}
 Hotkey % "$"StartHotkey,StartMacro
 Hotkey % "$"ReloadHotkey,ReloadMacro
 Hotkey % "$"ExitHotkey,ExitMacro
@@ -240,8 +247,7 @@ StartMacro:
 	WinActivate,Roblox
 	WinMaximize,Roblox
 	SendStatus(1)
-	Sleep 250
-	Gosub Calculations
+	Sleep 150
 	Gosub MoveGui
 	If GuiAlwaysOnTop
 		GuiControl,Choose,Tabs,1
@@ -352,7 +358,7 @@ RestartMacro:
 			Send {WheelUp}
 			Sleep AutoZoomDelay
 		}
-		Loop,2{
+		Loop,3{
 			Send {WheelDown}
 			Sleep AutoZoomDelay
 		}
@@ -489,34 +495,8 @@ backUp:
 	Click 0,500
 	Sleep 4000
 Return
-Calculations:
-	WinGetActiveStats,T,WW,WH,WL,WT
-	If(WW+WH-A_ScreenWidth-A_ScreenHeight)
-		Send {F11}
-	CameraCheckLeft:=WW/2.15
-	CameraCheckRight:=WW/1.85
-	CameraCheckTop:=WH/1.105
-	CameraCheckBottom:=WH/1.077
-	CShakeLeft:=WW/4.6545
-	CShakeRight:=WW/1.2736
-	CShakeTop:=WH/14.08
-	CShakeBottom:=WH/1.3409
-	FishBarLeft:=WW/3.32
-	FishBarRight:=WW/1.43
-	FishBarTop:=WH/1.172
-	FishBarBottom:=WH/1.16
-	BarHeight:=WH/1.0626
-	ResolutionScaling:=2560/WW
-	UnstableColorX:=WW/3.463
-	UnstableColorY:=WH/1.168
-	ProgBarLeft:=WW/2.547
-	ProgBarRight:=WW/1.644
-	ProgBarTop:=WH/1.1
-	ProgBarBottom:=WH/1.0965
-	LookDownX:=WW/2
-	LookDownY:=WH/4
-Return
 #Include gui.ahk
 #Include other.ahk
+#Include manual_setup.ahk
 GuiClose:
 	Goto ExitMacro
