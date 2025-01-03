@@ -234,7 +234,7 @@ CheckStatistics:
 	x:=WW-455
 	WinMove,%GuiTitle%,,%x%,0
 	Sleep 500
-	If !CaptureScreen("capture.png",1820,995,95,30)
+	If !CaptureScreen("capture.png",LvlCheckLeft,LvlCheckTop,LvlCheckRight-LvlCheckLeft,LvlCheckBottom-LvlCheckTop)
 		RunWait,% TesseractPath " ""capture.png"" ""capture.png_out""",,Hide
 	FileRead,lvl,capture.png_out.txt
 	FileDelete,capture.png
@@ -247,7 +247,7 @@ CheckStatistics:
 		If(LvlUpMode=="Txt")
 			SendStatus(5,[lvl])
 		Else
-			CS2DC(1844,995,1915,1025,"{""embeds"":[{""image"":{""url"":""attachment://screenshot.png""},""color"":4848188,""title"":""Level Up"",""footer"":{""text"":"""ct """}}]}")
+			CS2DC(LvlCheckLeft,LvlCheckTop,LvlCheckRight-LvlCheckLeft,LvlCheckBottom-LvlCheckTop,"{""embeds"":[{""image"":{""url"":""attachment://screenshot.png""},""color"":4848188,""title"":""Level Up"",""footer"":{""text"":"""ct """}}]}")
 	}
 	Gosub MoveGui
 	Sleep 250

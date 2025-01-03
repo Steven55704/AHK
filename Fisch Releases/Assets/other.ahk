@@ -1,4 +1,4 @@
-;2
+;3
 #Include %A_MyDocuments%\Macro Settings\main.ahk
 ImportMinigameConfig(name){
 	Global MGPath
@@ -61,8 +61,8 @@ FetchInstructions(){
 	Return StrSplit(req.ResponseText,"`n")
 }
 SendStatus(st,info:=0){
-	Global WebhookURL,NotifyOnFailsafe,runtime2,SendScreenshotFL
-	If StrLen(WebhookURL)>100{
+	Global UseWebhook,WebhookURL,NotifyOnFailsafe,runtime2,SendScreenshotFL
+	If UseWebhook&&StrLen(WebhookURL)>100{
 		payload:=""
 		FormatTime,ct,,hh:mm:ss
 		elapsed:=GetTime(runtime2)

@@ -1,8 +1,8 @@
-;4
+;5
 #Include %A_MyDocuments%\Macro Settings\main.ahk
 InitGui:
 	Gui -MinimizeBox -MaximizeBox +AlwaysOnTop
-	Gui Add,Tab3,vTabs x0 y0 w450 h176,Info|Main|Webhook|Minigame|Locations|Miscellaneous|Credits
+	Gui Add,Tab3,vTabs x0 y0 w450 h176,Info|Main|Webhook|Minigame|Locations|Misc|Manual Setup|Credits
 	Gui Tab,1
 	Gui Font,s10
 	Gui Add,Text,x5 y22 w72 h16,Gui Runtime
@@ -162,6 +162,27 @@ InitGui:
 	Gui Add,Button,vX3Y3 gTTT x398 y127 w48 h48
 	Gui Font
 	Gui Tab,7
+	Gui Add,Button,gShowBounds x2 y24 w80 h23,Show Bounds
+	Gui Add,Button,gHideBounds x83 y24 w80 h23,Hide Bounds
+	Gui Add,Button,gResetBounds x164 y24 w102 h23,Reset All Bounds
+	Gui Font,w600
+	Gui Add,GroupBox,x270 y22 w179 h152,Position And Size
+	Gui Font
+	Gui Add,Text,x275 y37 w68 h14,Select Bound:
+	Gui Add,ComboBox,vDDBN gSubAll x276 y51 w119,CameraCheck|FishBar|ProgBar|LvlCheck
+	Gui Add,Text,x275 y75 w37 h23,X (Left):
+	Gui Add,Edit,x312 y75 w46 h18 vBNX
+	Gui Add,UpDown,x341 y75 w18 h18 +0x80 Range-10000-10000 gApplyBnd vUDX
+	Gui Add,Text,x361 y75 w38 h23,Y (Top):
+	Gui Add,Edit,x399 y75 w46 h18 vBNY
+	Gui Add,UpDown,x428 y75 w18 h18 +0x80 Range-10000-10000 gApplyBnd vUDY
+	Gui Add,Text,x275 y96 w37 h23,Width:
+	Gui Add,Edit,x313 y96 w46 h18 vBNW
+	Gui Add,UpDown,x341 y96 w18 h18 +0x80 Range-10000-10000 gApplyBnd vUDW
+	Gui Add,Text,x361 y96 w37 h23,Height:
+	Gui Add,Edit,x399 y96 w46 h18 vBNH
+	Gui Add,UpDown,x428 y96 w18 h18 +0x80 Range-10000-10000 gApplyBnd vUDH
+	Gui Tab,8
 	Gui Add,Link,x6 y22 w276 h14,This macro is based on the <a href="https://www.youtube.com/@AsphaltCake">AsphaltCake</a> Fisch Macro V11
 	Gui Add,Text,x6 y+4 w257 h14,Gui, modified minigame, polishing, and webhook by me.
 	Gui Add,Text,x6 y+4 w257 h14,Image webhook provided by @lunarosity, embed by me.
@@ -304,6 +325,9 @@ InitGui:
 		NotifyImg:=CBSI
 		ImgNotifEveryN:=SIEN
 		LvlUpMode:=DDSS
+		SelectedBound:=DDBN
+		If Trim(DDBN)!=""
+			Gosub SelectBound
 		If CBCF
 			FarmLocation:="cryo"
 		Else
