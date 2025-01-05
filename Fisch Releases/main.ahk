@@ -13,9 +13,6 @@ If WinActive("Roblox"){
 	Send {LButton up}
 	Send {RButton up}
 	Send {Shift up}
-}Else{
-	Msgbox Roblox Not Found
-	ExitApp
 }
 SetKeyDelay,-1
 SetMouseDelay,-1
@@ -46,9 +43,9 @@ If !FileExist(MGPath)
 If !FileExist(DefMGPath)
 	FileAppend,[Values]`nStabilizerLoop=20`nSideBarRatio=0.8`nSideBarWait=1.72`nRightMult=2.6329`nRightDiv=1.8961`nRightAnkleMult=1.36`nLeftMult=2.9892`nLeftDiv=4.6235`nCoeff=1.97109`nExp=0.810929,%DefMGPath%
 If !FileExist(VersionPath)
-	FileAppend,1.4 10,%VersionPath%
+	FileAppend,1.4 11,%VersionPath%
 IniRead,curVer,%SettingsPath%,.,v
-configVer:="9"
+configVer:="12"
 If(curVer!=configVer){
 	Gosub DefaultSettings
 	IniWrite,%configVer%,%SettingsPath%,.,v
@@ -87,6 +84,9 @@ ReadGen(SelectedSkin,"SelectedTheme")
 ReadGen(FarmLocation,"FarmLocation")
 ReadGen(buyConch,"PurchaseConch")
 ReadGen(GuiAlwaysOnTop,"AlwaysOnTop")
+ReadGen(AutoSell,"AutoSell")
+ReadGen(AutoSellInterval,"AutoSellInterval")
+ReadGen(SendSellProfit,"SendSellProfit")
 AutoGraphicsDelay:=50
 AutoZoomDelay:=40
 AutoCameraDelay:=25
@@ -112,9 +112,8 @@ LeftDiv:=curMGConfig[8]
 Coefficient:=curMGConfig[9]
 Exponent:=curMGConfig[10]
 Scale(x){
-	c:=1.97109
-	e:=0.810929
-	Return c*x**e
+	Global Coefficient,Exponent
+	Return Coefficient*x**Exponent
 }
 LeftDeviation:=50
 ShakeFailsafe:=15
@@ -139,6 +138,9 @@ runtime2:=0
 cryoCanal:={CFatC:False}
 XOdebounce:=True
 SelectedBound:=""
+boundNames:=["CameraCheck","FishBar","ProgBar","LvlCheck","SellProfit","CameraMode","SellButton"]
+WW:=A_ScreenWidth
+WH:=A_ScreenHeight
 instructions:=FetchInstructions()
 SetTimer,GuiRuntime,1000
 Gosub Calculations
@@ -184,6 +186,9 @@ DefaultSettings:
 	WriteGen("FarmLocation","none")
 	WriteGen("PurchaseConch",1)
 	WriteGen("AlwaysOnTop",1)
+	WriteGen("AutoSell",0)
+	WriteGen("AutoSellInterval",25)
+	WriteGen("SendSellProfit",0)
 Return
 SaveSettings:
 	WriteGen("ShakeMode",ShakeMode)
@@ -220,6 +225,9 @@ SaveSettings:
 	WriteGen("FarmLocation",FarmLocation)
 	WriteGen("PurchaseConch",buyConch)
 	WriteGen("AlwaysOnTop",GuiAlwaysOnTop)
+	WriteGen("AutoSell",AutoSell)
+	WriteGen("AutoSellInterval",AutoSellInterval)
+	WriteGen("SendSellProfit",SendSellProfit)
 Return
 GuiRuntime:
 	runtime1++
@@ -281,15 +289,7 @@ StartMacro:
 		Sleep AutoCameraDelay
 		Send 1
 		Sleep AutoCameraDelay
-		Send {%NavigationKey%}
-		Sleep AutoCameraDelay
-		Loop,10{
-			Send d
-			Sleep AutoCameraDelay
-		}
-		Send {Enter}
-		Sleep AutoCameraDelay
-		Send {%NavigationKey%}
+		CameraMode(True)
 	}
 	Goto RestartMacro
 Return
@@ -435,19 +435,7 @@ backUp:
 	Sleep 200
 	If AutoBlurMinigame
 		Send m
-	PixelSearch,,,CameraCheckLeft,CameraCheckTop,CameraCheckRight,CameraCheckBottom,0xFFFFFF,1,Fast
-	If ErrorLevel{
-		Sleep AutoCameraDelay
-		Send {%NavigationKey%}
-		Sleep AutoCameraDelay
-		Loop,10{
-			Send d
-			Sleep AutoCameraDelay
-		}
-		Send {Enter}
-		Sleep AutoCameraDelay*5
-		Send {%NavigationKey%}
-	}
+	CameraMode(False)
 	Sleep 200
 	If buyConch{
 		Send {s down}
@@ -480,18 +468,7 @@ backUp:
 	Click 0,500
 	Sleep 400
 	Send {1}
-	PixelSearch,,,CameraCheckLeft,CameraCheckTop,CameraCheckRight,CameraCheckBottom,0xFFFFFF,1,Fast
-	If !ErrorLevel{
-		Sleep AutoCameraDelay
-		Send {%NavigationKey%}
-		Sleep AutoCameraDelay
-		Loop,10{
-			Send d
-			Sleep AutoCameraDelay
-		}
-		Send {Enter}
-		Sleep AutoCameraDelay
-	}
+	CameraMode(True)
 	Click 0,500
 	Sleep 4000
 Return
