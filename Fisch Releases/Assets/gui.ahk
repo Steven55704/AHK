@@ -1,4 +1,4 @@
-;6
+;7
 #Include %A_MyDocuments%\Macro Settings\main.ahk
 InitGui:
 	Gui -MinimizeBox -MaximizeBox +AlwaysOnTop
@@ -371,7 +371,7 @@ InitGui:
 	MGSave:
 		Gui Submit,NoHide
 		SplitPath,MGCF,,,,FileName
-		MGConfig:="[Values]`nStabilizerLoop="MGSL "`nSideBarRatio="MGSR "`nSideBarWait="MGSW "`nRightMult="MGRM "`nRightDiv="MGRD "`nRightAnkleMult="MGAM "`nLeftMult="MGLM "`nLeftDiv="MGLD "`nCoefficient="MGCO "`nExponent"MGXP
+		MGConfig:="[Values]`nStabilizerLoop="MGSL "`nSideBarRatio="MGSR "`nSideBarWait="MGSW "`nRightMult="MGRM "`nRightDiv="MGRD "`nRightAnkleMult="MGAM "`nLeftMult="MGLM "`nLeftDiv="MGLD "`nCoefficient="MGCO "`nExponent="MGXP
 		path:=DirPath "\Minigame\"FileName ".txt"
 		FileDelete,%path%
 		FileAppend,%MGConfig%,%path%
@@ -397,7 +397,7 @@ InitGui:
 				If(n==FileName)
 					isdupe:=True
 			}
-			MGConfig:="[Values]`nStabilizerLoop=10`nSideBarRatio=0.8`nSideBarWait=2`nRightMult=2.6`nRightDiv=1.4`nRightAnkleMult=1.2`nLeftMult=2.6`nLeftDiv=1.4`nCoeff=1`nExp=1"
+			MGConfig:="[Values]`nStabilizerLoop=10`nSideBarRatio=0.8`nSideBarWait=2`nRightMult=2.6`nRightDiv=1.4`nRightAnkleMult=1.2`nLeftMult=2.6`nLeftDiv=1.4`nCoefficient=1`nExponent=1"
 			path:=DirPath "\Minigame\"FileName ".txt"
 			If isdupe{
 				AskUser("Duplicate Found","Overwrite this file?")
@@ -440,6 +440,8 @@ InitGui:
 		RightAnkleMult:=cf[6]
 		LeftMult:=cf[7]
 		LeftDiv:=cf[8]
+		Coefficient:=cf[9]
+		Exponent:=cf[10]
 	Return
 	UpdateDisplay:
 		cf:=ImportMinigameConfig(curMGFile)
@@ -451,6 +453,8 @@ InitGui:
 		GuiControl,,MGAM,% cf[6]
 		GuiControl,,MGLM,% cf[7]
 		GuiControl,,MGLD,% cf[8]
+		GuiControl,,MGLD,% cf[9]
+		GuiControl,,MGLD,% cf[10]
 	Return
 	JG:
 		Gui Submit,NoHide
