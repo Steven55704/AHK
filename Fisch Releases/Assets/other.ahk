@@ -1,4 +1,4 @@
-;4
+;5
 #Include %A_MyDocuments%\Macro Settings\main.ahk
 ImportMinigameConfig(name){
 	Global MGPath
@@ -156,10 +156,14 @@ CS2DC(x1,y1,x2,y2,payload){
 	HTTP.Send(pd)
 	FileDelete,%tempFile%
 }
-WriteGen(k,v){
+RtrvGen(k,v){
 	Global SettingsPath
 	IniRead,tmp,%SettingsPath%,All,%k%,%v%
 	IniWrite,%tmp%,%SettingsPath%,All,%k%
+}
+WriteGen(k,v){
+	Global SettingsPath
+	IniWrite,%v%,%SettingsPath%,All,%k%
 }
 ReadGen(ByRef out,k){
 	Global SettingsPath
