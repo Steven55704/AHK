@@ -56,12 +56,10 @@ Chkd(b){
 CameraMode(t){
 	Global AutoCameraDelay,CameraCheckLeft,CameraCheckTop,CameraCheckRight,CameraCheckBottom,CameraModeX,CameraModeY
 	Sleep AutoCameraDelay
-	Loop,4{
-		PixelSearch,,,CameraCheckLeft,CameraCheckTop,CameraCheckRight,CameraCheckBottom,0xFFFFFF,0,Fast
-		If !ErrorLevel=t
-			Click %CameraModeX%,%CameraModeY%
-		Sleep AutoCameraDelay
-	}
+	PixelSearch,,,CameraCheckLeft,CameraCheckTop,CameraCheckRight,CameraCheckBottom,0xFFFFFF,0,Fast
+	If !ErrorLevel=t
+		Click %CameraModeX%,%CameraModeY%
+	Sleep AutoCameraDelay
 }
 FetchInstructions(){
 	req:=ComObjCreate("WinHttp.WinHttpRequest.5.1")
