@@ -1,4 +1,4 @@
-;3
+;4
 #Include %A_MyDocuments%\Macro Settings\main.ahk
 Track:
 	PixelSearch,x,,ProgBarRight,ProgBarTop,ProgBarLeft,ProgBarBottom,0xFFFFFF,3,Fast
@@ -193,7 +193,7 @@ MinigameLoop:
 		Goto MinigameLoop
 	}Else{
 		Duration:=(A_TickCount-MinigameStart)/1000
-		WasFishCaught:=ProgressX>WW/2
+		WasFishCaught:=ProgressX>CatchCheck
 		SetTimer,Track,Off
 		CatchCount++
 		If WasFishCaught
@@ -261,7 +261,7 @@ SellFish:
 	MouseMove,SellPosX,SellPosY
 	Sleep 100
 	Click %SellPosX%,%SellPosY%
-	Sleep 2500
+	Sleep 1500
 	Send {``}
 	Loop{
 		PixelSearch,,,SellProfitLeft,SellProfitTop,SellProfitRight,SellProfitBottom,0x49D164,12,Fast

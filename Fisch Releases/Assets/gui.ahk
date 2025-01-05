@@ -453,8 +453,8 @@ InitGui:
 		GuiControl,,MGAM,% cf[6]
 		GuiControl,,MGLM,% cf[7]
 		GuiControl,,MGLD,% cf[8]
-		GuiControl,,MGCO,% cf[9]
-		GuiControl,,MGXP,% cf[10]
+		GuiControl,,MGLD,% cf[9]
+		GuiControl,,MGLD,% cf[10]
 	Return
 	JG:
 		Gui Submit,NoHide

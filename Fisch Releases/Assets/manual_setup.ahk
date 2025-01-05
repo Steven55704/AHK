@@ -1,4 +1,4 @@
-;5
+;6
 #Include %A_MyDocuments%\Macro Settings\main.ahk
 CreateBound(n,x1,y1,x2,y2){
 	colors:={CameraCheck:"Yellow",FishBar:"Lime",ProgBar:"Red",LvlCheck:"Blue",SellProfit:"Aqua",CameraMode:"Fuchsia",SellButton:"Navy"}
@@ -87,6 +87,7 @@ Calculations:
 	UnstableColorY:=WH/1.168
 	LookDownX:=WW/2
 	LookDownY:=WH/4
+	CatchCheck:=(FishBarRight+FishBarLeft)/2
 	CameraModeX:=(CameraModeRight+CameraModeLeft)/2
 	CameraModeY:=(CameraModeBottom+CameraModeTop)/2
 	SellPosX:=(SellButtonRight+SellButtonLeft)/2
