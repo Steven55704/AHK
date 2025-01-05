@@ -1,4 +1,4 @@
-;5
+;6
 #Include %A_MyDocuments%\Macro Settings\main.ahk
 ImportMinigameConfig(name){
 	Global MGPath
@@ -57,7 +57,7 @@ CameraMode(t){
 	Global AutoCameraDelay,CameraCheckLeft,CameraCheckTop,CameraCheckRight,CameraCheckBottom,CameraModeX,CameraModeY
 	Sleep AutoCameraDelay
 	Loop,4{
-		PixelSearch,,,CameraCheckLeft,CameraCheckTop,CameraCheckRight,CameraCheckBottom,0xFFFFFF,2,Fast
+		PixelSearch,,,CameraCheckLeft,CameraCheckTop,CameraCheckRight,CameraCheckBottom,0xFFFFFF,0,Fast
 		If !ErrorLevel=t
 			Click %CameraModeX%,%CameraModeY%
 		Sleep AutoCameraDelay
