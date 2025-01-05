@@ -1,4 +1,4 @@
-;4
+;5
 #Include %A_MyDocuments%\Macro Settings\main.ahk
 CreateBound(n,x1,y1,x2,y2){
 	colors:={CameraCheck:"Yellow",FishBar:"Lime",ProgBar:"Red",LvlCheck:"Blue",SellProfit:"Aqua",CameraMode:"Fuchsia",SellButton:"Navy"}
@@ -90,7 +90,7 @@ Calculations:
 	CameraModeX:=(CameraModeRight+CameraModeLeft)/2
 	CameraModeY:=(CameraModeBottom+CameraModeTop)/2
 	SellPosX:=(SellButtonRight+SellButtonLeft)/2
-	SellPosY:=(SellButtonRight+SellButtonLeft)/2
+	SellPosY:=(SellButtonBottom+SellButtonTop)/2
 Return
 SaveBounds:
 	For i,j in boundNames
