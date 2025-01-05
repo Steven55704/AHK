@@ -1,4 +1,4 @@
-;1
+;2
 #Include %A_MyDocuments%\Macro Settings\main.ahk
 CShakeMode:
 	FailsafeCount:=0
@@ -17,7 +17,7 @@ CShakeMode:
 		PixelSearch,,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,FishColor,0,Fast
 		If !ErrorLevel{
 			SetTimer,Failsafe1,Off
-			Sleep 200
+			Sleep 1000
 			Goto BarMinigame
 		}Else{
 			PixelSearch,ClickX,ClickY,CShakeRight,CShakeTop,CShakeLeft,CShakeBottom,0xFFFFFF,1,Fast
@@ -55,7 +55,7 @@ NShakeMode:
 		PixelSearch,,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,FishColor,0,Fast
 		If !ErrorLevel{
 			SetTimer,Failsafe1,Off
-			Sleep 200
+			Sleep 1000
 			Goto BarMinigame
 		}Else
 			Send s{Enter}
