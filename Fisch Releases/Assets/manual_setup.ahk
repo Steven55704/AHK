@@ -1,14 +1,13 @@
-;1
+;2
 #Include %A_MyDocuments%\Macro Settings\main.ahk
 CreateBound(n,x1,y1,x2,y2){
-	colors:={CameraCheck:"Yellow",FishBar:"Lime",ProgBar:"Red",LvlCheck:"Blue"}
+	colors:={CameraCheck:"Yellow",FishBar:"Lime",ProgBar:"Red",LvlCheck:"Blue",SellProfit:"Aqua",CameraMode:"Fuchsia",SellButton:"Navy"}
 	w:=x2-x1
 	h:=y2-y1
 	Gui %n%:Destroy
 	Gui %n%:-Caption +AlwaysOnTop +ToolWindow
-	Gui %n%:Add,Text,x0 y0 w%w% h%h%,
 	Gui %n%:Color,% colors[n]
-	Gui %n%:Show,% "x"x1 "y"y1 "w"w "h"h,%n%
+	Gui %n%:Show,x%x1% y%y1% w%w% h%h%,%n%
 }
 WriteBnd(k,v,s){
 	Global BoundsPath
@@ -20,28 +19,63 @@ ReadBnd(ByRef out,k,s){
 	out:=temp+0
 }
 Calculations:
-	WinActivate,Roblox
-	WinMaximize,Roblox
-	WinGetActiveStats,T,WW,WH,WL,WT
-	If !FileExist(BoundsPath){
+	ReadBnd(tmp,"Top","CameraCheck")
+	msng:=tmp==""
+	If msng{
 		WriteBnd("Left",WW//2.15,"CameraCheck")
 		WriteBnd("Right",WW//1.85,"CameraCheck")
 		WriteBnd("Top",WH//1.105,"CameraCheck")
 		WriteBnd("Bottom",WH//1.077,"CameraCheck")
+	}
+	ReadBnd(tmp,"Top","FishBar")
+	msng:=tmp==""
+	If msng{
 		WriteBnd("Left",WW//3.32,"FishBar")
 		WriteBnd("Right",WW//1.43,"FishBar")
 		WriteBnd("Top",WH//1.172,"FishBar")
 		WriteBnd("Bottom",WH//1.16,"FishBar")
+	}
+	ReadBnd(tmp,"Top","ProgBar")
+	msng:=tmp==""
+	If msng{
 		WriteBnd("Left",WW//2.547,"ProgBar")
 		WriteBnd("Right",WW//1.644,"ProgBar")
 		WriteBnd("Top",WH//1.1,"ProgBar")
 		WriteBnd("Bottom",WH//1.0965,"ProgBar")
+	}
+	ReadBnd(tmp,"Top","LvlCheck")
+	msng:=tmp==""
+	If msng{
 		WriteBnd("Left",WW//1.05,"LvlCheck")
 		WriteBnd("Right",WW//1.0035,"LvlCheck")
 		WriteBnd("Top",WH//1.085,"LvlCheck")
 		WriteBnd("Bottom",WH//1.049,"LvlCheck")
 	}
-	For i,j in ["CameraCheck","FishBar","ProgBar","LvlCheck"]
+	ReadBnd(tmp,"Top","SellProfit")
+	msng:=tmp==""
+	If msng{
+		WriteBnd("Left",WW//1.09,"SellProfit")
+		WriteBnd("Right",WW//1.006,"SellProfit")
+		WriteBnd("Top",WH//1.21,"SellProfit")
+		WriteBnd("Bottom",WH//1.145,"SellProfit")
+	}
+	ReadBnd(tmp,"Top","CameraMode")
+	msng:=tmp==""
+	If msng{
+		WriteBnd("Left",WW//1.025,"CameraMode")
+		WriteBnd("Right",20,"CameraMode")
+		WriteBnd("Top",WW//1.01,"CameraMode")
+		WriteBnd("Bottom",46,"CameraMode")
+	}
+	ReadBnd(tmp,"Top","SellButton")
+	msng:=tmp==""
+	If msng{
+		WriteBnd("Left",WW//2.9,"SellButton")
+		WriteBnd("Right",WW//2.47,"SellButton")
+		WriteBnd("Top",WH//1.62,"SellButton")
+		WriteBnd("Bottom",WH//1.56,"SellButton")
+	}
+	For i,j in boundNames
 		For k,v in ["Left","Right","Top","Bottom"]
 			ReadBnd(%j%%v%,v,j)
 	CShakeLeft:=WW/4.6545
@@ -49,26 +83,27 @@ Calculations:
 	CShakeTop:=WH/14.08
 	CShakeBottom:=WH/1.3409
 	ResolutionScaling:=2560/WW
-	ResolutionScaling:=2560/WW
 	UnstableColorX:=WW/3.463
 	UnstableColorY:=WH/1.168
 	LookDownX:=WW/2
 	LookDownY:=WH/4
+	CameraModeX:=(CameraModeRight-CameraModeLeft)/2
+	CameraModeY:=(CameraModeBottom-CameraModeTop)/2
+	SellPosX:=(SellButtonRight-SellButtonLeft)/2
+	SellPosY:=(SellButtonRight-SellButtonLeft)/2
 Return
 SaveBounds:
-	For i,j in ["CameraCheck","FishBar","ProgBar","LvlCheck"]
+	For i,j in boundNames
 		For k,v in ["Left","Right","Top","Bottom"]
 			WriteBnd(v,%j%%v%,j)
 Return
 ShowBounds:
-	For i,v in ["CameraCheck","FishBar","ProgBar","LvlCheck"]
+	For i,v in boundNames
 		CreateBound(v,%v%Left,%v%Top,%v%Right,%v%Bottom)
 Return
 HideBounds:
-	Gui FishBar:Destroy
-	Gui ProgBar:Destroy
-	Gui CameraCheck:Destroy
-	Gui LvlCheck:Destroy
+	For _,v in boundNames
+		Gui %v%:Destroy
 Return
 ResetBounds:
 	FileDelete,%BoundsPath%

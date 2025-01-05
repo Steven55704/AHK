@@ -1,4 +1,4 @@
-;3
+;4
 #Include %A_MyDocuments%\Macro Settings\main.ahk
 ImportMinigameConfig(name){
 	Global MGPath
@@ -52,6 +52,16 @@ AskUser(a,b){
 }
 Chkd(b){
 	Return b?"Checked":""
+}
+CameraMode(t){
+	Global AutoCameraDelay,CameraCheckLeft,CameraCheckTop,CameraCheckRight,CameraCheckBottom,CameraModeX,CameraModeY
+	Sleep AutoCameraDelay
+	Loop,4{
+		PixelSearch,,,CameraCheckLeft,CameraCheckTop,CameraCheckRight,CameraCheckBottom,0xFFFFFF,2,Fast
+		If !ErrorLevel=t
+			Click %CameraModeX%,%CameraModeY%
+		Sleep AutoCameraDelay
+	}
 }
 FetchInstructions(){
 	req:=ComObjCreate("WinHttp.WinHttpRequest.5.1")
@@ -148,7 +158,8 @@ CS2DC(x1,y1,x2,y2,payload){
 }
 WriteGen(k,v){
 	Global SettingsPath
-	IniWrite,%v%,%SettingsPath%,All,%k%
+	IniRead,tmp,%SettingsPath%,All,%k%,%v%
+	IniWrite,%tmp%,%SettingsPath%,All,%k%
 }
 ReadGen(ByRef out,k){
 	Global SettingsPath

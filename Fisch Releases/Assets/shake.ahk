@@ -1,4 +1,4 @@
-;2
+;3
 #Include %A_MyDocuments%\Macro Settings\main.ahk
 CShakeMode:
 	FailsafeCount:=0
@@ -17,7 +17,6 @@ CShakeMode:
 		PixelSearch,,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,FishColor,0,Fast
 		If !ErrorLevel{
 			SetTimer,Failsafe1,Off
-			Sleep 1000
 			Goto BarMinigame
 		}Else{
 			PixelSearch,ClickX,ClickY,CShakeRight,CShakeTop,CShakeLeft,CShakeBottom,0xFFFFFF,1,Fast
@@ -26,7 +25,7 @@ CShakeMode:
 					CShakeRepeatBypassCounter:=0
 					MouseMove,ClickX,ClickY
 					Sleep ShakeDelay
-					Click ClickX,ClickY
+					Click %ClickX%,%ClickY%
 					MemoryX:=ClickX
 					MemoryY:=ClickY
 				}Else{
@@ -55,7 +54,6 @@ NShakeMode:
 		PixelSearch,,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,FishColor,0,Fast
 		If !ErrorLevel{
 			SetTimer,Failsafe1,Off
-			Sleep 1000
 			Goto BarMinigame
 		}Else
 			Send s{Enter}

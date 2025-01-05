@@ -1,4 +1,4 @@
-;2
+;3
 #Include %A_MyDocuments%\Macro Settings\main.ahk
 Track:
 	PixelSearch,x,,ProgBarRight,ProgBarTop,ProgBarLeft,ProgBarBottom,0xFFFFFF,3,Fast
@@ -11,6 +11,7 @@ Track:
 	}
 Return
 BarMinigame:
+	Sleep 1000
 	If AutoBlurMinigame
 		Send m
 	ForceReset:=False
@@ -199,7 +200,7 @@ MinigameLoop:
 			FishCaught++
 		Else
 			FishLost++
-		Sleep RestartDelay
+		Sleep RestartDelay/2
 		If UseWebhook{
 			If(!WasFishCaught&&SendScreenshotFL)||(WasFishCaught&&Mod(CatchCount,SendScreenshotEveryN)=0&&NotifyImg){
 				FormatTime,ct,,hh:mm:ss
@@ -213,24 +214,16 @@ MinigameLoop:
 			If(LvlUpMode!="Off"&&Mod(CatchCount,CheckLvlEveryN)=0)
 				Gosub CheckStatistics
 		}
+		Sleep RestartDelay/2
+		If(AutoSell&&Mod(CatchCount,AutoSellInterval)=0)
+			Gosub SellFish
 		If(FarmLocation=="cryo"&&A_TickCount>=StopFarmingAt)
 			Gosub backUp
 		Goto RestartMacro
 	}
 Return
 CheckStatistics:
-	PixelSearch,,,CameraCheckLeft,CameraCheckTop,CameraCheckRight,CameraCheckBottom,0xFFFFFF,1,Fast
-	If ErrorLevel{
-		Sleep AutoCameraDelay
-		Send {%NavigationKey%}
-		Sleep AutoCameraDelay
-		Loop,10{
-			Send d
-			Sleep AutoCameraDelay
-		}
-		Send {Enter}
-		Sleep AutoCameraDelay
-	}
+	CameraMode(False)
 	x:=WW-455
 	WinMove,%GuiTitle%,,%x%,0
 	Sleep 500
@@ -247,13 +240,45 @@ CheckStatistics:
 		If(LvlUpMode=="Txt")
 			SendStatus(5,[lvl])
 		Else
-			CS2DC(LvlCheckLeft,LvlCheckTop,LvlCheckRight-LvlCheckLeft,LvlCheckBottom-LvlCheckTop,"{""embeds"":[{""image"":{""url"":""attachment://screenshot.png""},""color"":4848188,""title"":""Level Up"",""footer"":{""text"":"""ct """}}]}")
+			CS2DC(LvlCheckLeft,LvlCheckTop,LvlCheckRight,LvlCheckBottom,"{""embeds"":[{""image"":{""url"":""attachment://screenshot.png""},""color"":4848188,""title"":""Level Up"",""footer"":{""text"":"""ct """}}]}")
 	}
 	Gosub MoveGui
 	Sleep 250
 	WinActivate,Roblox
 	WinMaximize,Roblox
 	Sleep AutoCameraDelay
-	Send {Enter}
+	CameraMode(True)
+	Sleep AutoCameraDelay
+Return
+SellFish:
+	CameraMode(False)
+	Sleep 200
+	x:=WW-455
+	WinMove,%GuiTitle%,,%x%,0
+	Sleep 250
+	Send {``}
+	Sleep 500
+	MouseMove,SellPosX,SellPosY
+	Sleep 100
+	Click %SellPosX%,%SellPosY%
+	Sleep 2500
+	Send {``}
+	Loop{
+		PixelSearch,,,SellProfitLeft,SellProfitTop,SellProfitRight,SellProfitBottom,0x49D164,12,Fast
+		If !ErrorLevel
+			Break
+		Else
+			Sleep 100
+	}
+	Sleep 200
+	FormatTime,ct,,hh:mm:ss
+	If UseWebhook&&SendSellProfit
+		CS2DC(SellProfitLeft,SellProfitTop,SellProfitRight,SellProfitBottom,"{""embeds"":[{""image"":{""url"":""attachment://screenshot.png""},""color"":6607177,""title"":""Money Gained"",""footer"":{""text"":"""ct """}}]}")
+	Gosub MoveGui
+	Sleep 250
+	WinActivate,Roblox
+	WinMaximize,Roblox
+	Sleep AutoCameraDelay
+	CameraMode(True)
 	Sleep AutoCameraDelay
 Return

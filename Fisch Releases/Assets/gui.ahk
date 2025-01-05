@@ -1,4 +1,4 @@
-;5
+;6
 #Include %A_MyDocuments%\Macro Settings\main.ahk
 InitGui:
 	Gui -MinimizeBox -MaximizeBox +AlwaysOnTop
@@ -96,6 +96,8 @@ InitGui:
 	Gui Add,Text,x129 y87 w62 h13,Check every
 	Gui Add,Edit,vCLEN gSubAll x190 y85 w26 h18 Number,%CheckLvlEveryN%
 	Gui Add,Text,x218 y87 w40 h13,catches.
+	SSP:=Chkd(SendSellProfit)
+	Gui Add,CheckBox,vCBSP gSubAll x129 y104 w154 h14 %SSP%,Send Sell Profits (Gamepass)
 	Gui Tab,4
 	cnfgoptions:=ScanForConfigs(curMGFile)
 	Gui Add,DropDownList,vMGCF gMGCCF x2 y24 w100,% cnfgoptions[1]
@@ -149,6 +151,10 @@ InitGui:
 	Gui,Add,ComboBox,vDDSL gChangeTheme x50 y40 w120 h100,
 	Loop,%SkinsPath%\*.she
 		GuiControl,,DDSL,% A_LoopFileName
+	UAS:=Chkd(AutoSell)
+	Gui Add,CheckBox,vCBGS gSubAll x5 y64 w120 h13 %UAS%,Auto Sell (Gamepass)
+	Gui Add,Edit,vASIG gSubAll x60 y78 w28 h18,%AutoSellInterval%
+	Gui Add,Text,x4 y79 w56 h18,Sell Interval
 	Gui Add,GroupBox,x302 y22 w146 h154,What is this for?
 	Gui Font,s20
 	Gui Add,Button,vX1Y1 gTTT x304 y33 w48 h48
@@ -169,19 +175,20 @@ InitGui:
 	Gui Add,GroupBox,x270 y22 w179 h152,Position And Size
 	Gui Font
 	Gui Add,Text,x275 y37 w68 h14,Select Bound:
-	Gui Add,ComboBox,vDDBN gSubAll x276 y51 w119,CameraCheck|FishBar|ProgBar|LvlCheck
+	Gui Add,ComboBox,vDDBN gSubAll x276 y51 w119,CameraCheck|FishBar|ProgBar|LvlCheck|SellProfit|CameraMode|SellButton
 	Gui Add,Text,x275 y75 w37 h23,X (Left):
-	Gui Add,Edit,x312 y75 w46 h18 vBNX
+	Gui Add,Edit,x312 y75 w46 h18 gApplyBnd vBNX
 	Gui Add,UpDown,x341 y75 w18 h18 +0x80 Range-10000-10000 gApplyBnd vUDX
 	Gui Add,Text,x361 y75 w38 h23,Y (Top):
-	Gui Add,Edit,x399 y75 w46 h18 vBNY
+	Gui Add,Edit,x399 y75 w46 h18 gApplyBnd vBNY
 	Gui Add,UpDown,x428 y75 w18 h18 +0x80 Range-10000-10000 gApplyBnd vUDY
 	Gui Add,Text,x275 y96 w37 h23,Width:
-	Gui Add,Edit,x313 y96 w46 h18 vBNW
+	Gui Add,Edit,x313 y96 w46 h18 gApplyBnd vBNW
 	Gui Add,UpDown,x341 y96 w18 h18 +0x80 Range-10000-10000 gApplyBnd vUDW
 	Gui Add,Text,x361 y96 w37 h23,Height:
-	Gui Add,Edit,x399 y96 w46 h18 vBNH
+	Gui Add,Edit,x399 y96 w46 h18 gApplyBnd vBNH
 	Gui Add,UpDown,x428 y96 w18 h18 +0x80 Range-10000-10000 gApplyBnd vUDH
+	Gui Add,Text,vBDSC x276 y120 w166
 	Gui Tab,8
 	Gui Add,Link,x6 y22 w276 h14,This macro is based on the <a href="https://www.youtube.com/@AsphaltCake">AsphaltCake</a> Fisch Macro V11
 	Gui Add,Text,x6 y+4 w257 h14,Gui, modified minigame, polishing, and webhook by me.
@@ -326,6 +333,9 @@ InitGui:
 		ImgNotifEveryN:=SIEN
 		LvlUpMode:=DDSS
 		SelectedBound:=DDBN
+		AutoSell:=CBGS
+		SendSellProfit:=CBSP
+		AutoSellInterval:=ASIG
 		If Trim(DDBN)!=""
 			Gosub SelectBound
 		If CBCF
@@ -342,7 +352,10 @@ InitGui:
 	STRS:
 		AskUser("Reset Settings","Are you sure?")
 		IfMsgBox Yes
+		{
+			FileDelete,%SettingsPath%
 			Goto DefaultSettings
+		}
 	Return
 	STSV:
 		AskUser("Save Settings","Overwrite old settings?")
