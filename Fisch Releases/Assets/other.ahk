@@ -1,18 +1,18 @@
-;6
+;7
 #Include %A_MyDocuments%\Macro Settings\main.ahk
 ImportMinigameConfig(name){
 	Global MGPath
 	path:=MGPath "\" name
-	IniRead,StabilizerLoop,%path%,Values,StabilizerLoop
-	IniRead,SideBarRatio,%path%,Values,SideBarRatio
-	IniRead,SideBarWait,%path%,Values,SideBarWait
-	IniRead,RightMult,%path%,Values,RightMult
-	IniRead,RightDiv,%path%,Values,RightDiv
-	IniRead,RightAnkleMult,%path%,Values,RightAnkleMult
-	IniRead,LeftMult,%path%,Values,LeftMult
-	IniRead,LeftDiv,%path%,Values,LeftDiv
-	IniRead,Coefficient,%path%,Values,Coefficient
-	IniRead,Exponent,%path%,Values,Exponent
+	IniRead,StabilizerLoop,%path%,Values,StabilizerLoop,20
+	IniRead,SideBarRatio,%path%,Values,SideBarRatio,0.8
+	IniRead,SideBarWait,%path%,Values,SideBarWait,1.72
+	IniRead,RightMult,%path%,Values,RightMult,2.6329
+	IniRead,RightDiv,%path%,Values,RightDiv,1.8961
+	IniRead,RightAnkleMult,%path%,Values,RightAnkleMult,1.36
+	IniRead,LeftMult,%path%,Values,LeftMult,2.9892
+	IniRead,LeftDiv,%path%,Values,LeftDiv,4.6235
+	IniRead,Coefficient,%path%,Values,Coefficient,1.97109
+	IniRead,Exponent,%path%,Values,Exponent,0.810929
 	Return [StabilizerLoop,SideBarRatio,SideBarWait,RightMult,RightDiv,RightAnkleMult,LeftMult,LeftDiv,Coefficient,Exponent]
 }
 ScanForConfigs(cur){
