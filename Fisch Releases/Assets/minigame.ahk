@@ -1,4 +1,4 @@
-;4
+;5
 #Include %A_MyDocuments%\Macro Settings\main.ahk
 Track:
 	PixelSearch,x,,ProgBarRight,ProgBarTop,ProgBarLeft,ProgBarBottom,0xFFFFFF,3,Fast
@@ -202,7 +202,7 @@ MinigameLoop:
 			FishLost++
 		Sleep RestartDelay/2
 		If UseWebhook{
-			If(!WasFishCaught&&SendScreenshotFL)||(WasFishCaught&&Mod(CatchCount,SendScreenshotEveryN)=0&&NotifyImg){
+			If(!WasFishCaught&&SendScreenshotFL)||(WasFishCaught&&Mod(CatchCount,ImgNotifEveryN)=0&&NotifyImg){
 				FormatTime,ct,,hh:mm:ss
 				elapsed:=GetTime(runtime2)
 				ratio:=FishCaught " / "FishLost " ("RegExReplace(FishCaught/CatchCount*100,"(?<=\.\d{3}).*$") "%)"
