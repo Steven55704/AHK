@@ -41,9 +41,9 @@ If !FileExist(LibPath)
 If !FileExist(MGPath)
 	FileCreateDir,%MGPath%
 If !FileExist(DefMGPath)
-	FileAppend,[Values]`nStabilizerLoop=20`nSideBarRatio=0.8`nSideBarWait=1.72`nRightMult=2.6329`nRightDiv=1.8961`nRightAnkleMult=1.36`nLeftMult=2.9892`nLeftDiv=4.6235`nCoeff=1.97109`nExp=0.810929,%DefMGPath%
+	FileAppend,[Values]`nStabilizerLoop=20`nSideBarRatio=0.8`nSideBarWait=1.72`nRightMult=2.6329`nRightDiv=1.8961`nRightAnkleMult=1.36`nLeftMult=2.9892`nLeftDiv=4.6235`nCoefficient=1.97109`nExponent=0.810929,%DefMGPath%
 If !FileExist(VersionPath)
-	FileAppend,1.4 12,%VersionPath%
+	FileAppend,1.4 13,%VersionPath%
 IniRead,curVer,%SettingsPath%,.,v
 configVer:="12"
 If(curVer!=configVer){
@@ -135,7 +135,7 @@ FishLost:=0
 CatchCount:=0
 runtime1:=0
 runtime2:=0
-cryoCanal:={CFatC:False}
+cryoCanal:={CF:False}
 XOdebounce:=True
 SelectedBound:=""
 boundNames:=["CameraCheck","FishBar","ProgBar","LvlCheck","SellProfit","CameraMode","SellButton"]
@@ -294,7 +294,7 @@ StartMacro:
 	Goto RestartMacro
 Return
 RestartMacro:
-	If(FarmLocation=="cryo"&&!cryoCanal.CFatC){
+	If(FarmLocation=="cryo"&&!cryoCanal.CF){
 		UpdateTask("Current Task: Walking To Cryogenic Canal")
 		Click 0,500
 		Loop,6{
@@ -343,17 +343,17 @@ RestartMacro:
 		Send {w down}
 		Sleep 200
 		Send {w up}
-		Sleep 3800
+		Sleep 4200
 		Send {s down}
-		Sleep 200
+		Sleep 300
 		Send {a up}
 		Sleep 500
 		Send {a down}{w down}{s up}
 		Sleep 1250
 		Send {a up}
-		Sleep 1930
+		Sleep 1870
 		Send {w up}
-		Sleep 300
+		Sleep 250
 		Loop,25{
 			Send {WheelUp}
 			Sleep AutoZoomDelay
@@ -364,7 +364,7 @@ RestartMacro:
 		}
 		Sleep AutoZoomDelay*5
 		StopFarmingAt:=A_TickCount+36*60000
-		cryoCanal.CFatC:=True
+		cryoCanal.CF:=True
 	}
 	MouseMove,LookDownX,LookDownY
 	If AutoLookDownCamera{
@@ -431,12 +431,12 @@ Return
 #Include shake.ahk
 #Include minigame.ahk
 backUp:
-	cryoCanal.CFatC:=False
+	cryoCanal.CF:=False
 	Sleep 200
 	If AutoBlurMinigame
 		Send m
 	CameraMode(False)
-	Sleep 200
+	Sleep 150	
 	If buyConch{
 		Send {s down}
 		Sleep 600
@@ -458,9 +458,11 @@ backUp:
 		}
 		Sleep 200
 		Send e
-		Sleep 400
-		Click 830,600
-		Sleep 400
+		Sleep 300
+		Loop,5{
+			Click 830,600
+			Sleep 50
+		}
 	}Else
 		Sleep 1000
 	Send {9}
