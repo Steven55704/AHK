@@ -43,7 +43,7 @@ If !FileExist(MGPath)
 If !FileExist(DefMGPath)
 	FileAppend,[Values]`nStabilizerLoop=20`nSideBarRatio=0.8`nSideBarWait=1.72`nRightMult=2.6329`nRightDiv=1.8961`nRightAnkleMult=1.36`nLeftMult=2.9892`nLeftDiv=4.6235`nCoefficient=1.97109`nExponent=0.810929,%DefMGPath%
 If !FileExist(VersionPath)
-	FileAppend,1.4 13,%VersionPath%
+	FileAppend,1.4 14,%VersionPath%
 IniRead,curVer,%SettingsPath%,.,v
 configVer:="12"
 If(curVer!=configVer){
@@ -92,7 +92,6 @@ AutoZoomDelay:=40
 AutoCameraDelay:=25
 AutoLookDelay:=50
 AutoBlurDelay:=25
-SendScreenshotEveryN:=10
 If(SelectedSkin!="none"){
 	sl:=SkinsPath "\"SelectedSkin
 	If FileExist(sl)
