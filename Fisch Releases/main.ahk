@@ -43,7 +43,7 @@ If !FileExist(MGPath)
 If !FileExist(DefMGPath)
 	FileAppend,[Values]`nStabilizerLoop=20`nSideBarRatio=0.8`nSideBarWait=1.72`nRightMult=2.6329`nRightDiv=1.8961`nRightAnkleMult=1.36`nLeftMult=2.9892`nLeftDiv=4.6235`nCoefficient=1.97109`nExponent=0.810929,%DefMGPath%
 If !FileExist(VersionPath)
-	FileAppend,1.4 14,%VersionPath%
+	FileAppend,1.4 15,%VersionPath%
 IniRead,curVer,%SettingsPath%,.,v
 configVer:="12"
 If(curVer!=configVer){
@@ -119,10 +119,12 @@ ShakeFailsafe:=15
 BarDetectionFailsafe:=3
 FailsInARow:=0
 RepeatBypassLimit:=10
-BarColor:=0xF8F8F8
+BarColor1:=0xF8F8F8
+BarColor2:=0xF4F9FF
 BarCalcColor:=0xF0F0F0
 ArrowColor:=0x868483
-FishColor:=0x5B4B43
+FishColor1:=0x5B4B43
+FishColor2:=0x525050
 ManualBarSize:=0
 Test1:=0
 Test2:=0
@@ -464,11 +466,11 @@ backUp:
 		}
 	}Else
 		Sleep 1000
-	Send {9}
+	Send 9
 	Sleep 500
 	Click 0,500
 	Sleep 400
-	Send {1}
+	Send 1
 	CameraMode(True)
 	Click 0,500
 	Sleep 4000
@@ -476,5 +478,3 @@ Return
 #Include gui.ahk
 #Include other.ahk
 #Include manual_setup.ahk
-GuiClose:
-	Goto ExitMacro
