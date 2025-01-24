@@ -23,12 +23,13 @@ CoordMode,Pixel,Relative
 CoordMode,Mouse,Relative
 #Include %A_MyDocuments%\Macro Settings\Lib
 #Include Gdip_All.ahk
-BuildNum:=16
+BuildNum:=17
 GuiTitle=Fisch V1.4.%BuildNum% by 0x3b5
 DirPath:=A_MyDocuments "\Macro Settings"
 LibPath:=DirPath "\Lib"
 DllCall("LoadLibrary","Str",LibPath "\SkinHu.dll")
 MGPath:=DirPath "\Minigame"
+LogoPath:=DirPath "\logo.ico"
 SkinsPath:=DirPath "\skins"
 SettingsPath:=DirPath "\general.txt"
 BoundsPath:=DirPath "\bounds.txt"
@@ -278,9 +279,8 @@ StartMacro:
 			Send {WheelUp}
 			Sleep AutoZoomDelay
 		}
-		Loop,4{
+		Loop,3{
 			Send {WheelDown}
-			Sleep AutoZoomDelay
 		}
 		Sleep AutoZoomDelay*5
 	}
@@ -361,7 +361,7 @@ RestartMacro:
 			Send {WheelUp}
 			Sleep AutoZoomDelay
 		}
-		Loop,3{
+		Loop,4{
 			Send {WheelDown}
 			Sleep AutoZoomDelay
 		}
