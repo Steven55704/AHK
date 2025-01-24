@@ -23,7 +23,8 @@ CoordMode,Pixel,Relative
 CoordMode,Mouse,Relative
 #Include %A_MyDocuments%\Macro Settings\Lib
 #Include Gdip_All.ahk
-GuiTitle:="Fisch V1.4 by 0x3b5"
+BuildNum:=15
+GuiTitle=Fisch V1.4.%BuildNum% by 0x3b5
 DirPath:=A_MyDocuments "\Macro Settings"
 LibPath:=DirPath "\Lib"
 DllCall("LoadLibrary","Str",LibPath "\SkinHu.dll")
@@ -43,7 +44,7 @@ If !FileExist(MGPath)
 If !FileExist(DefMGPath)
 	FileAppend,[Values]`nStabilizerLoop=20`nSideBarRatio=0.8`nSideBarWait=1.72`nRightMult=2.6329`nRightDiv=1.8961`nRightAnkleMult=1.36`nLeftMult=2.9892`nLeftDiv=4.6235`nCoefficient=1.97109`nExponent=0.810929,%DefMGPath%
 If !FileExist(VersionPath)
-	FileAppend,1.4 14,%VersionPath%
+	FileAppend,1.4 %BuildNum%,%VersionPath%
 IniRead,curVer,%SettingsPath%,.,v
 configVer:="12"
 If(curVer!=configVer){
@@ -119,11 +120,11 @@ ShakeFailsafe:=15
 BarDetectionFailsafe:=3
 FailsInARow:=0
 RepeatBypassLimit:=10
-BarColor:=0xF8F8F8
+BarColor1:=0xF8F8F8
 BarColor2:=0xF4F9FF
 BarCalcColor:=0xF0F0F0
 ArrowColor:=0x868483
-FishColor:=0x5B4B43
+FishColor1:=0x5B4B43
 FishColor2:=0x525050
 ManualBarSize:=0
 Test1:=0
@@ -279,7 +280,9 @@ StartMacro:
 			Send {WheelUp}
 			Sleep AutoZoomDelay
 		}
-		Send {WheelDown}
+		Loop,3{
+			Send {WheelDown}
+		}
 		Sleep AutoZoomDelay*5
 	}
 	UpdateTask("Current Task: Enable Camera Mode")
@@ -376,7 +379,7 @@ RestartMacro:
 		Sleep AutoLookDelay
 		Send {RButton down}
 		Sleep AutoLookDelay
-		DllCall("mouse_event",uint,1,int,0,int,10000)
+		DllCall("mouse_event",uint,1,int,0,int,-10000)
 		Sleep AutoLookDelay
 		Send {RButton up}
 		Sleep AutoLookDelay
