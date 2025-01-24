@@ -1,6 +1,9 @@
-;8
+;9
 #Include %A_MyDocuments%\Macro Settings\main.ahk
 InitGui:
+	If !FileExist(LogoPath)
+		UrlDownloadToFile,https://raw.githubusercontent.com/LopenaFollower/AHK/refs/heads/main/Fisch`%20Releases/Assets/logo.ico,%LogoPath%
+	Menu,Tray,Icon,%LogoPath%
 	Gui -MinimizeBox -MaximizeBox +AlwaysOnTop
 	Gui Add,Tab3,vTabs x0 y0 w450 h176,Info|Main|Webhook|Minigame|Locations|Misc|Manual Setup|Credits
 	Gui Tab,1
