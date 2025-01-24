@@ -1,4 +1,4 @@
-;6
+;7
 #Include %A_MyDocuments%\Macro Settings\main.ahk
 Track:
 	If GetFishPos(){
@@ -59,36 +59,17 @@ BarMinigame:
 	MaxLeftBar:=FishBarLeft+WhiteBarSize*SideBarRatio
 	MaxRightBar:=FishBarRight-WhiteBarSize*SideBarRatio
 	GetFishPos(){
-		Global FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,FishColor1,FishColor2,ResolutionScaling
-		FF:=False
-		PixelSearch,TFX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,FishColor1,0,Fast
-		If !ErrorLevel{
-			FX:=TFX
-			FF:=True
-		}
-		If !FF{
-			PixelSearch,TFX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,FishColor2,0,Fast
-			If !ErrorLevel{
-				FX:=TFX
-				FF:=True
-			}
-		}
-		Return FF?FishX:False
+		Global FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,FishColor,ResolutionScaling
+		PixelSearch,FishX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,FishColor,0,Fast
+		Return ErrorLevel?False:FishX
 	}
 	GetBarPos(){
-		Global FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,BarColor1,BarColor2,UnstableColorX,UnstableColorY,HalfBarSize
+		Global FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,BarColor,UnstableColorX,UnstableColorY,HalfBarSize
 		FB:=False
-		PixelSearch,TBX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,BarColor1,9,Fast
+		PixelSearch,TBX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,BarColor,9,Fast
 		If !ErrorLevel{
 			BX:=TBX+HalfBarSize
 			FB:=True
-		}
-		If !FB{
-			PixelSearch,TBX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,BarColor2,2,Fast
-			If !ErrorLevel{
-				BX:=TBX+HalfBarSize
-				FB:=True
-			}
 		}
 		If !FB{
 			PixelGetColor,UC,UnstableColorX,UnstableColorY
@@ -102,7 +83,7 @@ BarMinigame:
 			PixelSearch,AX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,ArrowColor,1,Fast
 			If !ErrorLevel{
 				PixelGetColor,UC,AX+25,FishBarTop-5
-				If(UC=FishColor1)
+				If(UC=FishColor)
 					PixelGetColor,UC,AX-25,FishBarTop-5
 				PixelSearch,TBX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,UC,5,Fast
 				If !ErrorLevel{
