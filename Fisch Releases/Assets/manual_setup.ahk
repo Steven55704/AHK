@@ -1,4 +1,4 @@
-;6
+;7
 #Include %A_MyDocuments%\Macro Settings\main.ahk
 CreateBound(n,x1,y1,x2,y2){
 	colors:={CameraCheck:"Yellow",FishBar:"Lime",ProgBar:"Red",LvlCheck:"Blue",SellProfit:"Aqua",CameraMode:"Fuchsia",SellButton:"Navy"}
@@ -20,7 +20,7 @@ ReadBnd(ByRef out,k,s){
 }
 Calculations:
 	ReadBnd(tmp,"Top","CameraCheck")
-	msng:=tmp==""
+	msng:=!tmp
 	If msng{
 		WriteBnd("Left",WW//2.15,"CameraCheck")
 		WriteBnd("Right",WW//1.85,"CameraCheck")
@@ -28,23 +28,23 @@ Calculations:
 		WriteBnd("Bottom",WH//1.077,"CameraCheck")
 	}
 	ReadBnd(tmp,"Top","FishBar")
-	msng:=tmp==""
+	msng:=!tmp
 	If msng{
-		WriteBnd("Left",WW//3.32,"FishBar")
-		WriteBnd("Right",WW//1.43,"FishBar")
+		WriteBnd("Left",0.2981543095*WW,"FishBar")
+		WriteBnd("Right",0.7018456905*WW,"FishBar")
 		WriteBnd("Top",WH//1.172,"FishBar")
 		WriteBnd("Bottom",WH//1.16,"FishBar")
 	}
 	ReadBnd(tmp,"Top","ProgBar")
-	msng:=tmp==""
+	msng:=!tmp
 	If msng{
-		WriteBnd("Left",WW//2.547,"ProgBar")
-		WriteBnd("Right",WW//1.644,"ProgBar")
+		WriteBnd("Left",0.391298225298586024*WW,"ProgBar")
+		WriteBnd("Right",0.608701774701413976*WW,"ProgBar")
 		WriteBnd("Top",WH//1.1,"ProgBar")
 		WriteBnd("Bottom",WH//1.0965,"ProgBar")
 	}
 	ReadBnd(tmp,"Top","LvlCheck")
-	msng:=tmp==""
+	msng:=!tmp
 	If msng{
 		WriteBnd("Left",WW//1.05,"LvlCheck")
 		WriteBnd("Right",WW//1.0035,"LvlCheck")
@@ -60,7 +60,7 @@ Calculations:
 		WriteBnd("Bottom",WH//1.145,"SellProfit")
 	}
 	ReadBnd(tmp,"Top","CameraMode")
-	msng:=tmp==""
+	msng:=!tmp
 	If msng{
 		WriteBnd("Left",WW//1.025,"CameraMode")
 		WriteBnd("Right",WW//1.01,"CameraMode")
@@ -68,7 +68,7 @@ Calculations:
 		WriteBnd("Bottom",46,"CameraMode")
 	}
 	ReadBnd(tmp,"Top","SellButton")
-	msng:=tmp==""
+	msng:=!tmp
 	If msng{
 		WriteBnd("Left",WW//2.9,"SellButton")
 		WriteBnd("Right",WW//2.47,"SellButton")

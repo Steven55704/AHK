@@ -1,13 +1,15 @@
-;5
+;6
 #Include %A_MyDocuments%\Macro Settings\main.ahk
 Track:
-	PixelSearch,x,,ProgBarRight,ProgBarTop,ProgBarLeft,ProgBarBottom,0xFFFFFF,3,Fast
-	If !ErrorLevel
-		ProgressX:=x
-	Else{
-		PixelSearch,x,,ProgBarRight,ProgBarTop,ProgBarLeft,ProgBarBottom,0x9F9F9F,3,Fast
+	If GetFishPos(){
+		PixelSearch,x,,ProgBarRight,ProgBarTop,ProgBarLeft,ProgBarBottom,0xFFFFFF,3,Fast
 		If !ErrorLevel
 			ProgressX:=x
+		Else{
+			PixelSearch,x,,ProgBarRight,ProgBarTop,ProgBarLeft,ProgBarBottom,0x9F9F9F,3,Fast
+			If !ErrorLevel
+				ProgressX:=x
+		}
 	}
 Return
 BarMinigame:
@@ -21,7 +23,7 @@ BarMinigame:
 		Sleep 1
 		UpdateTask("Current Task: Calculating Bar Size")
 		If ForceReset{
-			If(FarmLocation=="cryo"&&A_TickCount>=StopFarmingAt)
+			If(FarmLocation="cryo"&&A_TickCount>=StopFarmingAt)
 				Gosub backUp
 			Goto RestartMacro
 		}
@@ -57,17 +59,36 @@ BarMinigame:
 	MaxLeftBar:=FishBarLeft+WhiteBarSize*SideBarRatio
 	MaxRightBar:=FishBarRight-WhiteBarSize*SideBarRatio
 	GetFishPos(){
-		Global FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,FishColor,ResolutionScaling
-		PixelSearch,FishX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,FishColor,0,Fast
-		Return ErrorLevel?False:FishX
+		Global FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,FishColor1,FishColor2,ResolutionScaling
+		FF:=False
+		PixelSearch,TFX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,FishColor1,0,Fast
+		If !ErrorLevel{
+			FX:=TFX
+			FF:=True
+		}
+		If !FF{
+			PixelSearch,TFX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,FishColor2,0,Fast
+			If !ErrorLevel{
+				FX:=TFX
+				FF:=True
+			}
+		}
+		Return FF?FishX:False
 	}
 	GetBarPos(){
-		Global FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,BarColor,UnstableColorX,UnstableColorY,HalfBarSize
+		Global FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,BarColor1,BarColor2,UnstableColorX,UnstableColorY,HalfBarSize
 		FB:=False
-		PixelSearch,TBX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,BarColor,9,Fast
+		PixelSearch,TBX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,BarColor1,9,Fast
 		If !ErrorLevel{
 			BX:=TBX+HalfBarSize
 			FB:=True
+		}
+		If !FB{
+			PixelSearch,TBX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,BarColor2,2,Fast
+			If !ErrorLevel{
+				BX:=TBX+HalfBarSize
+				FB:=True
+			}
 		}
 		If !FB{
 			PixelGetColor,UC,UnstableColorX,UnstableColorY
@@ -81,7 +102,7 @@ BarMinigame:
 			PixelSearch,AX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,ArrowColor,1,Fast
 			If !ErrorLevel{
 				PixelGetColor,UC,AX+25,FishBarTop-5
-				If(UC=FishColor)
+				If(UC=FishColor1)
 					PixelGetColor,UC,AX-25,FishBarTop-5
 				PixelSearch,TBX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,UC,5,Fast
 				If !ErrorLevel{
@@ -102,13 +123,12 @@ BarMinigame:
 		}
 	}
 	MinigameStart:=A_TickCount
-	SetTimer,Track,100
+	SetTimer,Track,75
 	Goto MinigameLoop
 Return
 MinigameLoop:
 	Sleep 1
-	FishX:=GetFishPos()
-	If FishX{
+	If FishX:=GetFishPos(){
 		If ShakeOnly
 			Goto MinigameLoop
 		FailsInARow:=0
@@ -141,8 +161,7 @@ MinigameLoop:
 		}
 		MaxLeftToggle:=False
 		MaxRightToggle:=False
-		BarX:=GetBarPos()
-		If BarX{
+		If BarX:=GetBarPos(){
 			If(BarX<=FishX){
 				Difference:=Scale(FishX-BarX)*ResolutionScaling*RightMult
 				CounterDifference:=Difference/RightDiv
@@ -204,7 +223,6 @@ MinigameLoop:
 		If UseWebhook{
 			If(!WasFishCaught&&SendScreenshotFL)||(WasFishCaught&&Mod(CatchCount,ImgNotifEveryN)=0&&NotifyImg){
 				FormatTime,ct,,hh:mm:ss
-				elapsed:=GetTime(runtime2)
 				ratio:=FishCaught " / "FishLost " ("RegExReplace(FishCaught/CatchCount*100,"(?<=\.\d{3}).*$") "%)"
 				dur:=RegExReplace(Duration,"(?<=\.\d{3}).*$")
 				caught:=WasFishCaught?"Fish took "dur "s to catch.":"Spent "dur "s trying to catch the fish."
@@ -224,6 +242,7 @@ MinigameLoop:
 Return
 CheckStatistics:
 	CameraMode(False)
+	Sleep 200
 	x:=WW-455
 	WinMove,%GuiTitle%,,%x%,0
 	Sleep 500
@@ -265,10 +284,10 @@ SellFish:
 	Send {``}
 	Loop{
 		PixelSearch,,,SellProfitLeft,SellProfitTop,SellProfitRight,SellProfitBottom,0x49D164,12,Fast
-		If !ErrorLevel
-			Break
-		Else
+		If ErrorLevel
 			Sleep 100
+		Else
+			Break
 	}
 	Sleep 200
 	FormatTime,ct,,hh:mm:ss

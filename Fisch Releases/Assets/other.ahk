@@ -1,4 +1,4 @@
-;7
+;8
 #Include %A_MyDocuments%\Macro Settings\main.ahk
 ImportMinigameConfig(name){
 	Global MGPath
@@ -104,6 +104,22 @@ SendStatus(st,info:=0){
 		}
 	}
 }
+CaptureScreen(path,x,y,w,h){
+	If !pT:=Gdip_Startup()
+		Return False
+	If !pB:=Gdip_BitmapFromScreen(x "|"y "|"w "|"h){
+		Gdip_Shutdown(pT)
+		Return False
+	}
+	If !Gdip_SaveBitmapToFile(pB,path){
+		Gdip_DisposeImage(pB)
+		Gdip_Shutdown(pT)
+		Return False
+	}
+	Gdip_DisposeImage(pB)
+	Gdip_Shutdown(pT)
+	Return True
+}
 downloadTesseract(){
 	Global TesseractPath,GuiAlwaysOnTop,GuiTitle
 	If !FileExist(TesseractPath){
@@ -126,22 +142,6 @@ downloadTesseract(){
 			GuiControl,ChooseString,DDSS,Off
 		}
 	}
-}
-CaptureScreen(path,x,y,w,h){
-	If !pT:=Gdip_Startup()
-		Return False
-	If !pB:=Gdip_BitmapFromScreen(x "|"y "|"w "|"h){
-		Gdip_Shutdown(pT)
-		Return False
-	}
-	If !Gdip_SaveBitmapToFile(pB,path){
-		Gdip_DisposeImage(pB)
-		Gdip_Shutdown(pT)
-		Return False
-	}
-	Gdip_DisposeImage(pB)
-	Gdip_Shutdown(pT)
-	Return True
 }
 CS2DC(x1,y1,x2,y2,payload){
 	Global WebhookURL

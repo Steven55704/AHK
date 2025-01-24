@@ -1,4 +1,4 @@
-;7
+;8
 #Include %A_MyDocuments%\Macro Settings\main.ahk
 InitGui:
 	Gui -MinimizeBox -MaximizeBox +AlwaysOnTop
@@ -23,7 +23,7 @@ InitGui:
 	Gui Add,Text,x9 y53 w75 h13,Navigation Key:
 	Gui Add,Text,x9 y70 w64 h13,Shake Delay:
 	Gui Add,Text,x9 y87 w58 h13,Shake Only:
-	ListVal:=(ShakeMode=="Click")?"Click||Navigation":"Click|Navigation||"
+	ListVal:=(ShakeMode="click")?"Click||Navigation":"Click|Navigation||"
 	Gui Add,DropDownList,vDDSM gSubAll x74 y31 w65,%ListVal%
 	Gui Add,Edit,vNK gSubAll x85 y53 w54 h16,%NavigationKey%
 	Gui Add,Edit,vSD gSubAll x74 y70 w65 h16 Number,%ShakeDelay%
@@ -90,7 +90,7 @@ InitGui:
 	NOF:=Chkd(NotifyOnFailsafe),SFL:=Chkd(SendScreenshotFL)
 	Gui Add,CheckBox,vCBNF gSubAll x129 y35 w100 h14 %NOF%,Notify on Failsafe
 	Gui Add,CheckBox,vCBSS gSubAll x129 y51 w114 h14 %SFL%,Send SS on fish lost
-	ListVal:=(LvlUpMode=="Off")?"Off||Txt|Img":(LvlUpMode=="Txt")?"Off|Txt||Img":"Off|Txt|Img||"
+	ListVal:=(LvlUpMode="off")?"Off||Txt|Img":(LvlUpMode="txt")?"Off|Txt||Img":"Off|Txt|Img||"
 	Gui Add,DropDownList,vDDSS gSubAll x129 y66 w42,%ListVal%
 	Gui Add,Text,x174 y70 w84 h14,Notify on level up
 	Gui Add,Text,x129 y87 w62 h13,Check every
@@ -136,7 +136,7 @@ InitGui:
 	Gui Add,Edit,vMGXP x198 y136 w52 h17 gNumberEdit,%Exponent%
 	Gui Tab,5
 	Gui Add,GroupBox,x2 y21 w223 h77,Cryogenic Canal
-	CFH:=Chkd(FarmLocation=="cryo"),CBC:=Chkd(buyConch)
+	CFH:=Chkd(FarmLocation="cryo"),CBC:=Chkd(buyConch)
 	Gui Add,CheckBox,vCBCF gSubAll x7 y36 w64 h18 %CFH%,Farm here
 	Gui Add,CheckBox,vCBBC gSubAll x7 y53 w70 h18 %CBC%,Buy Conch
 	Gui Add,Text,x105 y29 w38 h14,Setup:
@@ -201,7 +201,7 @@ InitGui:
 		Gui Submit,NoHide
 		c:=A_GuiControl
 		GuiControlGet,sym,,%c%
-		If(sym==""&&XOdebounce){
+		If(sym=""&&XOdebounce){
 			XOdebounce:=False
 			GuiControl,,%c%,X
 			Random,slp,250,400
@@ -210,10 +210,10 @@ InitGui:
 			cb:=""
 			For _,v in ncb{
 				GuiControlGet,s,,%v%
-				cb.=(s=="")?"_":s
+				cb.=(s="")?"_":s
 			}
 			For k,v in instructions
-				If(SubStr(v,1,9)==cb)
+				If(SubStr(v,1,9)=cb)
 					bm:=StrSplit(SubStr(v,10))
 			GuiControl,,% "X"bm[1] "Y"bm[2],O
 			clb:=False
@@ -222,7 +222,7 @@ InitGui:
 				won:=True
 				For k,i in StrSplit(v){
 					GuiControlGet,ns,,% ncb[k]
-					If(ns!="O"&&i=="1")
+					If(ns!="O"&&i="1")
 						won:=False
 				}
 				If clb:=won
@@ -232,7 +232,7 @@ InitGui:
 				clb:=True
 				For k,v in ncb{
 					GuiControlGet,ns,,% v
-					If(ns=="")
+					If(ns="")
 						clb:=False
 				}
 			}
@@ -394,7 +394,7 @@ InitGui:
 			isdupe:=False
 			Loop %MGPath%\*.*{
 				SplitPath,A_LoopFileName,,,,n
-				If(n==FileName)
+				If(n=FileName)
 					isdupe:=True
 			}
 			MGConfig:="[Values]`nStabilizerLoop=10`nSideBarRatio=0.8`nSideBarWait=2`nRightMult=2.6`nRightDiv=1.4`nRightAnkleMult=1.2`nLeftMult=2.6`nLeftDiv=1.4`nCoefficient=1`nExponent=1"
@@ -464,3 +464,5 @@ InitGui:
 		Run % PS
 	Return
 Return
+GuiClose:
+	Goto ExitMacro

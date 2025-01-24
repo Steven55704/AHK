@@ -1,4 +1,4 @@
-;3
+;4
 #Include %A_MyDocuments%\Macro Settings\main.ahk
 CShakeMode:
 	FailsafeCount:=0
@@ -24,6 +24,7 @@ CShakeMode:
 				If(ClickX!=MemoryX&&ClickY!=MemoryY){
 					CShakeRepeatBypassCounter:=0
 					MouseMove,ClickX,ClickY
+					Click %ClickX%,%ClickY%
 					Sleep ShakeDelay
 					Click %ClickX%,%ClickY%
 					MemoryX:=ClickX
