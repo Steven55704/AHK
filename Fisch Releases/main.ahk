@@ -279,8 +279,9 @@ StartMacro:
 			Send {WheelUp}
 			Sleep AutoZoomDelay
 		}
-		Loop,3{
+		Loop,4{
 			Send {WheelDown}
+			Sleep AutoZoomDelay
 		}
 		Sleep AutoZoomDelay*5
 	}
