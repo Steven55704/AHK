@@ -1,6 +1,9 @@
 #NoEnv
 #SingleInstance Force
 #Persistent
+#KeyHistory 0
+#MaxHotkeysPerInterval 128
+#HotkeyInterval 1
 SetWinDelay,-1
 If !(A_IsUnicode=1&&A_PtrSize=4){
 	SplitPath,A_AhkPath,,dir
@@ -18,12 +21,14 @@ SetKeyDelay,-1
 SetMouseDelay,-1
 SetBatchLines,-1
 ListLines 0
+Process,Priority,,H
+SetControlDelay,-1
 SetTitleMatchMode 2
 CoordMode,Pixel,Relative
 CoordMode,Mouse,Relative
 #Include %A_MyDocuments%\Macro Settings\Lib
 #Include Gdip_All.ahk
-BuildNum:=17
+BuildNum:=18
 GuiTitle=Fisch V1.4.%BuildNum% by 0x3b5
 DirPath:=A_MyDocuments "\Macro Settings"
 LibPath:=DirPath "\Lib"
@@ -277,11 +282,11 @@ StartMacro:
 		Sleep AutoZoomDelay
 		Loop,20{
 			Send {WheelUp}
-			Sleep AutoZoomDelay
+			Wait(AutoZoomDelay)
 		}
 		Loop,4{
 			Send {WheelDown}
-			Sleep AutoZoomDelay
+			Wait(AutoZoomDelay)
 		}
 		Sleep AutoZoomDelay*5
 	}
