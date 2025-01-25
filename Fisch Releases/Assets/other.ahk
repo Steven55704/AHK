@@ -1,4 +1,4 @@
-;8
+;9
 #Include %A_MyDocuments%\Macro Settings\main.ahk
 ImportMinigameConfig(name){
 	Global MGPath
@@ -103,6 +103,9 @@ SendStatus(st,info:=0){
 			req.Send("{""embeds"":[{""color"":4848188,""fields"":[{""name"":""Level Up"",""value"": ""You are now level "lvl """}],""footer"":{""text"":"""ct """}}]}")
 		}
 	}
+}
+Wait(ms){
+	DllCall("Sleep",uint,Max(.1,ms))
 }
 CaptureScreen(path,x,y,w,h){
 	If !pT:=Gdip_Startup()

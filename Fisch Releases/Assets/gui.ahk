@@ -1,4 +1,4 @@
-;9
+;10
 #Include %A_MyDocuments%\Macro Settings\main.ahk
 InitGui:
 	If !FileExist(LogoPath)
@@ -197,6 +197,7 @@ InitGui:
 	Gui Add,Text,x6 y+4 w257 h14,Gui, modified minigame, polishing, and webhook by me.
 	Gui Add,Text,x6 y+4 w257 h14,Image webhook provided by @lunarosity, embed by me.
 	Gui Add,Text,x6 y+4 w257 h14,Themes and Lvl checker provided by @toxgt
+	Gui Add,Text,x6 y+4 w257 h14,Logo design by @grubrescue
 	Gui Add,Link,x6 y+4 w252 h14,Check out my <a href="https://github.com/LopenaFollower">GitHub</a> and <a href="https://discord.gg/Fh5rmgg27X">Discord Server</a>
 	Gui Show,w450 h175,%GuiTitle%
 	Return
@@ -208,7 +209,7 @@ InitGui:
 			XOdebounce:=False
 			GuiControl,,%c%,X
 			Random,slp,250,400
-			Sleep slp
+			Wait(slp)
 			ncb:=["X1Y1","X2Y1","X3Y1","X1Y2","X2Y2","X3Y2","X1Y3","X2Y3","X3Y3"]
 			cb:=""
 			For _,v in ncb{
@@ -239,7 +240,7 @@ InitGui:
 						clb:=False
 				}
 			}
-			Sleep 500-slp
+			Wait(500-slp)
 			If clb
 				For j,i in ncb
 					GuiControl,,%i%,

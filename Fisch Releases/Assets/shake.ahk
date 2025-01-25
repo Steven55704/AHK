@@ -1,4 +1,4 @@
-;4
+;5
 #Include %A_MyDocuments%\Macro Settings\main.ahk
 CShakeMode:
 	FailsafeCount:=0
@@ -13,7 +13,7 @@ CShakeMode:
 				Gosub backUp
 			Goto RestartMacro
 		}
-		Sleep ShakeDelay
+		Wait(ShakeDelay)
 		PixelSearch,,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,FishColor,0,Fast
 		If !ErrorLevel{
 			SetTimer,Failsafe1,Off
@@ -24,8 +24,7 @@ CShakeMode:
 				If(ClickX!=MemoryX&&ClickY!=MemoryY){
 					CShakeRepeatBypassCounter:=0
 					MouseMove,ClickX,ClickY
-					Click %ClickX%,%ClickY%
-					Sleep ShakeDelay
+					Wait(ShakeDelay)
 					Click %ClickX%,%ClickY%
 					MemoryX:=ClickX
 					MemoryY:=ClickY

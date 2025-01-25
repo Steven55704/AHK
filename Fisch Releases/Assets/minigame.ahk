@@ -1,4 +1,4 @@
-;7
+;8
 #Include %A_MyDocuments%\Macro Settings\main.ahk
 Track:
 	If GetFishPos(){
@@ -99,7 +99,7 @@ BarMinigame:
 		Loop,StabilizerLoop{
 			Send {LButton up}
 			If s
-				Sleep 1
+				Wait(1)
 			Send {LButton down}
 		}
 	}
@@ -108,7 +108,7 @@ BarMinigame:
 	Goto MinigameLoop
 Return
 MinigameLoop:
-	Sleep 1
+	Wait(1)
 	If FishX:=GetFishPos(){
 		If ShakeOnly
 			Goto MinigameLoop
@@ -120,9 +120,9 @@ MinigameLoop:
 				DirectionalToggle:="Right"
 				MaxLeftToggle:=True
 				Send {LButton up}
-				Sleep 1
+				Wait(1)
 				Send {LButton up}
-				Sleep Min(MSD,SideDelay)
+				Wait(Min(MSD,SideDelay))
 				AnkleBreakDelay:=0
 				SideDelay:=0
 			}
@@ -132,9 +132,9 @@ MinigameLoop:
 				DirectionalToggle:="Left"
 				MaxRightToggle:=True
 				Send {LButton down}
-				Sleep 1
+				Wait(1)
 				Send {LButton down}
-				Sleep Min(MSD,SideDelay)
+				Wait(Min(MSD,SideDelay))
 				AnkleBreakDelay:=0
 				SideDelay:=0
 			}
@@ -152,18 +152,18 @@ MinigameLoop:
 				If(DirectionalToggle=="Left"){
 					Stabilize()
 					Send {LButton down}
-					Sleep Min(MAD,AnkleBreakDelay)
+					Wait(Min(MAD,AnkleBreakDelay))
 					AnkleBreakDelay:=0
 				}Else{
 					AnkleBreakDelay:=AnkleBreakDelay+(Difference-CounterDifference)*RightAnkleMult
 					SideDelay:=AnkleBreakDelay/RightAnkleMult*SideBarWait
 				}
-				Sleep Difference
+				Wait(Difference)
 				Send {LButton up}
 				FishX:=GetFishPos()
 				If(FishX<MaxLeftBar||FishX>MaxRightBar)
 					Goto MinigameLoop
-				Sleep CounterDifference
+				Wait(CounterDifference)
 				Stabilize(1)
 				Send {LButton up}
 				DirectionalToggle:="Right"
@@ -177,14 +177,14 @@ MinigameLoop:
 				If(DirectionalToggle=="Right"){
 					Stabilize()
 					Send {LButton up}
-					Sleep MAD
+					Wait(MAD)
 				}
-				Sleep Difference-LeftDeviation
+				Wait(Difference-LeftDeviation)
 				Send {LButton down}
 				FishX:=GetFishPos()
 				If(FishX<MaxLeftBar||FishX>MaxRightBar)
 					Goto MinigameLoop
-				Sleep CounterDifference
+				Wait(CounterDifference)
 				Stabilize(1)
 				Send {LButton down}
 				DirectionalToggle:="Left"
