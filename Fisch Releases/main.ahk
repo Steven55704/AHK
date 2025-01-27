@@ -388,7 +388,6 @@ RestartMacro:
 		DllCall("mouse_event",uint,1,int,0,int,-10000)
 		Sleep 25
 		DllCall("mouse_event",uint,1,int,0,int,30)
-		MouseMove,LookDownX,LookDownY
 		Sleep AutoLookDelay
 		Send {RButton up}
 		Sleep AutoLookDelay
