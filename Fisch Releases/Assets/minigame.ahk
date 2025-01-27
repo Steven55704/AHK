@@ -1,4 +1,4 @@
-;8
+;9
 #Include %A_MyDocuments%\Macro Settings\main.ahk
 Track:
 	If GetFishPos(){
@@ -63,36 +63,55 @@ BarMinigame:
 		PixelSearch,FishX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,FishColor,0,Fast
 		Return ErrorLevel?False:FishX
 	}
+	SeraphicTrackerV1(){
+		Global FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,FishColor,ResolutionScaling
+		OX:=25
+		OY:=65
+		PixelSearch,FishX,,FishBarLeft-OX,FishBarTop-OY,FishBarRight+OX,FishBarBottom+OY,FishColor,5,Fast
+		Return ErrorLevel?False:FishX
+	}
 	GetBarPos(){
-		Global FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,BarColor,UnstableColorX,UnstableColorY,HalfBarSize
+		Global FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,BarColor1,BarColor2,UnstableColorX,UnstableColorY,HalfBarSize,TooltipY
 		FB:=False
-		PixelSearch,TBX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,BarColor,9,Fast
+		ToolTip,,,,1
+		PixelSearch,TBX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,BarColor1,1,Fast
 		If !ErrorLevel{
-			BX:=TBX+HalfBarSize
+			BX:=TBX
 			FB:=True
+			ToolTip,1,%BX%,%TooltipY%,1
 		}
 		If !FB{
 			PixelGetColor,UC,UnstableColorX,UnstableColorY
-			PixelSearch,TBX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,UC,21,Fast
+			PixelSearch,TBX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,UC,22,Fast
 			If !ErrorLevel{
-				BX:=TBX+HalfBarSize
+				BX:=TBX
 				FB:=True
+				ToolTip,3,%BX%,%TooltipY%,1
 			}
 		}
 		If !FB{
-			PixelSearch,AX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,ArrowColor,1,Fast
+			PixelSearch,AX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,ArrowColor,3,Fast
 			If !ErrorLevel{
 				PixelGetColor,UC,AX+25,FishBarTop-5
 				If(UC=FishColor)
 					PixelGetColor,UC,AX-25,FishBarTop-5
-				PixelSearch,TBX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,UC,5,Fast
+				PixelSearch,TBX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,UC,10,Fast
 				If !ErrorLevel{
-					BX:=TBX+HalfBarSize
+					BX:=TBX
 					FB:=True
+					ToolTip,4,%BX%,%TooltipY%,1
 				}
 			}
 		}
-		Return FB?BX:False
+		If !FB{
+			PixelSearch,TBX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,BarColor2,0,Fast
+			If !ErrorLevel{
+				BX:=TBX
+				FB:=True
+				ToolTip,2,%BX%,%TooltipY%,1
+			}
+		}
+		Return FB?(BX+HalfBarSize):False
 	}
 	Stabilize(s:=0){
 		Global StabilizerLoop
@@ -109,7 +128,7 @@ BarMinigame:
 Return
 MinigameLoop:
 	Wait(1)
-	If FishX:=GetFishPos(){
+	If(FishX:=GetFishPos())||SeraphicTrackerV1(){
 		If ShakeOnly
 			Goto MinigameLoop
 		FailsInARow:=0

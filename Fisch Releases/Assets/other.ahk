@@ -1,4 +1,4 @@
-;9
+;10
 #Include %A_MyDocuments%\Macro Settings\main.ahk
 ImportMinigameConfig(name){
 	Global MGPath
@@ -105,7 +105,7 @@ SendStatus(st,info:=0){
 	}
 }
 Wait(ms){
-	DllCall("Sleep",uint,Max(.1,ms))
+	DllCall("Sleep",uint,Max(.05,ms))
 }
 CaptureScreen(path,x,y,w,h){
 	If !pT:=Gdip_Startup()
