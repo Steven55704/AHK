@@ -90,7 +90,7 @@ BarMinigame:
 			}
 		}
 		If !FB{
-			PixelSearch,AX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,ArrowColor,3,Fast
+			PixelSearch,AX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,ArrowColor,1,Fast
 			If !ErrorLevel{
 				PixelGetColor,UC,AX+25,FishBarTop-5
 				If(UC=FishColor)
