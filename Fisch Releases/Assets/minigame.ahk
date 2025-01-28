@@ -1,4 +1,4 @@
-;11
+;12
 #Include %A_MyDocuments%\Macro Settings\main.ahk
 Track:
 	If GetFishPos(){
@@ -55,6 +55,7 @@ BarMinigame:
 	DirectionalToggle:=""
 	MaxLeftToggle:=False
 	MaxRightToggle:=False
+	UsingSeraphic:=False
 	ProgressX:=0
 	MaxLeftBar:=FishBarLeft+WhiteBarSize*SideBarRatio
 	MaxRightBar:=FishBarRight-WhiteBarSize*SideBarRatio
@@ -65,31 +66,29 @@ BarMinigame:
 	}
 	SeraphicTrackerV1(){
 		Global FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,FishColor,ResolutionScaling
-		OX:=25
-		OY:=65
+		OX:=20
+		OY:=70
 		PixelSearch,FishX,,FishBarLeft-OX,FishBarTop-OY,FishBarRight+OX,FishBarBottom+OY,FishColor,5,Fast
 		Return !ErrorLevel
 	}
 	GetBarPos(){
-		Global FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,BarColor1,BarColor2,HalfBarSize,TooltipY
+		Global FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,BarColor1,BarColor2,HalfBarSize
 		FB:=False
-		ToolTip,,,,1
 		PixelSearch,TBX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,BarColor1,0,Fast
 		If !ErrorLevel
 			Return TBX+HalfBarSize
 		Else{
-			PixelSearch,TBX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,BarColor2,2,Fast
+			PixelSearch,TBX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,BarColor2,0,Fast
 			If !ErrorLevel
 				Return TBX+HalfBarSize
 		}
 		If !FB{
 			PixelSearch,AX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,ArrowColor,5,Fast
 			If !ErrorLevel{
-				ToolTip,3.1,%BX%,%TooltipY%,1
 				PixelGetColor,UC,AX+25,FishBarTop-5
 				If(UC=FishColor)
 					PixelGetColor,UC,AX-25,FishBarTop-5
-				PixelSearch,TBX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,UC,5,Fast
+				PixelSearch,TBX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,UC,0,Fast
 				If !ErrorLevel
 					Return TBX+HalfBarSize
 			}
@@ -112,14 +111,19 @@ BarMinigame:
 Return
 MinigameLoop:
 	Wait(1)
-	Seraphic:=SeraphicTrackerV1()
-	If(FishX:=GetFishPos())||Seraphic{
+	If !FishX:=GetFishPos(){
+		Seraphic:=SeraphicTrackerV1()
+		UsingSeraphic:=UsingSeraphic||Seraphic
+	}
+	If FishX||Seraphic{
 		If ShakeOnly
 			Goto MinigameLoop
 		FailsInARow:=0
 		Stabilize(1)
 		Stabilize()
 		If(FishX<MaxLeftBar){
+			If UsingSeraphic
+				Send {LButton up}
 			If !MaxLeftToggle{
 				DirectionalToggle:="Right"
 				MaxLeftToggle:=True
@@ -132,6 +136,8 @@ MinigameLoop:
 			}
 			Goto MinigameLoop
 		}Else If(FishX>MaxRightBar){
+			If UsingSeraphic
+				Send {LButton down}
 			If !MaxRightToggle{
 				DirectionalToggle:="Left"
 				MaxRightToggle:=True
@@ -197,7 +203,6 @@ MinigameLoop:
 			Stabilize(1)
 		Goto MinigameLoop
 	}Else{
-		ToolTip,,,,1
 		Duration:=(A_TickCount-MinigameStart)/1000
 		WasFishCaught:=ProgressX>CatchCheck
 		SetTimer,Track,Off
