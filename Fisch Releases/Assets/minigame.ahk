@@ -1,4 +1,4 @@
-;10
+;11
 #Include %A_MyDocuments%\Macro Settings\main.ahk
 Track:
 	If GetFishPos(){
@@ -13,7 +13,7 @@ Track:
 	}
 Return
 BarMinigame:
-	Sleep 1000
+	Sleep 700
 	If AutoBlurMinigame
 		Send m
 	ForceReset:=False
@@ -55,7 +55,6 @@ BarMinigame:
 	DirectionalToggle:=""
 	MaxLeftToggle:=False
 	MaxRightToggle:=False
-	PrevX:=0
 	ProgressX:=0
 	MaxLeftBar:=FishBarLeft+WhiteBarSize*SideBarRatio
 	MaxRightBar:=FishBarRight-WhiteBarSize*SideBarRatio
@@ -72,14 +71,16 @@ BarMinigame:
 		Return !ErrorLevel
 	}
 	GetBarPos(){
-		Global FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,BarColor1,BarColor2,UnstableColorX,UnstableColorY,HalfBarSize,TooltipY
+		Global FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,BarColor1,BarColor2,HalfBarSize,TooltipY
 		FB:=False
 		ToolTip,,,,1
 		PixelSearch,TBX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,BarColor1,0,Fast
-		If !ErrorLevel&&PrevX!=TBX{
-			BX:=TBX+HalfBarSize
-			FB:=True
-			ToolTip,1,%BX%,%TooltipY%,1
+		If !ErrorLevel
+			Return TBX+HalfBarSize
+		Else{
+			PixelSearch,TBX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,BarColor2,2,Fast
+			If !ErrorLevel
+				Return TBX+HalfBarSize
 		}
 		If !FB{
 			PixelSearch,AX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,ArrowColor,5,Fast
@@ -88,32 +89,21 @@ BarMinigame:
 				PixelGetColor,UC,AX+25,FishBarTop-5
 				If(UC=FishColor)
 					PixelGetColor,UC,AX-25,FishBarTop-5
-				PixelSearch,TBX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,UC,10,Fast
-				If !ErrorLevel&&PrevX!=TBX{
-					BX:=TBX+HalfBarSize
-					FB:=True
-					ToolTip,3.2,%BX%,%TooltipY%,1
-				}
+				PixelSearch,TBX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,UC,5,Fast
+				If !ErrorLevel
+					Return TBX+HalfBarSize
 			}
 		}
-		If !FB{
-			PixelSearch,TBX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,BarColor2,5,Fast
-			If !ErrorLevel{
-				BX:=TBX+HalfBarSize
-				FB:=True
-				ToolTip,2,%BX%,%TooltipY%,1
-			}
-		}
-		PrevX:=BX
-		Return FB?BX:False
 	}
 	Stabilize(s:=0){
 		Global StabilizerLoop
 		Loop,StabilizerLoop{
 			Send {LButton up}
 			If s
-				Wait(1)
+				Wait(5)
 			Send {LButton down}
+			If s
+				Wait(5)
 		}
 	}
 	MinigameStart:=A_TickCount
@@ -129,9 +119,8 @@ MinigameLoop:
 		FailsInARow:=0
 		Stabilize(1)
 		Stabilize()
-		BarX:=GetBarPos()
 		If(FishX<MaxLeftBar){
-			If !MaxLeftToggle||(BarX<=MaxLeftBar){
+			If !MaxLeftToggle{
 				DirectionalToggle:="Right"
 				MaxLeftToggle:=True
 				Send {LButton up}
@@ -143,7 +132,7 @@ MinigameLoop:
 			}
 			Goto MinigameLoop
 		}Else If(FishX>MaxRightBar){
-			If !MaxRightToggle||(BarX>=MaxRightBar){
+			If !MaxRightToggle{
 				DirectionalToggle:="Left"
 				MaxRightToggle:=True
 				Send {LButton down}
