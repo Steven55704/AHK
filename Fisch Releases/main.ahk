@@ -28,7 +28,7 @@ CoordMode,Pixel,Relative
 CoordMode,Mouse,Relative
 #Include %A_MyDocuments%\Macro Settings\Lib
 #Include Gdip_All.ahk
-BuildNum:=20
+BuildNum:=21
 GuiTitle=Fisch V1.4.%BuildNum% by 0x3b5
 DirPath:=A_MyDocuments "\Macro Settings"
 LibPath:=DirPath "\Lib"
@@ -380,15 +380,15 @@ RestartMacro:
 	If AutoLookDownCamera{
 		UpdateTask("Current Task: Look Down")
 		Send {RButton up}
-		Sleep AutoLookDelay
-		MouseMove,LookDownX,LookDownY
-		Sleep AutoLookDelay
-		Send {RButton down}
-		Sleep AutoLookDelay
-		DllCall("mouse_event",uint,1,int,0,int,-2500)
-		Sleep AutoLookDelay
-		Send {RButton up}
-		Sleep AutoLookDelay
+		Loop,5{
+			MouseMove,LookDownX,LookDownY
+			Sleep AutoLookDelay
+			Send {RButton down}
+			DllCall("mouse_event",uint,1,int,0,int,-300)
+			Sleep AutoLookDelay
+			Send {RButton up}
+			Sleep AutoLookDelay
+		}
 		MouseMove,LookDownX,LookDownY
 		Sleep AutoLookDelay
 	}
