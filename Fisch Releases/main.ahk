@@ -28,7 +28,7 @@ CoordMode,Pixel,Relative
 CoordMode,Mouse,Relative
 #Include %A_MyDocuments%\Macro Settings\Lib
 #Include Gdip_All.ahk
-BuildNum:=19
+BuildNum:=20
 GuiTitle=Fisch V1.4.%BuildNum% by 0x3b5
 DirPath:=A_MyDocuments "\Macro Settings"
 LibPath:=DirPath "\Lib"
@@ -129,7 +129,7 @@ RepeatBypassLimit:=10
 BarColor1:=0xFFFFFF
 BarColor2:=0xF1F1F1
 BarCalcColor:=0xF0F0F0
-ArrowColor:=0x868483
+ArrowColor:=0x878584
 FishColor:=0x5B4B43
 ManualBarSize:=0
 Test1:=0
@@ -385,9 +385,7 @@ RestartMacro:
 		Sleep AutoLookDelay
 		Send {RButton down}
 		Sleep AutoLookDelay
-		DllCall("mouse_event",uint,1,int,0,int,-10000)
-		Sleep 25
-		DllCall("mouse_event",uint,1,int,0,int,30)
+		DllCall("mouse_event",uint,1,int,0,int,-2500)
 		Sleep AutoLookDelay
 		Send {RButton up}
 		Sleep AutoLookDelay
