@@ -1,4 +1,4 @@
-;9
+;10
 #Include %A_MyDocuments%\Macro Settings\main.ahk
 Track:
 	If GetFishPos(){
@@ -55,6 +55,7 @@ BarMinigame:
 	DirectionalToggle:=""
 	MaxLeftToggle:=False
 	MaxRightToggle:=False
+	PrevX:=0
 	ProgressX:=0
 	MaxLeftBar:=FishBarLeft+WhiteBarSize*SideBarRatio
 	MaxRightBar:=FishBarRight-WhiteBarSize*SideBarRatio
@@ -68,50 +69,43 @@ BarMinigame:
 		OX:=25
 		OY:=65
 		PixelSearch,FishX,,FishBarLeft-OX,FishBarTop-OY,FishBarRight+OX,FishBarBottom+OY,FishColor,5,Fast
-		Return ErrorLevel?False:FishX
+		Return !ErrorLevel
 	}
 	GetBarPos(){
 		Global FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,BarColor1,BarColor2,UnstableColorX,UnstableColorY,HalfBarSize,TooltipY
 		FB:=False
 		ToolTip,,,,1
-		PixelSearch,TBX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,BarColor1,1,Fast
-		If !ErrorLevel{
-			BX:=TBX
+		PixelSearch,TBX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,BarColor1,0,Fast
+		If !ErrorLevel&&PrevX!=TBX{
+			BX:=TBX+HalfBarSize
 			FB:=True
 			ToolTip,1,%BX%,%TooltipY%,1
 		}
 		If !FB{
-			PixelGetColor,UC,UnstableColorX,UnstableColorY
-			PixelSearch,TBX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,UC,22,Fast
+			PixelSearch,AX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,ArrowColor,5,Fast
 			If !ErrorLevel{
-				BX:=TBX
-				FB:=True
-				ToolTip,3,%BX%,%TooltipY%,1
-			}
-		}
-		If !FB{
-			PixelSearch,AX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,ArrowColor,1,Fast
-			If !ErrorLevel{
+				ToolTip,3.1,%BX%,%TooltipY%,1
 				PixelGetColor,UC,AX+25,FishBarTop-5
 				If(UC=FishColor)
 					PixelGetColor,UC,AX-25,FishBarTop-5
 				PixelSearch,TBX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,UC,10,Fast
-				If !ErrorLevel{
-					BX:=TBX
+				If !ErrorLevel&&PrevX!=TBX{
+					BX:=TBX+HalfBarSize
 					FB:=True
-					ToolTip,4,%BX%,%TooltipY%,1
+					ToolTip,3.2,%BX%,%TooltipY%,1
 				}
 			}
 		}
 		If !FB{
-			PixelSearch,TBX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,BarColor2,0,Fast
+			PixelSearch,TBX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,BarColor2,5,Fast
 			If !ErrorLevel{
-				BX:=TBX
+				BX:=TBX+HalfBarSize
 				FB:=True
 				ToolTip,2,%BX%,%TooltipY%,1
 			}
 		}
-		Return FB?(BX+HalfBarSize):False
+		PrevX:=BX
+		Return FB?BX:False
 	}
 	Stabilize(s:=0){
 		Global StabilizerLoop
@@ -128,14 +122,16 @@ BarMinigame:
 Return
 MinigameLoop:
 	Wait(1)
-	If(FishX:=GetFishPos())||SeraphicTrackerV1(){
+	Seraphic:=SeraphicTrackerV1()
+	If(FishX:=GetFishPos())||Seraphic{
 		If ShakeOnly
 			Goto MinigameLoop
 		FailsInARow:=0
 		Stabilize(1)
 		Stabilize()
+		BarX:=GetBarPos()
 		If(FishX<MaxLeftBar){
-			If !MaxLeftToggle{
+			If !MaxLeftToggle||(BarX<=MaxLeftBar){
 				DirectionalToggle:="Right"
 				MaxLeftToggle:=True
 				Send {LButton up}
@@ -147,7 +143,7 @@ MinigameLoop:
 			}
 			Goto MinigameLoop
 		}Else If(FishX>MaxRightBar){
-			If !MaxRightToggle{
+			If !MaxRightToggle||(BarX>=MaxRightBar){
 				DirectionalToggle:="Left"
 				MaxRightToggle:=True
 				Send {LButton down}
@@ -208,9 +204,11 @@ MinigameLoop:
 				Send {LButton down}
 				DirectionalToggle:="Left"
 			}
-		}
+		}Else If Seraphic
+			Stabilize(1)
 		Goto MinigameLoop
 	}Else{
+		ToolTip,,,,1
 		Duration:=(A_TickCount-MinigameStart)/1000
 		WasFishCaught:=ProgressX>CatchCheck
 		SetTimer,Track,Off
