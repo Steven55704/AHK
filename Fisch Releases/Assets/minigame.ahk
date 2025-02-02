@@ -1,12 +1,12 @@
-;12
+;13
 #Include %A_MyDocuments%\Macro Settings\main.ahk
 Track:
 	If GetFishPos(){
-		PixelSearch,x,,ProgBarRight,ProgBarTop,ProgBarLeft,ProgBarBottom,0xFFFFFF,3,Fast
+		PixelSearch,x,,ProgBarRight,ProgBarTop,ProgBarLeft,ProgBarBottom,0xFFFFFF,2,Fast
 		If !ErrorLevel
 			ProgressX:=x
 		Else{
-			PixelSearch,x,,ProgBarRight,ProgBarTop,ProgBarLeft,ProgBarBottom,0x9F9F9F,3,Fast
+			PixelSearch,x,,ProgBarRight,ProgBarTop,ProgBarLeft,ProgBarBottom,0x9F9F9F,2,Fast
 			If !ErrorLevel
 				ProgressX:=x
 		}
@@ -55,20 +55,19 @@ BarMinigame:
 	DirectionalToggle:=""
 	MaxLeftToggle:=False
 	MaxRightToggle:=False
-	UsingSeraphic:=False
 	ProgressX:=0
 	MaxLeftBar:=FishBarLeft+WhiteBarSize*SideBarRatio
 	MaxRightBar:=FishBarRight-WhiteBarSize*SideBarRatio
 	GetFishPos(){
-		Global FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,FishColor,ResolutionScaling
+		Global FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,FishColor
 		PixelSearch,FishX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,FishColor,0,Fast
 		Return ErrorLevel?False:FishX
 	}
 	SeraphicTrackerV1(){
-		Global FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,FishColor,ResolutionScaling
-		OX:=20
-		OY:=70
-		PixelSearch,FishX,,FishBarLeft-OX,FishBarTop-OY,FishBarRight+OX,FishBarBottom+OY,FishColor,5,Fast
+		Global FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,FishColor
+		OX:=10
+		OY:=50
+		PixelSearch,FishX,,FishBarLeft-OX,FishBarTop-OY,FishBarRight+OX,FishBarBottom+OY,FishColor,3,Fast
 		Return !ErrorLevel
 	}
 	GetBarPos(){
@@ -113,7 +112,8 @@ MinigameLoop:
 	Wait(1)
 	If !FishX:=GetFishPos(){
 		Seraphic:=SeraphicTrackerV1()
-		UsingSeraphic:=UsingSeraphic||Seraphic
+		MaxLeftToggle:=False
+		MaxRightToggle:=False
 	}
 	If FishX||Seraphic{
 		If ShakeOnly
@@ -122,8 +122,6 @@ MinigameLoop:
 		Stabilize(1)
 		Stabilize()
 		If(FishX<MaxLeftBar){
-			If UsingSeraphic
-				Send {LButton up}
 			If !MaxLeftToggle{
 				DirectionalToggle:="Right"
 				MaxLeftToggle:=True
@@ -136,8 +134,6 @@ MinigameLoop:
 			}
 			Goto MinigameLoop
 		}Else If(FishX>MaxRightBar){
-			If UsingSeraphic
-				Send {LButton down}
 			If !MaxRightToggle{
 				DirectionalToggle:="Left"
 				MaxRightToggle:=True
