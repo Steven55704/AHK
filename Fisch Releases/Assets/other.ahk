@@ -1,4 +1,4 @@
-;10
+;11
 #Include %A_MyDocuments%\Macro Settings\main.ahk
 ImportMinigameConfig(name){
 	Global MGPath
@@ -53,14 +53,37 @@ AskUser(a,b){
 Chkd(b){
 	Return b?"Checked":""
 }
+getCameraState(){
+	EnvGet,LAD,LocalAppData
+	logPath:=LAD "\Roblox\logs"
+	t:=0
+	file:=""
+	Loop,%logPath%\*.log{
+		If((ct:=A_LoopFileTimeModified)>=t){
+			t:=ct
+			file:=A_LoopFileFullPath
+		}
+	}
+	FileRead,state,%file%
+	state:=SubStr(state,InStr(state,"setting cinematic mode to ",False,0),32)
+	Return InStr(state,"true")
+}
 CameraMode(t){
-	Global AutoCameraDelay,CameraCheckLeft,CameraCheckTop,CameraCheckRight,CameraCheckBottom,CameraModeX,CameraModeY
+	Global AutoCameraDelay,CameraModeX,CameraModeY
 	Sleep AutoCameraDelay
-	PixelSearch,,,CameraCheckLeft,CameraCheckTop,CameraCheckRight,CameraCheckBottom,0xFFFFFF,0,Fast
-	If !ErrorLevel=t
+	If getCameraState()!=t
 		Click %CameraModeX%,%CameraModeY%
 	Sleep AutoCameraDelay
 }
+;leaving this here incase they remove the debugger
+;CameraMode(t){
+;	Global AutoCameraDelay,CameraCheckLeft,CameraCheckTop,CameraCheckRight,CameraCheckBottom,CameraModeX,CameraModeY
+;	Sleep AutoCameraDelay
+;	PixelSearch,,,CameraCheckLeft,CameraCheckTop,CameraCheckRight,CameraCheckBottom,0xFFFFFF,0,Fast
+;	If !ErrorLevel=t
+;		Click %CameraModeX%,%CameraModeY%
+;	Sleep AutoCameraDelay
+;}
 FetchInstructions(){
 	req:=ComObjCreate("WinHttp.WinHttpRequest.5.1")
 	req.Open("GET","https://raw.githubusercontent.com/LopenaFollower/JavaScript/refs/heads/main/instructions.txt",1)

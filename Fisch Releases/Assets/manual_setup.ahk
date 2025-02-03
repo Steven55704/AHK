@@ -83,8 +83,6 @@ Calculations:
 	CShakeTop:=WH/14.08
 	CShakeBottom:=WH/1.3409
 	ResolutionScaling:=2560/WW
-	UnstableColorX:=WW/3.463
-	UnstableColorY:=WH/1.168
 	LookDownX:=WW/2
 	LookDownY:=WH/2
 	ToolTipY:=WH/1.0626

@@ -1,4 +1,4 @@
-;13
+;14
 #Include %A_MyDocuments%\Macro Settings\main.ahk
 Track:
 	If GetFishPos(){
@@ -93,19 +93,19 @@ BarMinigame:
 			}
 		}
 	}
-	Stabilize(s:=0){
+	Stabilize(s:=0,w:=5){
 		Global StabilizerLoop
 		Loop,StabilizerLoop{
 			Send {LButton up}
 			If s
-				Wait(5)
+				Wait(w)
 			Send {LButton down}
 			If s
-				Wait(5)
+				Wait(w)
 		}
 	}
 	MinigameStart:=A_TickCount
-	SetTimer,Track,75
+	SetTimer,Track,100
 	Goto MinigameLoop
 Return
 MinigameLoop:
@@ -119,7 +119,7 @@ MinigameLoop:
 		If ShakeOnly
 			Goto MinigameLoop
 		FailsInARow:=0
-		Stabilize(1)
+		Stabilize(1,25)
 		Stabilize()
 		If(FishX<MaxLeftBar){
 			If !MaxLeftToggle{
@@ -268,7 +268,7 @@ SellFish:
 	MouseMove,SellPosX,SellPosY
 	Sleep 100
 	Click %SellPosX%,%SellPosY%
-	Sleep 1500
+	Sleep 1200
 	Send {``}
 	Loop{
 		PixelSearch,,,SellProfitLeft,SellProfitTop,SellProfitRight,SellProfitBottom,0x49D164,12,Fast
