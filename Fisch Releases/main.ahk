@@ -28,7 +28,7 @@ CoordMode,Pixel,Relative
 CoordMode,Mouse,Relative
 #Include %A_MyDocuments%\Macro Settings\Lib
 #Include Gdip_All.ahk
-BuildNum:=21
+BuildNum:=22
 GuiTitle=Fisch V1.4.%BuildNum% by 0x3b5
 DirPath:=A_MyDocuments "\Macro Settings"
 LibPath:=DirPath "\Lib"
@@ -48,7 +48,7 @@ If !FileExist(LibPath)
 If !FileExist(MGPath)
 	FileCreateDir,%MGPath%
 If !FileExist(DefMGPath)
-	FileAppend,[Values]`nStabilizerLoop=20`nSideBarRatio=0.8`nSideBarWait=1.72`nRightMult=2.6329`nRightDiv=1.8961`nRightAnkleMult=1.36`nLeftMult=2.9892`nLeftDiv=4.6235`nCoefficient=1.97109`nExponent=0.810929,%DefMGPath%
+	FileAppend,[Values]`nStabilizerLoop=20`nSideBarRatio=0.75`nSideBarWait=1.42`nRightMult=2.6414`nRightDiv=1.8961`nRightAnkleMult=1.274`nLeftMult=2.9892`nLeftDiv=4.6235`nCoefficient=1.97109`nExponent=0.810929,%DefMGPath%
 If !FileExist(VersionPath)
 	FileAppend,1.4 %BuildNum%,%VersionPath%
 IniRead,curVer,%SettingsPath%,.,v
