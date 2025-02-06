@@ -6,9 +6,10 @@
 #HotkeyInterval 1
 SetWinDelay,-1
 If !(A_IsUnicode=1&&A_PtrSize=4){
-	SplitPath,A_AhkPath,,dir
-	Run,%dir%\AutoHotkeyU32.exe "%A_ScriptFullPath%" 
-	ExitApp
+	msgbox if you get this, lmk if anything breaks later on
+	;SplitPath,A_AhkPath,,dir
+	;Run,%dir%\AutoHotkeyU32.exe "%A_ScriptFullPath%" 
+	;ExitApp
 }
 WinActivate,Roblox
 If WinActive("Roblox"){
@@ -28,7 +29,7 @@ CoordMode,Pixel,Relative
 CoordMode,Mouse,Relative
 #Include %A_MyDocuments%\Macro Settings\Lib
 #Include Gdip_All.ahk
-BuildNum:=22
+BuildNum:=23
 GuiTitle=Fisch V1.4.%BuildNum% by 0x3b5
 DirPath:=A_MyDocuments "\Macro Settings"
 LibPath:=DirPath "\Lib"
@@ -94,6 +95,9 @@ ReadGen(GuiAlwaysOnTop,"AlwaysOnTop")
 ReadGen(AutoSell,"AutoSell")
 ReadGen(AutoSellInterval,"AutoSellInterval")
 ReadGen(SendSellProfit,"SendSellProfit")
+ReadGen(SendFishScreenshot,"SendFishScreenshot")
+ReadGen(SendFishWhenTimeOn,"SendFishWhenTimeOn")
+ReadGen(SendFishWhenTimeValue,"SendFishWhenTimeValue")
 AutoGraphicsDelay:=50
 AutoZoomDelay:=40
 AutoCameraDelay:=25
@@ -196,6 +200,9 @@ DefaultSettings:
 	RtrvGen("AutoSell",0)
 	RtrvGen("AutoSellInterval",25)
 	RtrvGen("SendSellProfit",0)
+	RtrvGen("SendFishScreenshot",1)
+	RtrvGen("SendFishWhenTimeValue",50)
+	RtrvGen("SendFishWhenTimeOn",0)
 Return
 SaveSettings:
 	WriteGen("ShakeMode",ShakeMode)
@@ -235,6 +242,9 @@ SaveSettings:
 	WriteGen("AutoSell",AutoSell)
 	WriteGen("AutoSellInterval",AutoSellInterval)
 	WriteGen("SendSellProfit",SendSellProfit)
+	WriteGen("SendFishScreenshot",SendFishScreenshot)
+	WriteGen("SendFishWhenTimeOn",SendFishWhenTimeOn)
+	WriteGen("SendFishWhenTimeValue",SendFishWhenTimeValue)
 Return
 GuiRuntime:
 	runtime1++
