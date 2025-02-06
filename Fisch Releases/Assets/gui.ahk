@@ -1,4 +1,4 @@
-;11
+;12
 #Include %A_MyDocuments%\Macro Settings\main.ahk
 InitGui:
 	If !FileExist(LogoPath)
@@ -101,6 +101,11 @@ InitGui:
 	Gui Add,Text,x218 y87 w40 h13,catches.
 	SSP:=Chkd(SendSellProfit)
 	Gui Add,CheckBox,vCBSP gSubAll x129 y104 w154 h14 %SSP%,Send Sell Profits (Gamepass)
+	SFS:=Chkd(SendFishScreenshot),SFWT:=Chkd(SendFishWhenTimeOn)
+	Gui Add,CheckBox,vCBFSS gSubAll x129 y120 w174 h14 %SFS%,Send Fish Screenshot On Catch
+	Gui Add,CheckBox,vCBFTSO gSubAll x129 y136 h14 %SFWT%,Only Send If Catch Time < 
+	Gui Add,Edit,vCBFTSV gSubAll x275 y136 w26 h18 Number,%SendFishWhenTimeValue%
+	Gui Add,Text,x305 y139,Seconds
 	Gui Tab,4
 	cnfgoptions:=ScanForConfigs(curMGFile)
 	Gui Add,DropDownList,vMGCF gMGCCF x2 y24 w100,% cnfgoptions[1]
@@ -198,6 +203,7 @@ InitGui:
 	Gui Add,Text,x6 y+4 w257 h14,Image webhook provided by @lunarosity, embed by me.
 	Gui Add,Text,x6 y+4 w257 h14,Themes and Lvl checker provided by @toxgt
 	Gui Add,Text,x6 y+4 w257 h14,Accurate Camera mode by @b0red_man
+	Gui Add,Text,x6 y+4 w257 h14,Fish image webhook by @b0red_man
 	Gui Add,Text,x6 y+4 w257 h14,Logo design by @grubrescue
 	Gui Add,Link,x6 y+4 w252 h14,Check out my <a href="https://github.com/LopenaFollower">GitHub</a> and <a href="https://discord.gg/Fh5rmgg27X">Discord Server</a>
 	Gui Show,w450 h175,%GuiTitle%
@@ -341,6 +347,9 @@ InitGui:
 		AutoSell:=CBGS
 		SendSellProfit:=CBSP
 		AutoSellInterval:=ASIG
+		SendFishScreenshot:=CBFSS
+		SendFishWhenTimeOn:=CBFTSO
+		SendFishWhenTimeValue:=CBFTSV
 		If Trim(DDBN)!=""
 			Gosub SelectBound
 		If CBCF

@@ -1,4 +1,4 @@
-;14
+;15
 #Include %A_MyDocuments%\Macro Settings\main.ahk
 Track:
 	If GetFishPos(){
@@ -216,7 +216,8 @@ MinigameLoop:
 				caught:=WasFishCaught?"Fish took "dur "s to catch.":"Spent "dur "s trying to catch the fish."
 				CS2DC(0,0,A_ScreenWidth,A_ScreenHeight,"{""embeds"":[{""image"":{""url"":""attachment://screenshot.png""},""color"":15258703,""fields"":[{""name"":""Catch Rate"",""value"":"""ratio """},{""name"":""Fish was "(WasFishCaught?"Caught!":"Lost.") """,""value"":"""caught """},{""name"":""Runtime"",""value"": """GetTime(runtime2) """}],""footer"":{""text"":"""ct """}}]}")
 			}Else If(Mod(CatchCount,NotifEveryN)=0)
-				SendStatus(3,[FishCaught,FishLost,Duration,WasFishCaught])
+				If((!SendFishWhenTimeOn)||(SendFishWhenTimeOn&&Duration>=SendFishWhenTimeValue))
+					SendStatus(3,[FishCaught,FishLost,Duration,WasFishCaught])
 			If(LvlUpMode!="Off"&&Mod(CatchCount,CheckLvlEveryN)=0)
 				Gosub CheckStatistics
 		}
