@@ -1,4 +1,4 @@
-;12
+;13
 #Include %A_MyDocuments%\Macro Settings\main.ahk
 InitGui:
 	If !FileExist(LogoPath)
@@ -102,10 +102,12 @@ InitGui:
 	SSP:=Chkd(SendSellProfit)
 	Gui Add,CheckBox,vCBSP gSubAll x129 y104 w154 h14 %SSP%,Send Sell Profits (Gamepass)
 	SFS:=Chkd(SendFishScreenshot),SFWT:=Chkd(SendFishWhenTimeOn)
-	Gui Add,CheckBox,vCBFSS gSubAll x129 y120 w174 h14 %SFS%,Send Fish Screenshot On Catch
-	Gui Add,CheckBox,vCBFTSO gSubAll x129 y136 h14 %SFWT%,Only Send If Catch Time < 
-	Gui Add,Edit,vCBFTSV gSubAll x275 y136 w26 h18 Number,%SendFishWhenTimeValue%
-	Gui Add,Text,x305 y139,Seconds
+	Gui Add,CheckBox,vCBFSS gSubAll x129 y120 w174 h14 %SFS%,Send Fish Screenshot on Catch
+	Gui Add,Text,x129 y138,% "Screenshot Delay:"
+	Gui Add,Edit,gSubAll vSSD x219 y136 w40 h18 Number,%ScreenshotDelay%
+	Gui Add,CheckBox,vCBFTSO gSubAll x129 y155 h14 %SFWT%,Only Send if Catch Time < 
+	Gui Add,Edit,vCBFTSV gSubAll x275 y153 w26 h18 Number,%SendFishWhenTimeValue%
+	Gui Add,Text,x305 y155,seconds
 	Gui Tab,4
 	cnfgoptions:=ScanForConfigs(curMGFile)
 	Gui Add,DropDownList,vMGCF gMGCCF x2 y24 w100,% cnfgoptions[1]
@@ -137,7 +139,7 @@ InitGui:
 	Gui Add,Text,x128 y98 w62 h14,Sidebar Wait
 	Gui Add,Text,x128 y118 w82 h14,Scale Coeff
 	Gui Add,Text,x128 y138 w82 h14,Scale Exp
-	Gui Add,Edit,vMGSL x198 y56 w52 h17 gNumberEdit,%StabilizerLoop%
+	Gui Add,Edit,vMGSL x198 y56 w52 h17 Number,%StabilizerLoop%
 	Gui Add,Edit,vMGSR x198 y76 w52 h17 gNumberEdit,%SideBarRatio%
 	Gui Add,Edit,vMGSW x198 y96 w52 h17 gNumberEdit,%SideBarWait%
 	Gui Add,Edit,vMGCO x198 y116 w52 h17 gNumberEdit,%Coefficient%
@@ -160,7 +162,7 @@ InitGui:
 	Loop,%SkinsPath%\*.she
 		GuiControl,,DDSL,% A_LoopFileName
 	UAS:=Chkd(AutoSell)
-	Gui Add,CheckBox,vCBGS gSubAll x5 y64 w120 h13 %UAS%,Auto Sell (Gamepass)
+	Gui Add,CheckBox,vCBGS gSubAll x5 y64 w125 h13 %UAS%,Auto Sell (Gamepass)
 	Gui Add,Edit,vASIG gSubAll x60 y78 w28 h18,%AutoSellInterval%
 	Gui Add,Text,x4 y79 w56 h18,Sell Interval
 	Gui Add,GroupBox,x302 y22 w146 h154,What is this for?
@@ -184,10 +186,10 @@ InitGui:
 	Gui Font
 	Gui Add,Text,x275 y37 w68 h14,Select Bound:
 	Gui Add,ComboBox,vDDBN gSubAll x276 y51 w119,CameraCheck|FishBar|ProgBar|LvlCheck|SellProfit|CameraMode|SellButton
-	Gui Add,Text,x275 y75 w37 h23,X (Left):
+	Gui Add,Text,x275 y75 w39 h23,X (Left):
 	Gui Add,Edit,x312 y75 w46 h18 gApplyBnd vBNX
 	Gui Add,UpDown,x341 y75 w18 h18 +0x80 Range-10000-10000 gApplyBnd vUDX
-	Gui Add,Text,x361 y75 w38 h23,Y (Top):
+	Gui Add,Text,x361 y75 w39 h23,Y (Top):
 	Gui Add,Edit,x399 y75 w46 h18 gApplyBnd vBNY
 	Gui Add,UpDown,x428 y75 w18 h18 +0x80 Range-10000-10000 gApplyBnd vUDY
 	Gui Add,Text,x275 y96 w37 h23,Width:
@@ -348,6 +350,7 @@ InitGui:
 		SendSellProfit:=CBSP
 		AutoSellInterval:=ASIG
 		SendFishScreenshot:=CBFSS
+		ScreenshotDelay:=SSD
 		SendFishWhenTimeOn:=CBFTSO
 		SendFishWhenTimeValue:=CBFTSV
 		If Trim(DDBN)!=""
