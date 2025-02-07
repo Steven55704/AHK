@@ -1,4 +1,4 @@
-;10
+;11
 #Include %A_MyDocuments%\Macro Settings\main.ahk
 CreateBound(n,x1,y1,x2,y2){
 	colors:={CameraCheck:"Yellow",FishBar:"Lime",ProgBar:"Red",LvlCheck:"Blue",SellProfit:"Aqua",CameraMode:"Fuchsia",SellButton:"Navy"}
@@ -32,16 +32,16 @@ Calculations:
 	If msng{
 		WriteBnd("Left",0.2981543095*WW,"FishBar")
 		WriteBnd("Right",0.7018456905*WW,"FishBar")
-		WriteBnd("Top",WH//1.172,"FishBar")
-		WriteBnd("Bottom",WH//1.16,"FishBar")
+		WriteBnd("Top",0.882456064*WH+8.817548288,"FishBar")
+		WriteBnd("Bottom",0.925090417*WH-6.655244186,"FishBar")
 	}
 	ReadBnd(tmp,"Top","ProgBar")
 	msng:=!tmp
 	If msng{
 		WriteBnd("Left",0.391298225298586024*WW,"ProgBar")
 		WriteBnd("Right",0.608701774701413976*WW,"ProgBar")
-		WriteBnd("Top",WH//1.1,"ProgBar")
-		WriteBnd("Bottom",WH//1.0965,"ProgBar")
+		WriteBnd("Top",0.9890419465*WH-31.364432897,"ProgBar")
+		WriteBnd("Bottom",1.000522078523626678*WH-36.030280554370347324,"ProgBar")
 	}
 	ReadBnd(tmp,"Top","LvlCheck")
 	msng:=!tmp
