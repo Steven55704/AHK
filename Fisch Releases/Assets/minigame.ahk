@@ -1,4 +1,4 @@
-;16
+;17
 #Include ..\main.ahk
 Track:
 	If GetFishPos(){
@@ -71,7 +71,7 @@ BarMinigame:
 		Return !ErrorLevel
 	}
 	GetBarPos(){
-		Global FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,BarColor1,BarColor2,HalfBarSize
+		Global FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,BarColor1,BarColor2,ArrowColor,HalfBarSize
 		FB:=False
 		PixelSearch,TBX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,BarColor1,0,Fast
 		If !ErrorLevel
