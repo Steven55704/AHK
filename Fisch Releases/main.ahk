@@ -29,7 +29,7 @@ CoordMode,Pixel,Relative
 CoordMode,Mouse,Relative
 #Include %A_MyDocuments%\Macro Settings\Lib
 #Include Gdip_All.ahk
-BuildNum:=26
+BuildNum:=25
 GuiTitle=Fisch V1.4.%BuildNum% by 0x3b5
 DirPath:=A_MyDocuments "\Macro Settings"
 LibPath:=DirPath "\Lib"
@@ -497,6 +497,6 @@ backUp:
 	Click 0,500
 	Sleep 4000
 Return
-#Include other.ahk
 #Include gui.ahk
+#Include other.ahk
 #Include manual_setup.ahk
