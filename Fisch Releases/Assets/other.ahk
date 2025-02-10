@@ -1,5 +1,5 @@
-;13
-#Include %A_MyDocuments%\Macro Settings\main.ahk
+;14
+#Include ..\main.ahk
 ImportMinigameConfig(name){
 	Global MGPath
 	path:=MGPath "\" name
@@ -50,6 +50,10 @@ AskUser(a,b){
 	Gui +OwnDialogs
 	MsgBox,4,%a%,%b%
 }
+ErrorMsg(t,m){
+	Gui +OwnDialogs
+	MsgBox,16,%t%,%m%
+}
 Chkd(b){
 	Return b?"Checked":""
 }
@@ -86,6 +90,8 @@ CameraMode(t){
 ;}
 FetchInstructions(){
 	req:=ComObjCreate("WinHttp.WinHttpRequest.5.1")
+	req.Option(9):=2048
+	req.SetTimeouts(5000,5000,10000,10000)
 	req.Open("GET","https://raw.githubusercontent.com/LopenaFollower/JavaScript/refs/heads/main/instructions.txt",1)
 	req.Send()
 	req.WaitForResponse()
@@ -98,6 +104,8 @@ SendStatus(st,info:=0){
 		FormatTime,ct,,hh:mm:ss
 		elapsed:=GetTime(runtime2)
 		req:=ComObjCreate("WinHttp.WinHttpRequest.5.1")
+		req.Option(9):=2048
+		req.SetTimeouts(5000,5000,10000,10000)
 		req.Open("POST",WebhookURL "?wait=true",0)
 		req.SetRequestHeader("Content-Type","application/json")
 		Switch st
@@ -162,8 +170,7 @@ downloadTesseract(){
 		InstallerPath:=A_Temp "\tesseract-installer.exe"
 		UrlDownloadToFile,https://github.com/tesseract-ocr/tesseract/releases/download/5.5.0/tesseract-ocr-w64-setup-5.5.0.20241111.exe,%InstallerPath%
 		If !FileExist(InstallerPath){
-			Gui +OwnDialogs
-			MsgBox,16,Error,Failed to download the Tesseract installer. Please check your internet connection and try again.
+			ErrorMsg("Error","Failed to download the Tesseract installer. Please check your internet connection and try again.")
 			GuiControl,ChooseString,DDSS,Off
 		}
 		WinSet,AlwaysOnTop,0,%GuiTitle%
@@ -172,7 +179,7 @@ downloadTesseract(){
 		If FileExist("C:\Program Files\Tesseract-OCR\tesseract.exe")
 			MsgBox,64,Installation Complete,Tesseract OCR has been successfully installed!
 		Else{
-			MsgBox,16,Installation Failed,Tesseract OCR installation failed. Please install it manually at https://github.com/tesseract-ocr/tesseract.
+			ErrorMsg("Installation Failed","Tesseract OCR installation failed. Please install it manually at https://github.com/tesseract-ocr/tesseract")
 			GuiControl,ChooseString,DDSS,Off
 		}
 	}
@@ -182,10 +189,12 @@ CS2DC(x1,y1,x2,y2,payload){
 	tempFile:=A_Temp "\screenshot.png"
 	CaptureScreen(tempFile,x1,y1,x2-x1,y2-y1)
 	New CreateFormData({file:[tempFile],payload_json:payload},pd,hd)
-	HTTP:=ComObjCreate("WinHttp.WinHttpRequest.5.1")
-	HTTP.Open("POST",WebhookURL,0)
-	HTTP.SetRequestHeader("Content-Type",hd)
-	HTTP.Send(pd)
+	req:=ComObjCreate("WinHttp.WinHttpRequest.5.1")
+	req.Option(9):=2048
+	req.SetTimeouts(5000,5000,10000,10000)
+	req.Open("POST",WebhookURL,0)
+	req.SetRequestHeader("Content-Type",hd)
+	req.Send(pd)
 	FileDelete,%tempFile%
 }
 RtrvGen(k,v){

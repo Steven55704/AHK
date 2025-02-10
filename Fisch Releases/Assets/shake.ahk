@@ -1,5 +1,5 @@
-;5
-#Include %A_MyDocuments%\Macro Settings\main.ahk
+;6
+#Include ..\main.ahk
 CShakeMode:
 	FailsafeCount:=0
 	CShakeRepeatBypassCounter:=0

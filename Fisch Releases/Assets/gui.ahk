@@ -1,5 +1,5 @@
-;13
-#Include %A_MyDocuments%\Macro Settings\main.ahk
+;14
+#Include ..\main.ahk
 InitGui:
 	If !FileExist(LogoPath)
 		UrlDownloadToFile,https://raw.githubusercontent.com/LopenaFollower/AHK/refs/heads/main/Fisch`%20Releases/Assets/logo.ico,%LogoPath%
@@ -79,7 +79,7 @@ InitGui:
 	Gui Add,Text,x5 y24 w73 h14,Webhook URL
 	Gui Add,Edit,vWURL gSubAll x3 y36 w120 h21,%WebhookURL%
 	UWH:=Chkd(UseWebhook)
-	Gui Add,CheckBox,vCBWH gSubAll x4 y59 w100 h14 %UWH%,Enable Webhook
+	Gui Add,CheckBox,vCBWH gValidateWebhook x4 y59 w100 h14 %UWH%,Enable Webhook
 	Gui Add,Text,x4 y76 w56 h13,Notify every
 	Gui Add,Edit,vWHSK gSubAll x60 y74 w22 h18 Number,%NotifEveryN%
 	Gui Add,Text,x83 y76 w40 h13,catches.
@@ -292,6 +292,7 @@ InitGui:
 			CastRandomization:=DLCR
 		If StrLen(DLWB)>0
 			WaitForBobber:=DLWB
+		WURL=Trim(WURL)
 		If StrLen(WURL)>100
 			WebhookURL:=WURL
 		If StrLen(WHSK)>0
@@ -366,6 +367,17 @@ InitGui:
 		If CBAS
 			Goto SaveSettings
 	Return
+	ValidateWebhook:
+		Gui Submit,NoHide
+		If CBWH{
+			Url=Trim(WURL)
+			If !RegexMatch(Url,"i)https:\/\/(canary\.|ptb\.)?(discord|discordapp)\.com\/api\/webhooks\/([\d]+)\/([a-z0-9_-]+)")||SubStr(Url,1,33)!="https://discord.com/api/webhooks/"{ ; filter by natro
+				GuiControl,,CBWH,0
+				ErrorMsg("Invalid webhook URL","Webhook option has been disabled.")
+			}
+		}
+		Goto SubAll
+	Return
 	STRS:
 		AskUser("Reset Settings","Are you sure?")
 		IfMsgBox Yes
@@ -431,10 +443,8 @@ InitGui:
 				GuiControl,,MGCF,% newopt[1]
 				Goto MGCCF
 			}
-		}Else{
-			Gui +OwnDialogs
-			MsgBox,16,Invalid,File name contains invalid character or is empty.
-		}
+		}Else
+			ErrorMsg("Invalid","File name contains invalid character or is empty.")
 	Return
 	MGRefresh:
 		Gui Submit,NoHide

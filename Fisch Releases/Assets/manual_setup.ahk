@@ -1,5 +1,5 @@
-;11
-#Include %A_MyDocuments%\Macro Settings\main.ahk
+;12
+#Include ..\main.ahk
 CreateBound(n,x1,y1,x2,y2){
 	colors:={CameraCheck:"Yellow",FishBar:"Lime",ProgBar:"Red",LvlCheck:"Blue",SellProfit:"Aqua",CameraMode:"Fuchsia",SellButton:"Navy"}
 	w:=x2-x1

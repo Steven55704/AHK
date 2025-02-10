@@ -1,5 +1,5 @@
-;15
-#Include %A_MyDocuments%\Macro Settings\main.ahk
+;16
+#Include ..\main.ahk
 Track:
 	If GetFishPos(){
 		PixelSearch,x,,ProgBarRight,ProgBarTop,ProgBarLeft,ProgBarBottom,0xFFFFFF,2,Fast
@@ -196,7 +196,7 @@ MinigameLoop:
 				DirectionalToggle:="Left"
 			}
 		}Else If Seraphic
-			Stabilize(1)
+			Stabilize(1,50)
 		Goto MinigameLoop
 	}Else{
 		Duration:=(A_TickCount-MinigameStart)/1000
