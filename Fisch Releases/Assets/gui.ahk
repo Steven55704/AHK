@@ -1,4 +1,4 @@
-;14
+;15
 #Include ..\main.ahk
 InitGui:
 	If !FileExist(LogoPath)
@@ -370,7 +370,8 @@ InitGui:
 	ValidateWebhook:
 		Gui Submit,NoHide
 		If CBWH{
-			Url=Trim(WURL)
+			Url:=Trim(WURL)
+			msgbox % Url
 			If !RegexMatch(Url,"i)https:\/\/(canary\.|ptb\.)?(discord|discordapp)\.com\/api\/webhooks\/([\d]+)\/([a-z0-9_-]+)")||SubStr(Url,1,33)!="https://discord.com/api/webhooks/"{ ; filter by natro
 				GuiControl,,CBWH,0
 				ErrorMsg("Invalid webhook URL","Webhook option has been disabled.")
