@@ -196,7 +196,7 @@ MinigameLoop:
 				DirectionalToggle:="Left"
 			}
 		}Else If Seraphic
-			Stabilize(1,50)
+			Stabilize(1,10)
 		Goto MinigameLoop
 	}Else{
 		Duration:=(A_TickCount-MinigameStart)/1000
