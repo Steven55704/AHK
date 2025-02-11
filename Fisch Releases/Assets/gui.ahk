@@ -1,4 +1,4 @@
-;16
+;17
 #Include ..\main.ahk
 InitGui:
 	If !FileExist(LogoPath)
@@ -189,7 +189,8 @@ InitGui:
 	Gui Add,GroupBox,x2 y54 w267 h120,Debugging
 	Gui Add,GroupBox,x270 y22 w179 h152,Position And Size
 	Gui Font
-	Gui Add,CheckBox,vCBST gSubAll x7 y68 w82 h16,Show tooltips
+	STT:=Chkd(ShowTooltips)
+	Gui Add,CheckBox,vCBST gSubAll x7 y68 w82 h16 %STT%,Show tooltips
 	Gui Add,Text,x275 y37 w68 h14,Select Bound:
 	Gui Add,ComboBox,vDDBN gSubAll x276 y51 w119,CameraCheck|FishBar|ProgBar|LvlCheck|SellProfit|CameraMode|SellButton
 	Gui Add,Text,x275 y75 w39 h23,X (Left):
@@ -358,7 +359,7 @@ InitGui:
 		ScreenshotDelay:=SSD
 		SendFishWhenTimeOn:=CBFTSO
 		SendFishWhenTimeValue:=CBFTSV
-		ShowTooltips=CBST
+		ShowTooltips:=CBST
 		If Trim(DDBN)!=""
 			Gosub SelectBound
 		If CBCF
