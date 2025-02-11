@@ -6,7 +6,7 @@
 #HotkeyInterval 1
 SetWinDelay,-1
 If !(A_IsUnicode=1&&A_PtrSize=4){
-	msgbox will run AutoHotkeyU32.exe
+	MsgBox,64,,Running AutoHotkeyU32,2
 	SplitPath,A_AhkPath,,dir
 	Run,%dir%\AutoHotkeyU32.exe "%A_ScriptFullPath%" 
 	ExitApp
@@ -29,7 +29,7 @@ CoordMode,Pixel,Relative
 CoordMode,Mouse,Relative
 #Include %A_MyDocuments%\Macro Settings\Lib
 #Include Gdip_All.ahk
-BuildNum:=25
+BuildNum:=26
 GuiTitle=Fisch V1.4.%BuildNum% by 0x3b5
 DirPath:=A_MyDocuments "\Macro Settings"
 LibPath:=DirPath "\Lib"
@@ -53,7 +53,7 @@ If !FileExist(DefMGPath)
 If !FileExist(VersionPath)
 	FileAppend,1.4 %BuildNum%,%VersionPath%
 IniRead,curVer,%SettingsPath%,.,v
-configVer:="13"
+configVer:="14"
 If(curVer!=configVer){
 	Gosub DefaultSettings
 	IniWrite,%configVer%,%SettingsPath%,.,v
@@ -99,6 +99,7 @@ ReadGen(SendFishScreenshot,"SendFishScreenshot")
 ReadGen(ScreenshotDelay,"ScreenshotDelay")
 ReadGen(SendFishWhenTimeOn,"SendFishWhenTimeOn")
 ReadGen(SendFishWhenTimeValue,"SendFishWhenTimeValue")
+ReadGen(ShowTooltips,"ShowTooltips")
 AutoGraphicsDelay:=50
 AutoZoomDelay:=40
 AutoCameraDelay:=25
@@ -205,6 +206,7 @@ DefaultSettings:
 	RtrvGen("ScreenshotDelay",45)
 	RtrvGen("SendFishWhenTimeValue",20)
 	RtrvGen("SendFishWhenTimeOn",0)
+	RtrvGen("ShowTooltips",0)
 Return
 SaveSettings:
 	WriteGen("ShakeMode",ShakeMode)
@@ -248,6 +250,7 @@ SaveSettings:
 	WriteGen("ScreenshotDelay",ScreenshotDelay)
 	WriteGen("SendFishWhenTimeOn",SendFishWhenTimeOn)
 	WriteGen("SendFishWhenTimeValue",SendFishWhenTimeValue)
+	WriteGen("ShowTooltips",ShowTooltips)
 Return
 GuiRuntime:
 	runtime1++
