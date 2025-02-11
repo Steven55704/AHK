@@ -27,11 +27,11 @@ SetControlDelay,-1
 SetTitleMatchMode 2
 CoordMode,Pixel,Relative
 CoordMode,Mouse,Relative
-#Include %A_MyDocuments%\Macro Settings\Lib
+#Include %A_ScriptDir%\Lib
 #Include Gdip_All.ahk
-BuildNum:=27
+BuildNum:=28
 GuiTitle=Fisch V1.4.%BuildNum% by 0x3b5
-DirPath:=A_MyDocuments "\Macro Settings"
+DirPath:=A_ScriptDir "\.."
 LibPath:=DirPath "\Lib"
 DllCall("LoadLibrary","Str",LibPath "\SkinHu.dll")
 MGPath:=DirPath "\Minigame"
