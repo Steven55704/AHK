@@ -31,7 +31,7 @@ CoordMode,Mouse,Relative
 #Include Gdip_All.ahk
 BuildNum:=28
 GuiTitle=Fisch V1.4.%BuildNum% by 0x3b5
-DirPath:=A_ScriptDir "\.."
+DirPath:=A_ScriptDir
 LibPath:=DirPath "\Lib"
 DllCall("LoadLibrary","Str",LibPath "\SkinHu.dll")
 MGPath:=DirPath "\Minigame"
