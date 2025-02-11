@@ -29,7 +29,7 @@ CoordMode,Pixel,Relative
 CoordMode,Mouse,Relative
 #Include %A_MyDocuments%\Macro Settings\Lib
 #Include Gdip_All.ahk
-BuildNum:=26
+BuildNum:=27
 GuiTitle=Fisch V1.4.%BuildNum% by 0x3b5
 DirPath:=A_MyDocuments "\Macro Settings"
 LibPath:=DirPath "\Lib"
@@ -131,7 +131,7 @@ LeftDeviation:=50
 ShakeFailsafe:=15
 BarDetectionFailsafe:=3
 FailsInARow:=0
-RepeatBypassLimit:=10
+RepeatBypassLimit:=2
 BarColor1:=0xFFFFFF
 BarColor2:=0xF1F1F1
 BarCalcColor:=0xF0F0F0
