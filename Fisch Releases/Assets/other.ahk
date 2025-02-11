@@ -1,4 +1,4 @@
-;15
+;16
 #Include ..\main.ahk
 ImportMinigameConfig(name){
 	Global MGPath
@@ -211,6 +211,8 @@ ReadGen(ByRef out,k){
 	IniRead,temp,%SettingsPath%,All,%k%
 	If temp is Number
 		temp:=temp+0
+	If(temp=="ERROR")
+		temp:=""
 	out:=temp
 }
 Class CreateFormData{
