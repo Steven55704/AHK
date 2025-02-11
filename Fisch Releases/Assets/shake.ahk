@@ -1,4 +1,4 @@
-;7
+;8
 #Include ..\main.ahk
 CShakeMode:
 	FailsafeCount:=0
@@ -19,14 +19,14 @@ CShakeMode:
 			SetTimer,Failsafe1,Off
 			Goto BarMinigame
 		}Else{
-			PixelSearch,ClickX,ClickY,CShakeRight,CShakeTop,CShakeLeft,CShakeBottom,0xFFFFFF,1,Fast
+			PixelSearch,ClickX,ClickY,CShakeRight,CShakeTop,CShakeLeft,CShakeBottom,0xFFFFFF,2,Fast
 			If !ErrorLevel{
 				If(ClickX!=MemoryX&&ClickY!=MemoryY){
 					CShakeRepeatBypassCounter:=0
 					MouseMove,ClickX,ClickY
 					Wait(ShakeDelay)
 					Click %ClickX%,%ClickY%
-					Wait(ShakeDelay)
+					Wait(15)
 					Click %ClickX%,%ClickY%
 					MemoryX:=ClickX
 					MemoryY:=ClickY

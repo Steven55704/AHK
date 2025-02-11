@@ -1,4 +1,4 @@
-;18
+;19
 #Include ..\main.ahk
 Track:
 	If GetFishPos()||Seraphic{
@@ -80,26 +80,21 @@ BarMinigame:
 	}
 	GetBarPos(){
 		Global FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,BarColor1,BarColor2,ArrowColor,HalfBarSize
-		FB:=False
 		PixelSearch,TBX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,BarColor1,0,Fast
 		If !ErrorLevel
 			Return TBX+HalfBarSize
-		Else{
-			PixelSearch,TBX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,BarColor2,0,Fast
+		PixelSearch,AX,,FishBarLeft+3,FishBarTop,FishBarRight-3,FishBarBottom,ArrowColor,5,Fast
+		If !ErrorLevel{
+			PixelGetColor,UC,AX+15,FishBarTop-5
+			If(UC=FishColor)
+				PixelGetColor,UC,AX-15,FishBarTop-5
+			PixelSearch,TBX,,FishBarLeft+3,FishBarTop,FishBarRight-3,FishBarBottom,UC,5,Fast
 			If !ErrorLevel
 				Return TBX+HalfBarSize
 		}
-		If !FB{
-			PixelSearch,AX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,ArrowColor,5,Fast
-			If !ErrorLevel{
-				PixelGetColor,UC,AX+25,FishBarTop-5
-				If(UC=FishColor)
-					PixelGetColor,UC,AX-25,FishBarTop-5
-				PixelSearch,TBX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,UC,0,Fast
-				If !ErrorLevel
-					Return TBX+HalfBarSize
-			}
-		}
+		PixelSearch,TBX,,FishBarLeft+5,FishBarTop,FishBarRight-5,FishBarBottom,BarColor2,0,Fast
+		If !ErrorLevel
+			Return TBX+HalfBarSize
 	}
 	Stabilize(s:=0,w:=5){
 		Global StabilizerLoop
@@ -129,11 +124,9 @@ MinigameLoop:
 		If ShakeOnly
 			Goto MinigameLoop
 		FailsInARow:=0
-		Stabilize(1,25)
-		Stabilize()
 		If(FishX<MaxLeftBar){
 			If !MaxLeftToggle{
-				DirectionalToggle:="Right"
+				DirectionalToggle=Right
 				MaxLeftToggle:=True
 				Send {LButton up}
 				Wait(1)
@@ -145,7 +138,7 @@ MinigameLoop:
 			Goto MinigameLoop
 		}Else If(FishX>MaxRightBar){
 			If !MaxRightToggle{
-				DirectionalToggle:="Left"
+				DirectionalToggle=Left
 				MaxRightToggle:=True
 				Send {LButton down}
 				Wait(1)
@@ -158,6 +151,7 @@ MinigameLoop:
 		}
 		MaxLeftToggle:=False
 		MaxRightToggle:=False
+		Stabilize(1)
 		If BarX:=GetBarPos(){
 			If ShowTooltips
 				Tooltip,|,%BarX%,%ToolTipY%,2
@@ -184,7 +178,7 @@ MinigameLoop:
 				Wait(CounterDifference)
 				Stabilize(1)
 				Send {LButton up}
-				DirectionalToggle:="Right"
+				DirectionalToggle=Right
 			}Else{
 				Difference:=Scale(BarX-FishX)*ResolutionScaling*LeftMult
 				CounterDifference:=Difference/LeftDiv
@@ -205,7 +199,7 @@ MinigameLoop:
 				Wait(CounterDifference)
 				Stabilize(1)
 				Send {LButton down}
-				DirectionalToggle:="Left"
+				DirectionalToggle=Left
 			}
 		}Else If Seraphic
 			Stabilize(1,10)
@@ -230,7 +224,7 @@ MinigameLoop:
 				caught:=WasFishCaught?"Fish took "dur "s to catch.":"Spent "dur "s trying to catch the fish."
 				CS2DC(0,0,A_ScreenWidth,A_ScreenHeight,"{""embeds"":[{""image"":{""url"":""attachment://screenshot.png""},""color"":15258703,""fields"":[{""name"":""Catch Rate"",""value"":"""ratio """},{""name"":""Fish was "(WasFishCaught?"Caught!":"Lost.") """,""value"":"""caught """},{""name"":""Runtime"",""value"": """GetTime(runtime2) """}],""footer"":{""text"":"""ct """}}]}")
 			}Else If(Mod(CatchCount,NotifEveryN)=0)
-				If((!SendFishWhenTimeOn)||(SendFishWhenTimeOn&&Duration>=SendFishWhenTimeValue))
+				If(!SendFishWhenTimeOn||(SendFishWhenTimeOn&&Duration>=SendFishWhenTimeValue))
 					SendStatus(3,[FishCaught,FishLost,Duration,WasFishCaught])
 			If(LvlUpMode!="Off"&&Mod(CatchCount,CheckLvlEveryN)=0)
 				Gosub CheckStatistics
