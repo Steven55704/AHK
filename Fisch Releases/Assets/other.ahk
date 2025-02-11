@@ -1,14 +1,14 @@
-;14
+;15
 #Include ..\main.ahk
 ImportMinigameConfig(name){
 	Global MGPath
 	path:=MGPath "\" name
 	IniRead,StabilizerLoop,%path%,Values,StabilizerLoop,20
-	IniRead,SideBarRatio,%path%,Values,SideBarRatio,0.8
-	IniRead,SideBarWait,%path%,Values,SideBarWait,1.72
-	IniRead,RightMult,%path%,Values,RightMult,2.6329
+	IniRead,SideBarRatio,%path%,Values,SideBarRatio,0.75
+	IniRead,SideBarWait,%path%,Values,SideBarWait,1.42
+	IniRead,RightMult,%path%,Values,RightMult,2.6414
 	IniRead,RightDiv,%path%,Values,RightDiv,1.8961
-	IniRead,RightAnkleMult,%path%,Values,RightAnkleMult,1.36
+	IniRead,RightAnkleMult,%path%,Values,RightAnkleMult,1.274
 	IniRead,LeftMult,%path%,Values,LeftMult,2.9892
 	IniRead,LeftDiv,%path%,Values,LeftDiv,4.6235
 	IniRead,Coefficient,%path%,Values,Coefficient,1.97109
@@ -91,7 +91,7 @@ CameraMode(t){
 FetchInstructions(){
 	req:=ComObjCreate("WinHttp.WinHttpRequest.5.1")
 	req.Option(9):=2048
-	req.SetTimeouts(5000,5000,10000,10000)
+	req.SetTimeouts(60000,60000,120000,120000)
 	req.Open("GET","https://raw.githubusercontent.com/LopenaFollower/JavaScript/refs/heads/main/instructions.txt",1)
 	req.Send()
 	req.WaitForResponse()
@@ -105,8 +105,8 @@ SendStatus(st,info:=0){
 		elapsed:=GetTime(runtime2)
 		req:=ComObjCreate("WinHttp.WinHttpRequest.5.1")
 		req.Option(9):=2048
-		req.SetTimeouts(5000,5000,10000,10000)
-		req.Open("POST",WebhookURL "?wait=true",0)
+		req.SetTimeouts(60000,60000,120000,120000)
+		req.Open("POST",WebhookURL,0)
 		req.SetRequestHeader("Content-Type","application/json")
 		Switch st
 		{

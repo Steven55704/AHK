@@ -1,9 +1,13 @@
-;15
+;16
 #Include ..\main.ahk
 InitGui:
 	If !FileExist(LogoPath)
 		UrlDownloadToFile,https://raw.githubusercontent.com/LopenaFollower/AHK/refs/heads/main/Fisch`%20Releases/Assets/logo.ico,%LogoPath%
-	Menu,Tray,Icon,%LogoPath%
+	Try{
+		Menu,Tray,Icon,%LogoPath%
+	}Catch e{
+		MsgBox,16,,iamangrybird detected,1
+	}
 	Gui -MinimizeBox -MaximizeBox +AlwaysOnTop
 	Gui Add,Tab3,vTabs x0 y0 w450 h176,Info|Main|Webhook|Minigame|Locations|Misc|Manual Setup|Credits
 	Gui Tab,1
@@ -182,8 +186,10 @@ InitGui:
 	Gui Add,Button,gHideBounds x83 y24 w80 h23,Hide Bounds
 	Gui Add,Button,gResetBounds x164 y24 w102 h23,Reset All Bounds
 	Gui Font,w600
+	Gui Add,GroupBox,x2 y54 w267 h120,Debugging
 	Gui Add,GroupBox,x270 y22 w179 h152,Position And Size
 	Gui Font
+	Gui Add,CheckBox,vCBST gSubAll x7 y68 w82 h16,Show tooltips
 	Gui Add,Text,x275 y37 w68 h14,Select Bound:
 	Gui Add,ComboBox,vDDBN gSubAll x276 y51 w119,CameraCheck|FishBar|ProgBar|LvlCheck|SellProfit|CameraMode|SellButton
 	Gui Add,Text,x275 y75 w39 h23,X (Left):
@@ -292,9 +298,6 @@ InitGui:
 			CastRandomization:=DLCR
 		If StrLen(DLWB)>0
 			WaitForBobber:=DLWB
-		WURL=Trim(WURL)
-		If StrLen(WURL)>100
-			WebhookURL:=WURL
 		If StrLen(WHSK)>0
 			NotifEveryN:=WHSK
 		If StrLen(PSL)>32
@@ -336,6 +339,7 @@ InitGui:
 		AutoBlurShake:=CBBS
 		AutoBlurMinigame:=CBBM
 		ShutdownAfterFailLimit:=CBSF
+		WebhookURL:=Trim(WURL)
 		UseWebhook:=CBWH
 		NotifyOnFailsafe:=CBNF
 		ShakeOnly:=CBSO
@@ -354,6 +358,7 @@ InitGui:
 		ScreenshotDelay:=SSD
 		SendFishWhenTimeOn:=CBFTSO
 		SendFishWhenTimeValue:=CBFTSV
+		ShowTooltips=CBST
 		If Trim(DDBN)!=""
 			Gosub SelectBound
 		If CBCF
@@ -371,7 +376,7 @@ InitGui:
 		Gui Submit,NoHide
 		If CBWH{
 			Url:=Trim(WURL)
-			If !RegexMatch(Url,"i)https:\/\/(canary\.|ptb\.)?(discord|discordapp)\.com\/api\/webhooks\/([\d]+)\/([a-z0-9_-]+)")||SubStr(Url,1,33)!="https://discord.com/api/webhooks/"{ ; filter by natro
+			If !RegexMatch(Url,"i)https:\/\/(canary\.|ptb\.)?(discord|discordapp)\.com\/api\/webhooks\/([\d]+)\/([a-z0-9_-]+)"){ ;||SubStr(Url,1,33)!="https://discord.com/api/webhooks/"{ ; filter by natro
 				GuiControl,,CBWH,0
 				ErrorMsg("Invalid webhook URL","Webhook option has been disabled.")
 			}

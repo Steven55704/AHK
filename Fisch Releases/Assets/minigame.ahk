@@ -1,7 +1,7 @@
-;17
+;18
 #Include ..\main.ahk
 Track:
-	If GetFishPos(){
+	If GetFishPos()||Seraphic{
 		PixelSearch,x,,ProgBarRight,ProgBarTop,ProgBarLeft,ProgBarBottom,0xFFFFFF,2,Fast
 		If !ErrorLevel
 			ProgressX:=x
@@ -9,6 +9,14 @@ Track:
 			PixelSearch,x,,ProgBarRight,ProgBarTop,ProgBarLeft,ProgBarBottom,0x9F9F9F,2,Fast
 			If !ErrorLevel
 				ProgressX:=x
+		}
+		If ShowTooltips{
+			Tooltip,p,%ProgressX%,%ToolTipY%,3
+			If MaxLeftToggle||MaxRightToggle{
+				BX:=GetBarPos()
+				DR:=MaxLeftToggle?"<":">"
+				Tooltip,%DR%,%BX%,%ToolTipY%,2
+			}
 		}
 	}
 Return
@@ -116,6 +124,8 @@ MinigameLoop:
 		MaxRightToggle:=False
 	}
 	If FishX||Seraphic{
+		If ShowTooltips
+			Tooltip,.,%FishX%,%ToolTipY%,1
 		If ShakeOnly
 			Goto MinigameLoop
 		FailsInARow:=0
@@ -149,6 +159,8 @@ MinigameLoop:
 		MaxLeftToggle:=False
 		MaxRightToggle:=False
 		If BarX:=GetBarPos(){
+			If ShowTooltips
+				Tooltip,|,%BarX%,%ToolTipY%,2
 			If(BarX<=FishX){
 				Difference:=Scale(FishX-BarX)*ResolutionScaling*RightMult
 				CounterDifference:=Difference/RightDiv
@@ -202,6 +214,8 @@ MinigameLoop:
 		Duration:=(A_TickCount-MinigameStart)/1000
 		WasFishCaught:=ProgressX>CatchCheck
 		SetTimer,Track,Off
+		Loop,3
+			Tooltip,,,,%A_Index%
 		CatchCount++
 		If WasFishCaught
 			FishCaught++
@@ -264,6 +278,9 @@ SellFish:
 	x:=WW-455
 	WinMove,%GuiTitle%,,%x%,0
 	Sleep 250
+	If AutoBlurMinigame
+		Send m
+	Sleep 200
 	Send {``}
 	Sleep 500
 	MouseMove,SellPosX,SellPosY

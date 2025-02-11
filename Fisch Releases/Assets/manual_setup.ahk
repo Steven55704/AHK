@@ -1,4 +1,4 @@
-;12
+;13
 #Include ..\main.ahk
 CreateBound(n,x1,y1,x2,y2){
 	colors:={CameraCheck:"Yellow",FishBar:"Lime",ProgBar:"Red",LvlCheck:"Blue",SellProfit:"Aqua",CameraMode:"Fuchsia",SellButton:"Navy"}
@@ -85,8 +85,8 @@ Calculations:
 	ResolutionScaling:=2560/WW
 	LookDownX:=WW/2
 	LookDownY:=WH/2
-	ToolTipY:=WH/1.0626
-	CatchCheck:=(ProgBarRight+3*ProgBarLeft)/4
+	ToolTipY:=WH/1.0624
+	CatchCheck:=(ProgBarRight+4*ProgBarLeft)/5
 	CameraModeX:=(CameraModeRight+CameraModeLeft)/2
 	CameraModeY:=(CameraModeBottom+CameraModeTop)/2
 	SellPosX:=(SellButtonRight+SellButtonLeft)/2

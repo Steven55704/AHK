@@ -1,4 +1,4 @@
-;6
+;7
 #Include ..\main.ahk
 CShakeMode:
 	FailsafeCount:=0
@@ -24,6 +24,8 @@ CShakeMode:
 				If(ClickX!=MemoryX&&ClickY!=MemoryY){
 					CShakeRepeatBypassCounter:=0
 					MouseMove,ClickX,ClickY
+					Wait(ShakeDelay)
+					Click %ClickX%,%ClickY%
 					Wait(ShakeDelay)
 					Click %ClickX%,%ClickY%
 					MemoryX:=ClickX
