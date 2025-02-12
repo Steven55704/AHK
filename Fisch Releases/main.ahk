@@ -29,7 +29,7 @@ CoordMode,Pixel,Relative
 CoordMode,Mouse,Relative
 #Include %A_ScriptDir%\Lib
 #Include Gdip_All.ahk
-BuildNum:=28
+BuildNum:=29
 GuiTitle=Fisch V1.4.%BuildNum% by 0x3b5
 DirPath:=A_ScriptDir
 LibPath:=DirPath "\Lib"
@@ -453,6 +453,14 @@ Failsafe3:
 		Goto ExitMacro
 	}
 	runtime2++
+Return
+Failsafe4:
+	If(A_TickCount-SellingStart>20000){
+		SetTimer,Failsafe4,Off
+		FailsInARow++
+		SendStatus(4,["Sell failsafe triggered.",FailsInARow])
+		EmStop:=True
+	}
 Return
 #Include shake.ahk
 #Include minigame.ahk
