@@ -1,4 +1,4 @@
-;19
+;20
 #Include ..\main.ahk
 Track:
 	If GetFishPos()||Seraphic{
@@ -280,18 +280,21 @@ SellFish:
 	MouseMove,SellPosX,SellPosY
 	Sleep 100
 	Click %SellPosX%,%SellPosY%
+	SellingStart:=A_TickCount
+	EmStop:=False
+	SetTimer,Failsafe4,100
 	Sleep 1200
 	Send {``}
 	Loop{
-		PixelSearch,,,SellProfitLeft,SellProfitTop,SellProfitRight,SellProfitBottom,0x49D164,12,Fast
-		If ErrorLevel
+		PixelSearch,,,SellProfitLeft,SellProfitTop,SellProfitRight,SellProfitBottom,0x49D164,13,Fast
+		If ErrorLevel&&!EmStop
 			Sleep 100
 		Else
 			Break
 	}
 	Sleep 200
 	FormatTime,ct,,hh:mm:ss
-	If UseWebhook&&SendSellProfit
+	If UseWebhook&&SendSellProfit&&!EmStop
 		CS2DC(SellProfitLeft,SellProfitTop,SellProfitRight,SellProfitBottom,"{""embeds"":[{""image"":{""url"":""attachment://screenshot.png""},""color"":6607177,""title"":""Money Gained"",""footer"":{""text"":"""ct """}}]}")
 	Gosub MoveGui
 	Sleep 250
