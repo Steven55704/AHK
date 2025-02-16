@@ -22,6 +22,7 @@ InitGui:
 	Gui Add,Text,vTTask x5 y87 w162 h14,Current Task: Idle
 	Gui Font
 	Gui Add,Text,vTFC x5 y102 w100 h13,Fish Count: 0/0
+	Gui Add,Text,vSGM x5 y+2 w100 h13,
 	Gui Tab,2
 	Gui Font,w600
 	Gui Add,GroupBox,x2 y21 w140 h84,Shaking

@@ -1,12 +1,12 @@
-;20
+;21
 #Include ..\main.ahk
 Track:
 	If GetFishPos()||Seraphic{
-		PixelSearch,x,,ProgBarRight,ProgBarTop,ProgBarLeft,ProgBarBottom,0xFFFFFF,2,Fast
+		PixelSearch,x,,ProgBarRight,ProgBarTop,ProgBarLeft,ProgBarBottom,0xFFFFFF,0,Fast
 		If !ErrorLevel
 			ProgressX:=x
 		Else{
-			PixelSearch,x,,ProgBarRight,ProgBarTop,ProgBarLeft,ProgBarBottom,0x9F9F9F,2,Fast
+			PixelSearch,x,,ProgBarRight,ProgBarTop,ProgBarLeft,ProgBarBottom,0x9F9F9F,0,Fast
 			If !ErrorLevel
 				ProgressX:=x
 		}
@@ -80,25 +80,25 @@ BarMinigame:
 	}
 	GetBarPos(){
 		Global FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,BarColor1,BarColor2,ArrowColor,HalfBarSize
-		PixelSearch,TBX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,BarColor1,0,Fast
+		PixelSearch,TBX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,BarColor1,1,Fast
 		If !ErrorLevel
-			Return TBX+HalfBarSize
-		PixelSearch,AX,,FishBarLeft+3,FishBarTop,FishBarRight-3,FishBarBottom,ArrowColor,5,Fast
+			Return Max(FishBarLeft,Min(FishBarRight,TBX+HalfBarSize))
+		PixelSearch,AX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,ArrowColor,0,Fast
 		If !ErrorLevel{
-			PixelGetColor,UC,AX+15,FishBarTop-5
+			PixelGetColor,UC,AX+25,FishBarTop+3
 			If(UC=FishColor)
-				PixelGetColor,UC,AX-15,FishBarTop-5
-			PixelSearch,TBX,,FishBarLeft+3,FishBarTop,FishBarRight-3,FishBarBottom,UC,5,Fast
+				PixelGetColor,UC,AX-25,FishBarTop+3
+			PixelSearch,TBX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,UC,0,Fast
 			If !ErrorLevel
-				Return TBX+HalfBarSize
+				Return Max(FishBarLeft,Min(FishBarRight,TBX+HalfBarSize))
 		}
-		PixelSearch,TBX,,FishBarLeft+5,FishBarTop,FishBarRight-5,FishBarBottom,BarColor2,0,Fast
+		PixelSearch,TBX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,BarColor2,0,Fast
 		If !ErrorLevel
-			Return TBX+HalfBarSize
+			Return Max(FishBarLeft,Min(FishBarRight,TBX+HalfBarSize))
 	}
 	Stabilize(s:=0,w:=5){
 		Global StabilizerLoop
-		Loop,StabilizerLoop{
+		Loop,%StabilizerLoop%{
 			Send {LButton up}
 			If s
 				Wait(w)
@@ -151,18 +151,17 @@ MinigameLoop:
 		}
 		MaxLeftToggle:=False
 		MaxRightToggle:=False
-		Stabilize(1)
 		If BarX:=GetBarPos(){
 			If ShowTooltips
 				Tooltip,|,%BarX%,%ToolTipY%,2
+			DST:=Abs(BarX-FishX)
+			If(DST<HalfBarSize*.2)
+				Stabilize()
 			If(BarX<=FishX){
 				Difference:=Scale(FishX-BarX)*ResolutionScaling*RightMult
 				CounterDifference:=Difference/RightDiv
 				Send {LButton down}
-				Stabilize()
-				Send {LButton down}
 				If(DirectionalToggle=="Left"){
-					Stabilize()
 					Send {LButton down}
 					Wait(Min(MAD,AnkleBreakDelay))
 					AnkleBreakDelay:=0
@@ -176,18 +175,14 @@ MinigameLoop:
 				If(FishX<MaxLeftBar||FishX>MaxRightBar)
 					Goto MinigameLoop
 				Wait(CounterDifference)
-				Stabilize(1)
 				Send {LButton up}
 				DirectionalToggle=Right
 			}Else{
 				Difference:=Scale(BarX-FishX)*ResolutionScaling*LeftMult
 				CounterDifference:=Difference/LeftDiv
 				Send {LButton up}
-				Stabilize()
-				Send {LButton up}
 				AnkleBreakDelay:=0
 				If(DirectionalToggle=="Right"){
-					Stabilize()
 					Send {LButton up}
 					Wait(MAD)
 				}
@@ -197,7 +192,6 @@ MinigameLoop:
 				If(FishX<MaxLeftBar||FishX>MaxRightBar)
 					Goto MinigameLoop
 				Wait(CounterDifference)
-				Stabilize(1)
 				Send {LButton down}
 				DirectionalToggle=Left
 			}
