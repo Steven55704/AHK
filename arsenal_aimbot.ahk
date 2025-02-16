@@ -22,9 +22,7 @@ CoordMode,Mouse,Screen
 PID:=DllCall("GetCurrentProcessId")
 Process,Priority,%PID%,High
 EC:=0xE600E6
-MouseGetPos,x,y
-CX:=x
-CY:=y
+MouseGetPos,CX,CY
 FX:=A_ScreenWidth/10
 FY:=A_ScreenHeight/10
 SL:=CX-FX
@@ -40,10 +38,8 @@ Loop,4
 TG:=0
 S:=1.5
 Loop{
-	If TG and WinActive("Roblox"){
-		MouseGetPos, mousex, mousey
-		CX:=mousex
-		CY:=mousey
+	If TG&&WinActive("Roblox"){
+		MouseGetPos,CX,CY
 		FX:=A_ScreenWidth/20
 		FY:=A_ScreenHeight/16
 		SL:=CX-FX
