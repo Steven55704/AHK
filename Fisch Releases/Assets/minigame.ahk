@@ -162,7 +162,7 @@ MinigameLoop:
 				Send {LButton down}
 				If(DirectionalToggle=="Left"){
 					Send {LButton down}
-					;Wait(Min(MAD,AnkleBreakDelay))
+					Wait(Min(MAD,AnkleBreakDelay))
 					AnkleBreakDelay:=0
 				}Else{
 					AnkleBreakDelay:=AnkleBreakDelay+(Difference-CounterDifference)*RightAnkleMult
