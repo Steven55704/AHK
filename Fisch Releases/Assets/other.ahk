@@ -1,4 +1,4 @@
-;16
+;17
 #Include ..\main.ahk
 ImportMinigameConfig(name){
 	Global MGPath
@@ -27,6 +27,9 @@ ScanForConfigs(cur){
 		}
 	}
 	Return [opt,cnt]
+}
+getISO8601(){
+	Return SubStr(A_NowUTC,1,4) "-"SubStr(A_NowUTC,5,2) "-"SubStr(A_NowUTC,7,2) "T"SubStr(A_NowUTC,9,2) ":"SubStr(A_NowUTC,11,2) ":"SubStr(A_NowUTC,13,2) "Z"
 }
 UpdateTask(t){
 	GuiControl,Text,TTask,%t%
@@ -101,7 +104,7 @@ SendStatus(st,info:=0){
 	Global UseWebhook,WebhookURL,NotifyOnFailsafe,runtime2,SendScreenshot,FishBarLeft,FishBarRight,SellButtonBottom,FishBarTop,SendFishScreenshot,ScreenshotDelay
 	If UseWebhook&&StrLen(WebhookURL)>100{
 		payload:=""
-		FormatTime,ct,,hh:mm:ss
+		ct:=getISO8601()
 		elapsed:=GetTime(runtime2)
 		req:=ComObjCreate("WinHttp.WinHttpRequest.5.1")
 		req.Option(9):=2048
@@ -110,11 +113,11 @@ SendStatus(st,info:=0){
 		req.SetRequestHeader("Content-Type","application/json")
 		Switch st
 		{
-		case 0: req.Send("{""embeds"":[{""color"":5066239,""fields"":[],""title"":""Starting UI"",""footer"":{""text"":"""ct """}}]}")
-		case 1: req.Send("{""embeds"":[{""color"":65280,""fields"":[],""title"":""Starting Macro"",""footer"":{""text"":"""ct """}}]}")
+		case 0: req.Send("{""embeds"":[{""color"":5066239,""fields"":[],""title"":""Starting UI"",""timestamp"": """ct """}]}")
+		case 1: req.Send("{""embeds"":[{""color"":65280,""fields"":[],""title"":""Starting Macro"",""timestamp"": """ct """}]}")
 		case 2:
 			tc:=info[1]
-			req.Send("{""embeds"":[{""color"":16711680,""fields"":[{""name"":""Runtime"",""value"": """elapsed """},{""name"":""Total Catches"",""value"":"""tc """}],""title"":""Exiting Macro"",""footer"":{""text"":"""ct """}}]}")
+			req.Send("{""embeds"":[{""color"":16711680,""fields"":[{""name"":""Runtime"",""value"": """elapsed """},{""name"":""Total Catches"",""value"":"""tc """}],""title"":""Exiting Macro"",""timestamp"": """ct """}]}")
 		case 3:
 			fc:=info[1]
 			fl:=info[2]
@@ -127,24 +130,24 @@ SendStatus(st,info:=0){
 				Sleep %ScreenshotDelay%
 				CameraMode(False)
 				Sleep %ScreenshotDelay%
-				CS2DC(FishBarLeft,SellButtonBottom,FishBarRight,FishBarTop,"{""embeds"":[{""color"":15258703,""image"":{""url"":""attachment://screenshot.png""},""fields"":[{""name"":""Catch Rate"",""value"":"""ratio """},{""name"":""Fish was "(s?"Caught!":"Lost.") """,""value"":"""caught """},{""name"":""Runtime"",""value"": """elapsed """}],""footer"":{""text"":"""ct """}}]}")
+				CS2DC(FishBarLeft,SellButtonBottom,FishBarRight,FishBarTop,"{""embeds"":[{""color"":15258703,""image"":{""url"":""attachment://screenshot.png""},""fields"":[{""name"":""Catch Rate"",""value"":"""ratio """},{""name"":""Fish was "(s?"Caught!":"Lost.") """,""value"":"""caught """},{""name"":""Runtime"",""value"": """elapsed """}],""timestamp"": """ct """}]}")
 				Sleep %ScreenshotDelay%
 				CameraMode(True)
 			}Else
-				req.Send("{""embeds"":[{""color"":15258703,""fields"":[{""name"":""Catch Rate"",""value"":"""ratio """},{""name"":""Fish was "(s?"Caught!":"Lost.") """,""value"":"""caught """},{""name"":""Runtime"",""value"": """elapsed """}],""footer"":{""text"":"""ct """}}]}")
+				req.Send("{""embeds"":[{""color"":15258703,""fields"":[{""name"":""Catch Rate"",""value"":"""ratio """},{""name"":""Fish was "(s?"Caught!":"Lost.") """,""value"":"""caught """},{""name"":""Runtime"",""value"": """elapsed """}],""timestamp"": """ct """}]}")
 		case 4:
 			FailsafeMessage:=info[1]
 			Occurences:=info[2]
 			If NotifyOnFailsafe
-				req.Send("{""embeds"":[{""title"":""Failsafe Triggered! ("Occurences ")"",""description"":"""FailsafeMessage """,""color"":0,""fields"":[],""footer"":{""text"":"""ct """}}]}")
+				req.Send("{""embeds"":[{""title"":""Failsafe Triggered! ("Occurences ")"",""description"":"""FailsafeMessage """,""color"":0,""fields"":[],""timestamp"": """ct """}]}")
 		case 5:
 			lvl:=info[1]
-			req.Send("{""embeds"":[{""color"":4848188,""fields"":[{""name"":""Level Up"",""value"": ""You are now level "lvl """}],""footer"":{""text"":"""ct """}}]}")
+			req.Send("{""embeds"":[{""color"":4848188,""fields"":[{""name"":""Level Up"",""value"": ""You are now level "lvl """}],""timestamp"": """ct """}]}")
 		}
 	}
 }
 Wait(ms){
-	DllCall("Sleep",uint,Max(.05,ms))
+	DllCall("Sleep",uint,Max(.025,ms))
 }
 CaptureScreen(path,x,y,w,h){
 	If !pT:=Gdip_Startup()

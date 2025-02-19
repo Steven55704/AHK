@@ -1,4 +1,4 @@
-;21
+;22
 #Include ..\main.ahk
 Track:
 	If GetFishPos()||Seraphic{
@@ -16,7 +16,8 @@ Track:
 				BX:=GetBarPos()
 				DR:=MaxLeftToggle?"<":">"
 				Tooltip,%DR%,%BX%,%ToolTipY%,2
-			}
+			}Else
+				Tooltip,|,%BarX%,%ToolTipY%,2
 		}
 	}
 Return
@@ -80,10 +81,11 @@ BarMinigame:
 	}
 	GetBarPos(){
 		Global FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,BarColor1,BarColor2,ArrowColor,HalfBarSize
-		PixelSearch,TBX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,BarColor1,1,Fast
+		Alw:=HalfBarSize*.8
+		PixelSearch,TBX,,FishBarLeft,FishBarTop,FishBarRight-Alw,FishBarBottom,BarColor1,2,Fast
 		If !ErrorLevel
 			Return Max(FishBarLeft,Min(FishBarRight,TBX+HalfBarSize))
-		PixelSearch,AX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,ArrowColor,0,Fast
+		PixelSearch,AX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,ArrowColor,2,Fast
 		If !ErrorLevel{
 			PixelGetColor,UC,AX+25,FishBarTop+3
 			If(UC=FishColor)
@@ -92,7 +94,7 @@ BarMinigame:
 			If !ErrorLevel
 				Return Max(FishBarLeft,Min(FishBarRight,TBX+HalfBarSize))
 		}
-		PixelSearch,TBX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,BarColor2,0,Fast
+		PixelSearch,TBX,,FishBarLeft,FishBarTop,FishBarRight-Alw,FishBarBottom,BarColor2,0,Fast
 		If !ErrorLevel
 			Return Max(FishBarLeft,Min(FishBarRight,TBX+HalfBarSize))
 	}
@@ -112,7 +114,7 @@ BarMinigame:
 	Goto MinigameLoop
 Return
 MinigameLoop:
-	Wait(1)
+	Sleep 1
 	If !FishX:=GetFishPos(){
 		Seraphic:=SeraphicTrackerV1()
 		MaxLeftToggle:=False
@@ -152,18 +154,15 @@ MinigameLoop:
 		MaxLeftToggle:=False
 		MaxRightToggle:=False
 		If BarX:=GetBarPos(){
-			If ShowTooltips
-				Tooltip,|,%BarX%,%ToolTipY%,2
-			DST:=Abs(BarX-FishX)
-			If(DST<HalfBarSize*.2)
+			If(Abs(BarX-FishX)<HalfBarSize*.45)
 				Stabilize()
-			If(BarX<=FishX){
+			If((BarX:=GetBarPos())<=FishX){
 				Difference:=Scale(FishX-BarX)*ResolutionScaling*RightMult
 				CounterDifference:=Difference/RightDiv
 				Send {LButton down}
 				If(DirectionalToggle=="Left"){
 					Send {LButton down}
-					Wait(Min(MAD,AnkleBreakDelay))
+					;Wait(Min(MAD,AnkleBreakDelay))
 					AnkleBreakDelay:=0
 				}Else{
 					AnkleBreakDelay:=AnkleBreakDelay+(Difference-CounterDifference)*RightAnkleMult
@@ -212,16 +211,15 @@ MinigameLoop:
 		Sleep RestartDelay/2
 		If UseWebhook{
 			If(!WasFishCaught&&SendScreenshotFL)||(WasFishCaught&&Mod(CatchCount,ImgNotifEveryN)=0&&NotifyImg){
-				FormatTime,ct,,hh:mm:ss
 				ratio:=FishCaught " / "FishLost " ("RegExReplace(FishCaught/CatchCount*100,"(?<=\.\d{3}).*$") "%)"
 				dur:=RegExReplace(Duration,"(?<=\.\d{3}).*$")
 				caught:=WasFishCaught?"Fish took "dur "s to catch.":"Spent "dur "s trying to catch the fish."
-				CS2DC(0,0,A_ScreenWidth,A_ScreenHeight,"{""embeds"":[{""image"":{""url"":""attachment://screenshot.png""},""color"":15258703,""fields"":[{""name"":""Catch Rate"",""value"":"""ratio """},{""name"":""Fish was "(WasFishCaught?"Caught!":"Lost.") """,""value"":"""caught """},{""name"":""Runtime"",""value"": """GetTime(runtime2) """}],""footer"":{""text"":"""ct """}}]}")
+				CS2DC(0,0,A_ScreenWidth,A_ScreenHeight,"{""embeds"":[{""image"":{""url"":""attachment://screenshot.png""},""color"":15258703,""fields"":[{""name"":""Catch Rate"",""value"":"""ratio """},{""name"":""Fish was "(WasFishCaught?"Caught!":"Lost.") """,""value"":"""caught """},{""name"":""Runtime"",""value"": """GetTime(runtime2) """}],""timestamp"":"""getISO8601() """}]}")
 			}Else If(Mod(CatchCount,NotifEveryN)=0)
 				If(!SendFishWhenTimeOn||(SendFishWhenTimeOn&&Duration>=SendFishWhenTimeValue))
 					SendStatus(3,[FishCaught,FishLost,Duration,WasFishCaught])
 			If(LvlUpMode!="Off"&&Mod(CatchCount,CheckLvlEveryN)=0)
-				Gosub CheckStatistics
+				Gosub CheckStats
 		}
 		Sleep RestartDelay/2
 		If(AutoSell&&Mod(CatchCount,AutoSellInterval)=0)
@@ -231,26 +229,25 @@ MinigameLoop:
 		Goto RestartMacro
 	}
 Return
-CheckStatistics:
+CheckStats:
 	CameraMode(False)
 	Sleep 200
 	x:=WW-455
 	WinMove,%GuiTitle%,,%x%,0
-	Sleep 500
+	Sleep 300
 	If !CaptureScreen("capture.png",LvlCheckLeft,LvlCheckTop,LvlCheckRight-LvlCheckLeft,LvlCheckBottom-LvlCheckTop)
 		RunWait,% TesseractPath " ""capture.png"" ""capture.png_out""",,Hide
 	FileRead,lvl,capture.png_out.txt
 	FileDelete,capture.png
 	FileDelete,capture.png_out.txt
 	lvl:=RegExReplace(lvl,"[^0-9]")
-	FormatTime,ct,,hh:mm:ss
 	If(lvl!=""&&lvl!=LastLvl){
 		LastLvl:=lvl
 		Gosub SaveSettings
 		If(LvlUpMode=="Txt")
 			SendStatus(5,[lvl])
 		Else
-			CS2DC(LvlCheckLeft,LvlCheckTop,LvlCheckRight,LvlCheckBottom,"{""embeds"":[{""image"":{""url"":""attachment://screenshot.png""},""color"":4848188,""title"":""Level Up"",""footer"":{""text"":"""ct """}}]}")
+			CS2DC(LvlCheckLeft,LvlCheckTop,LvlCheckRight,LvlCheckBottom,"{""embeds"":[{""image"":{""url"":""attachment://screenshot.png""},""color"":4848188,""title"":""Level Up"",""timestamp"":"""getISO8601() """}]}")
 	}
 	Gosub MoveGui
 	Sleep 250
@@ -276,7 +273,7 @@ SellFish:
 	Click %SellPosX%,%SellPosY%
 	SellingStart:=A_TickCount
 	EmStop:=False
-	SetTimer,Failsafe4,100
+	SetTimer,Failsafe4,250
 	Sleep 1200
 	Send {``}
 	Loop{
@@ -287,9 +284,8 @@ SellFish:
 			Break
 	}
 	Sleep 200
-	FormatTime,ct,,hh:mm:ss
 	If UseWebhook&&SendSellProfit&&!EmStop
-		CS2DC(SellProfitLeft,SellProfitTop,SellProfitRight,SellProfitBottom,"{""embeds"":[{""image"":{""url"":""attachment://screenshot.png""},""color"":6607177,""title"":""Money Gained"",""footer"":{""text"":"""ct """}}]}")
+		CS2DC(SellProfitLeft,SellProfitTop,SellProfitRight,SellProfitBottom,"{""embeds"":[{""image"":{""url"":""attachment://screenshot.png""},""color"":6607177,""title"":""Money Gained"",""timestamp"": """getISO8601() """}]}")
 	Gosub MoveGui
 	Sleep 250
 	WinActivate,Roblox

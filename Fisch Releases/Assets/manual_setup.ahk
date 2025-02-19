@@ -1,4 +1,4 @@
-;13
+;14
 #Include ..\main.ahk
 CreateBound(n,x1,y1,x2,y2){
 	colors:={CameraCheck:"Yellow",FishBar:"Lime",ProgBar:"Red",LvlCheck:"Blue",SellProfit:"Aqua",CameraMode:"Fuchsia",SellButton:"Navy"}
@@ -32,16 +32,16 @@ Calculations:
 	If msng{
 		WriteBnd("Left",0.2981543095*WW,"FishBar")
 		WriteBnd("Right",0.7018456905*WW,"FishBar")
-		WriteBnd("Top",0.882456064*WH+8.817548288,"FishBar")
-		WriteBnd("Bottom",0.925090417*WH-6.655244186,"FishBar")
+		WriteBnd("Top",0.8437251366*WH,"FishBar")
+		WriteBnd("Bottom",0.8695706519*WH,"FishBar")
 	}
 	ReadBnd(tmp,"Top","ProgBar")
 	msng:=!tmp
 	If msng{
 		WriteBnd("Left",0.391298225298586024*WW,"ProgBar")
 		WriteBnd("Right",0.608701774701413976*WW,"ProgBar")
-		WriteBnd("Top",0.9890419465*WH-31.364432897,"ProgBar")
-		WriteBnd("Bottom",1.000522078523626678*WH-36.030280554370347324,"ProgBar")
+		WriteBnd("Top",0.906723864247629459*WH,"ProgBar")
+		WriteBnd("Bottom",0.912658193867388538*WH,"ProgBar")
 	}
 	ReadBnd(tmp,"Top","LvlCheck")
 	msng:=!tmp
