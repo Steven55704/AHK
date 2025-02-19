@@ -6,7 +6,7 @@
 #HotkeyInterval 1
 SetWinDelay,-1
 If !(A_IsUnicode=1&&A_PtrSize=4){
-	MsgBox,64,,Running AutoHotkeyU32,2
+	MsgBox,64,,Running AutoHotkeyU32,1
 	SplitPath,A_AhkPath,,dir
 	Run,%dir%\AutoHotkeyU32.exe "%A_ScriptFullPath%" 
 	ExitApp
@@ -29,7 +29,7 @@ CoordMode,Pixel,Relative
 CoordMode,Mouse,Relative
 #Include %A_ScriptDir%\Lib
 #Include Gdip_All.ahk
-BuildNum:=29
+BuildNum:=30
 GuiTitle=Fisch V1.4.%BuildNum% by 0x3b5
 DirPath:=A_ScriptDir
 LibPath:=DirPath "\Lib"
@@ -259,6 +259,8 @@ GuiRuntime:
 	GuiControl,Text,TFC,% FishCaught " / "FishLost " ("RegExReplace(FishCaught/CatchCount*100,"(?<=\.\d{3}).*$") "%)"
 Return
 ReloadMacro:
+	If(FishCaught>0)
+		SendStatus(2,[FishCaught])
 	Reload
 Return
 ExitMacro:
@@ -320,6 +322,7 @@ StartMacro:
 	Goto RestartMacro
 Return
 RestartMacro:
+	WinActivate,Roblox
 	If(FarmLocation=="cryo"&&!cryoCanal.CF){
 		UpdateTask("Current Task: Walking To Cryogenic Canal")
 		Click 0,500
