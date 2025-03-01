@@ -1,4 +1,4 @@
-;17
+;18
 #Include ..\main.ahk
 ImportMinigameConfig(name){
 	Global MGPath
@@ -60,37 +60,36 @@ ErrorMsg(t,m){
 Chkd(b){
 	Return b?"Checked":""
 }
-getCameraState(){
-	EnvGet,LAD,LocalAppData
-	logPath:=LAD "\Roblox\logs"
-	t:=0
-	file:=""
-	Loop,%logPath%\*.log{
-		If((ct:=A_LoopFileTimeModified)>=t&&SubStr(A_LoopFileName,-7,4)="last"){
-			t:=ct
-			file:=A_LoopFileFullPath
-		}
-	}
-	FileRead,state,%file%
-	state:=SubStr(state,InStr(state,"setting cinematic mode to ",False,0),32)
-	Return InStr(state,"true")>0
-}
-CameraMode(t){
-	Global AutoCameraDelay,CameraModeX,CameraModeY
-	Sleep AutoCameraDelay
-	If getCameraState()!=t
-		Click %CameraModeX%,%CameraModeY%
-	Sleep AutoCameraDelay
-}
-;leaving this here incase they remove the debugger
+;getCameraState(){
+;	EnvGet,LAD,LocalAppData
+;	logPath:=LAD "\Roblox\logs"
+;	t:=0
+;	file:=""
+;	Loop,%logPath%\*.log{
+;		If((ct:=A_LoopFileTimeModified)>=t&&SubStr(A_LoopFileName,-7,4)="last"){
+;			t:=ct
+;			file:=A_LoopFileFullPath
+;		}
+;	}
+;	FileRead,state,%file%
+;	state:=SubStr(state,InStr(state,"setting cinematic mode to ",False,0),32)
+;	Return InStr(state,"true")>0
+;}
 ;CameraMode(t){
-;	Global AutoCameraDelay,CameraCheckLeft,CameraCheckTop,CameraCheckRight,CameraCheckBottom,CameraModeX,CameraModeY
+;	Global AutoCameraDelay,CameraModeX,CameraModeY
 ;	Sleep AutoCameraDelay
-;	PixelSearch,,,CameraCheckLeft,CameraCheckTop,CameraCheckRight,CameraCheckBottom,0xFFFFFF,0,Fast
-;	If !ErrorLevel=t
+;	If getCameraState()!=t
 ;		Click %CameraModeX%,%CameraModeY%
 ;	Sleep AutoCameraDelay
 ;}
+CameraMode(t){
+	Global AutoCameraDelay,CameraCheckLeft,CameraCheckTop,CameraCheckRight,CameraCheckBottom,CameraModeX,CameraModeY
+	Sleep AutoCameraDelay
+	PixelSearch,,,CameraCheckLeft,CameraCheckTop,CameraCheckRight,CameraCheckBottom,0xFFFFFF,0,Fast
+	If !ErrorLevel=t
+		Click %CameraModeX%,%CameraModeY%
+	Sleep AutoCameraDelay
+}
 FetchInstructions(){
 	req:=ComObjCreate("WinHttp.WinHttpRequest.5.1")
 	req.Option(9):=2048
