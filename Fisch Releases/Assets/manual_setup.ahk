@@ -1,7 +1,7 @@
-;14
+;15
 #Include ..\main.ahk
 CreateBound(n,x1,y1,x2,y2){
-	colors:={CameraCheck:"Yellow",FishBar:"Lime",ProgBar:"Red",LvlCheck:"Blue",SellProfit:"Aqua",CameraMode:"Fuchsia",SellButton:"Navy"}
+	colors:={CameraCheck:"Yellow",FishBar:"Lime",ProgBar:"Red",LvlCheck:"Blue",SellProfit:"Aqua",CameraMode:"Fuchsia",SellButton:"Navy",Bar:"Gray"}
 	w:=x2-x1
 	h:=y2-y1
 	Gui %n%:Destroy
@@ -33,7 +33,7 @@ Calculations:
 		WriteBnd("Left",0.2981543095*WW,"FishBar")
 		WriteBnd("Right",0.7018456905*WW,"FishBar")
 		WriteBnd("Top",0.8437251366*WH,"FishBar")
-		WriteBnd("Bottom",0.8695706519*WH,"FishBar")
+		WriteBnd("Bottom",0.8694532453*WH,"FishBar")
 	}
 	ReadBnd(tmp,"Top","ProgBar")
 	msng:=!tmp

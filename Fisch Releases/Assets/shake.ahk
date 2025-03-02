@@ -19,10 +19,11 @@ CShakeMode:
 			SetTimer,Failsafe1,Off
 			Goto BarMinigame
 		}Else{
-			PixelSearch,ClickX,ClickY,CShakeRight,CShakeTop,CShakeLeft,CShakeBottom,0xFFFFFF,2,Fast
+			PixelSearch,ClickX,ClickY,CShakeRight,CShakeBottom,CShakeLeft,CShakeTop,0xFFFFFF,2,Fast
 			If !ErrorLevel{
 				If(ClickX!=MemoryX&&ClickY!=MemoryY){
 					CShakeRepeatBypassCounter:=0
+					Wait(15)
 					MouseClick,L,ClickX,ClickY
 					MemoryX:=ClickX
 					MemoryY:=ClickY

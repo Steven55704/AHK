@@ -1,4 +1,4 @@
-;18
+;19
 #Include ..\main.ahk
 ImportMinigameConfig(name){
 	Global MGPath
@@ -30,6 +30,9 @@ ScanForConfigs(cur){
 }
 getISO8601(){
 	Return SubStr(A_NowUTC,1,4) "-"SubStr(A_NowUTC,5,2) "-"SubStr(A_NowUTC,7,2) "T"SubStr(A_NowUTC,9,2) ":"SubStr(A_NowUTC,11,2) ":"SubStr(A_NowUTC,13,2) "Z"
+}
+ZTrim(N){
+	Return RegExReplace(N,"\.0*$|(\.\d*?)0*$","$1")
 }
 UpdateTask(t){
 	GuiControl,Text,TTask,%t%
