@@ -1,4 +1,4 @@
-;17
+;18
 #Include ..\main.ahk
 InitGui:
 	If !FileExist(LogoPath)
@@ -212,7 +212,7 @@ InitGui:
 	Gui Add,Text,x6 y+4 w257 h14,Gui, modified minigame, polishing, and webhook by me.
 	Gui Add,Text,x6 y+4 w257 h14,Image webhook provided by @lunarosity, embed by me.
 	Gui Add,Text,x6 y+4 w257 h14,Themes and Lvl checker provided by @toxgt
-	Gui Add,Text,x6 y+4 w257 h14,Accurate Camera mode by @b0red_man
+	Gui Add,Text,x6 y+4 w270 h14,Accurate Camera mode(sadly patched) by @b0red_man
 	Gui Add,Text,x6 y+4 w257 h14,Fish image webhook by @b0red_man
 	Gui Add,Text,x6 y+4 w257 h14,Logo design by @grubrescue
 	Gui Add,Link,x6 y+4 w252 h14,Check out my <a href="https://github.com/LopenaFollower">GitHub</a> and <a href="https://discord.gg/Fh5rmgg27X">Discord Server</a>
