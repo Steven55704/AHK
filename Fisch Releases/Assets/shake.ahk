@@ -1,4 +1,4 @@
-;10
+;11
 #Include ..\main.ahk
 CShakeMode:
 	FailsafeCount:=0
