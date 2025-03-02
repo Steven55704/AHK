@@ -28,7 +28,7 @@ SetControlDelay,-1
 SetTitleMatchMode 2
 #Include %A_ScriptDir%\Lib
 #Include Gdip_All.ahk
-BuildNum:=31
+BuildNum:=32
 GuiTitle=Fisch V1.4.%BuildNum% by 0x3b5
 DirPath:=A_ScriptDir
 LibPath:=DirPath "\Lib"
@@ -324,6 +324,12 @@ StartMacro:
 Return
 RestartMacro:
 	WinActivate,Roblox
+	If AutoBlurShake{
+		UpdateTask("Current Task: Blur Camera")
+		Sleep 500
+		Send {``}
+		Sleep AutoBlurDelay
+	}
 	If(FarmLocation=="cryo"&&!cryoCanal.CF){
 		UpdateTask("Current Task: Walking To Cryogenic Canal")
 		Click 0,500
@@ -418,12 +424,6 @@ RestartMacro:
 	Sleep RodCastDuration-RCD+CastRandomization
 	Send {LButton up}
 	Sleep WaitForBobber
-	If AutoBlurShake{
-		UpdateTask("Current Task: Blur Camera")
-		Sleep AutoBlurDelay
-		Send {``}
-		Sleep AutoBlurDelay
-	}
 	UpdateTask("Current Task: Shake")
 	If(ShakeMode=="Click")
 		Goto CShakeMode
@@ -472,7 +472,7 @@ backUp:
 	cryoCanal.CF:=False
 	Sleep 200
 	If AutoBlurMinigame
-		Send m
+		Send {``}
 	CameraMode(False)
 	Sleep 150	
 	If buyConch{
