@@ -1,4 +1,4 @@
-;22
+;23
 #Include ..\main.ahk
 Track:
 	If GetFishPos()||Seraphic{
@@ -12,19 +12,17 @@ Track:
 		}
 		If ShowTooltips{
 			Tooltip,p,%ProgressX%,%ToolTipY%,3
+			BX:=GetBarPos()
 			If MaxLeftToggle||MaxRightToggle{
-				BX:=GetBarPos()
 				DR:=MaxLeftToggle?"<":">"
 				Tooltip,%DR%,%BX%,%ToolTipY%,2
 			}Else
-				Tooltip,|,%BarX%,%ToolTipY%,2
+				Tooltip,|,%BX%,%ToolTipY%,2
 		}
 	}
 Return
 BarMinigame:
 	Sleep 700
-	If AutoBlurMinigame
-		Send m
 	ForceReset:=False
 	BarCalcFailsafeCounter:=0
 	SetTimer,Failsafe2,1000
@@ -57,6 +55,8 @@ BarMinigame:
 				Break
 		}
 	}
+	If AutoBlurMinigame
+		Send {``}
 	UpdateTask("Current Task: Bar Minigame")
 	HalfBarSize:=WhiteBarSize/2
 	SideDelay:=0
@@ -85,12 +85,12 @@ BarMinigame:
 		PixelSearch,TBX,,FishBarLeft,FishBarTop,FishBarRight-Alw,FishBarBottom,BarColor1,2,Fast
 		If !ErrorLevel
 			Return Max(FishBarLeft,Min(FishBarRight,TBX+HalfBarSize))
-		PixelSearch,AX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,ArrowColor,2,Fast
+		PixelSearch,AX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,ArrowColor,1,Fast
 		If !ErrorLevel{
 			PixelGetColor,UC,AX+25,FishBarTop+3
 			If(UC=FishColor)
 				PixelGetColor,UC,AX-25,FishBarTop+3
-			PixelSearch,TBX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,UC,0,Fast
+			PixelSearch,TBX,,FishBarLeft,FishBarTop,FishBarRight,FishBarBottom,UC,5,Fast
 			If !ErrorLevel
 				Return Max(FishBarLeft,Min(FishBarRight,TBX+HalfBarSize))
 		}
