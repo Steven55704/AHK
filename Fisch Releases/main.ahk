@@ -28,9 +28,11 @@ SetControlDelay,-1
 SetTitleMatchMode 2
 #Include %A_ScriptDir%\Lib
 #Include Gdip_All.ahk
-BuildNum:=32
+BuildNum:=33
 GuiTitle=Fisch V1.4.%BuildNum% by 0x3b5
 DirPath:=A_ScriptDir
+WW:=A_ScreenWidth
+WH:=A_ScreenHeight
 LibPath:=DirPath "\Lib"
 DllCall("LoadLibrary","Str",LibPath "\SkinHu.dll")
 MGPath:=DirPath "\Minigame"
@@ -52,14 +54,16 @@ If !FileExist(DefMGPath)
 If !FileExist(VersionPath)
 	FileAppend,1.4 %BuildNum%,%VersionPath%
 IniRead,curVer,%SettingsPath%,.,v
-configVer:="14"
+configVer:="15"
 If(curVer!=configVer){
 	Gosub DefaultSettings
 	IniWrite,%configVer%,%SettingsPath%,.,v
 }
+ReadGen(BarControl,"Control")
 ReadGen(ShakeMode,"ShakeMode")
 ReadGen(NavigationKey,"NavKey")
 ReadGen(ShakeDelay,"ShakeDelay")
+ReadGen(ShakeFailsafe,"ShakeFailsafe")
 ReadGen(ShakeOnly,"ShakeOnly")
 ReadGen(StartHotkey,"StartHotkey")
 ReadGen(ReloadHotkey,"ReloadHotkey")
@@ -127,7 +131,6 @@ Scale(x){
 	Return Coefficient*x**Exponent
 }
 LeftDeviation:=50
-ShakeFailsafe:=15
 BarDetectionFailsafe:=3
 FailsInARow:=0
 RepeatBypassLimit:=2
@@ -136,7 +139,7 @@ BarColor2:=0xF1F1F1
 BarCalcColor:=0xF0F0F0
 ArrowColor:=0x878584
 FishColor:=0x5B4B43
-ManualBarSize:=0
+ManualBarSize:=(BarControl="auto")?0:0.403691381*WW*(0.3+BarControl)
 Test1:=0
 Test2:=0
 MSD:=250
@@ -151,8 +154,6 @@ cryoCanal:={CF:False}
 XOdebounce:=True
 SelectedBound:=""
 boundNames:=["CameraCheck","FishBar","ProgBar","LvlCheck","SellProfit","CameraMode","SellButton"]
-WW:=A_ScreenWidth
-WH:=A_ScreenHeight
 instructions:=FetchInstructions()
 SetTimer,GuiRuntime,1000
 Gosub Calculations
@@ -164,9 +165,11 @@ Hotkey % "$"ExitHotkey,ExitMacro
 SendStatus(0)
 Return
 DefaultSettings:
+	RtrvGen("Control","Auto")
 	RtrvGen("ShakeMode","Click")
 	RtrvGen("NavKey","\")
 	RtrvGen("ShakeDelay",35)
+	RtrvGen("ShakeFailsafe",15)
 	RtrvGen("ShakeOnly",0)
 	RtrvGen("StartHotkey","F1")
 	RtrvGen("ReloadHotkey","F2")
@@ -208,10 +211,12 @@ DefaultSettings:
 	RtrvGen("ShowTooltips",0)
 Return
 SaveSettings:
+	WriteGen("Control",BarControl)
 	WriteGen("ShakeMode",ShakeMode)
 	WriteGen("NavKey",NavigationKey)
 	WriteGen("ShakeDelay",ShakeDelay)
 	WriteGen("ShakeOnly",ShakeOnly)
+	WriteGen("ShakeFailsafe",ShakeFailsafe)
 	WriteGen("StartHotkey",StartHotkey)
 	WriteGen("ReloadHotkey",ReloadHotkey)
 	WriteGen("ExitHotkey",ExitHotkey)
@@ -279,7 +284,9 @@ MoveGui:
 Return
 StartMacro:
 	WinActivate,Roblox
-	WinMaximize,Roblox
+	WinMaximize,
+	Gosub HideBounds
+	Gosub HideBar
 	SendStatus(1)
 	Sleep 150
 	Gosub MoveGui
