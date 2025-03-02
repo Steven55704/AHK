@@ -124,7 +124,7 @@ Coefficient:=curMGConfig[9]
 Exponent:=curMGConfig[10]
 Scale(x){
 	Global Coefficient,Exponent
-	Return 620/(1+Exp(0.00548693*x-4.91287))
+	Return Coefficient*x**Exponent
 }
 LeftDeviation:=50
 ShakeFailsafe:=15
