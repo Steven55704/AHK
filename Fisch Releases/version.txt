@@ -1,6 +1,6 @@
-1.4 31
+1.4 32
 shake.ahk - 10
-minigame.ahk - 22
+minigame.ahk - 23
 gui.ahk - 18
 manual_setup.ahk - 14
 other.ahk - 18
