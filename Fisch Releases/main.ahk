@@ -6,6 +6,9 @@
 #MaxHotkeysPerInterval 256
 #HotkeyInterval 1
 SetWinDelay,-1
+
+; -------------------------------- Roblox Checker --------------------------------
+
 If !(A_IsUnicode=1&&A_PtrSize=4){
 	MsgBox,64,,Running AutoHotkeyU32,1
 	SplitPath,A_AhkPath,,dir
@@ -19,6 +22,9 @@ If WinActive("Roblox"){
 	Send {RButton up}
 	Send {Shift up}
 }
+
+; -------------------------------- Divider --------------------------------
+
 SetKeyDelay,-1
 SetMouseDelay,-1
 SetBatchLines,-1
@@ -28,7 +34,7 @@ SetControlDelay,-1
 SetTitleMatchMode 2
 #Include %A_ScriptDir%\Lib
 #Include Gdip_All.ahk
-BuildNum:=33
+BuildNum:=35
 GuiTitle=Fisch V1.4.%BuildNum% by 0x3b5
 DirPath:=A_ScriptDir
 WW:=A_ScreenWidth
@@ -74,6 +80,11 @@ ReadGen(AutoLookDownCamera,"LookDown")
 ReadGen(AutoBlurShake,"BlurShake")
 ReadGen(AutoBlurMinigame,"BlurMinigame")
 ReadGen(ShutdownAfterFailLimit,"ShutdownAfterFailLimit")
+ReadGen(GraphicsDelay,"GraphicsDelay")
+ReadGen(ZoomDelay,"ZoomDelay")
+ReadGen(LookDelay,"LookDelay")
+ReadGen(BlurDelay,"BlurDelay")
+ReadGen(FailLimit,"FailLimit")
 ReadGen(PrivateServer,"PrivateServer")
 ReadGen(RestartDelay,"RestartDelay")
 ReadGen(RodCastDuration,"CastDelay")
@@ -215,8 +226,8 @@ SaveSettings:
 	WriteGen("ShakeMode",ShakeMode)
 	WriteGen("NavKey",NavigationKey)
 	WriteGen("ShakeDelay",ShakeDelay)
-	WriteGen("ShakeOnly",ShakeOnly)
 	WriteGen("ShakeFailsafe",ShakeFailsafe)
+	WriteGen("ShakeOnly",ShakeOnly)
 	WriteGen("StartHotkey",StartHotkey)
 	WriteGen("ReloadHotkey",ReloadHotkey)
 	WriteGen("ExitHotkey",ExitHotkey)

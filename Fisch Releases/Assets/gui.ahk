@@ -8,8 +8,11 @@ InitGui:
 	}Catch e{
 		MsgBox,16,,iamangrybird detected,1
 	}
+
 	Gui -MinimizeBox -MaximizeBox +AlwaysOnTop
 	Gui Add,Tab3,vTabs x0 y0 w450 h176,Info|Main|Webhook|Minigame|Locations|Misc|Manual Setup|Credits
+
+	; -------------------------------- TAB Info --------------------------------
 	Gui Tab,1
 	Gui Font,s10
 	Gui Add,Text,x5 y22 w72 h16,Gui Runtime
@@ -22,76 +25,104 @@ InitGui:
 	Gui Add,Text,vTTask x5 y87 w162 h14,Current Task: Idle
 	Gui Font
 	Gui Add,Text,vTFC x5 y102 w100 h13,Fish Count: 0/0
-	Gui Add,Text,vSGM x5 y+2 w100 h13,
+
+	; -------------------------------- TAB Main --------------------------------
 	Gui Tab,2
+
+	; -------------------------------- TAB Main GROUP Shaking --------------------------------
 	Gui Font,w600
-	Gui Add,GroupBox,x2 y21 w140 h84,Shaking
+	Gui Add,GroupBox,x2 y21 w140 h100,Shaking
 	Gui Font
 	Gui Add,Text,x9 y35 w64 h13,Shake Mode:
 	Gui Add,Text,x9 y53 w75 h13,Navigation Key:
 	Gui Add,Text,x9 y70 w64 h13,Shake Delay:
-	Gui Add,Text,x9 y87 w58 h13,Shake Only:
-	ListVal:=(ShakeMode="click")?"Click||Navigation":"Click|Navigation||"
-	Gui Add,DropDownList,vDDSM gSubAll x74 y31 w65,%ListVal%
-	Gui Add,Edit,vNK gSubAll x85 y53 w54 h16,%NavigationKey%
-	Gui Add,Edit,vSD gSubAll x74 y70 w65 h16 Number,%ShakeDelay%
+	Gui Add,Text,x9 y87 w75 h13,Shake Failsafe:
+	Gui Add,Text,x9 y104 w58 h13,Shake Only:
+	ListVal:=(ShakeMode="click")?"Click||Nav":"Click|Nav||"
+	Gui Add,DropDownList,vDDSM gSubAll x93 y31 w46,%ListVal%
+	Gui Add,Edit,vNK gSubAll x107 y53 w32 h16,%NavigationKey%
+	Gui Add,Edit,vSD gSubAll x107 y70 w32 h16 Number,%ShakeDelay%
+	Gui Add,Edit,vSF gSubAll x107 y87 w32 h16 Number,%ShakeFailsafe%
 	SHO:=Chkd(ShakeOnly)
-	Gui Add,CheckBox,vCBSO gSubAll x125 y87 w13 h13 %SHO%,Shake Only:
+	Gui Add,CheckBox,vCBSO gSubAll x125 y104 w13 h13 %SHO%,Shake Only:
+
+	; -------------------------------- TAB Main GROUP Hotkeys --------------------------------
 	Gui Font,w600
-	Gui Add,GroupBox,x2 y104 w140 h71,Hotkeys
+	Gui Add,GroupBox,x2 y120 w140 h70,Hotkeys
 	Gui Font
-	Gui Add,Text,x9 y116 w67 h13,Start Fisching:
-	Gui Add,Text,x9 y136 w70 h13,Reload Macro:
-	Gui Add,Text,x9 y155 w54 h13,Exit Macro:
-	Gui Add,Hotkey,vCSHK gSubAll x81 y115 w57 h18,%StartHotkey%
-	Gui Add,Hotkey,vCRHK gSubAll x81 y134 w57 h18,%ReloadHotkey%
-	Gui Add,Hotkey,vCEHK gSubAll x81 y153 w57 h18,%ExitHotkey%
+	Gui Add,Text,x9 y134 w67 h13,Start Fisching:
+	Gui Add,Text,x9 y152 w70 h13,Reload Macro:
+	Gui Add,Text,x9 y170 w54 h13,Exit Macro:
+	Gui Add,Hotkey,vCSHK gSubAll x81 y132 w57 h18,%StartHotkey%
+	Gui Add,Hotkey,vCRHK gSubAll x81 y150 w57 h18,%ReloadHotkey%
+	Gui Add,Hotkey,vCEHK gSubAll x81 y168 w57 h18,%ExitHotkey%
+
+	; -------------------------------- TAB Main GROUP Options --------------------------------
 	Gui Font,w600
-	Gui Add,GroupBox,x144 y21 w134 h106,Options
+	Gui Add,GroupBox,x144 y21 w180 h106,Options
 	Gui Font
-	ALG:=Chkd(AutoLowerGraphics),AZC:=Chkd(AutoZoomInCamera),ALD:=Chkd(AutoLookDownCamera),ABlS:=Chkd(AutoBlurShake),ABlM:=Chkd(AutoBlurMinigame),ASF:=Chkd(ShutdownAfterFailLimit)
+	ALG:=Chkd(LowerGraphics),AZC:=Chkd(ZoomCamera),ALD:=Chkd(LookCamera),ABBRC:=Chkd(BlurCamera),ASF:=Chkd(ShutdownAfterFailLimit)
 	Gui Add,CheckBox,vCBLG gSubAll x148 y35 w96 h14 %ALG%,Lower Graphics
-	Gui Add,CheckBox,vCBZC gSubAll x148 y50 w98 h14 %AZC%,Zoom In Camera
-	Gui Add,CheckBox,vCBLD gSubAll x148 y65 w98 h14 %ALD%,Look Down
-	Gui Add,CheckBox,vCBBS gSubAll x148 y80 w104 h14 %ABlS%,Blur When Shake
-	Gui Add,CheckBox,vCBBM gSubAll x148 y95 w118 h14 %ABlM%,Blur When Minigame
-	Gui Add,CheckBox,vCBSF gSubAll x148 y110 w128 h14 %ASF%,ShutdownAfterFailLimit
+	Gui Add,CheckBox,vCBZC gSubAll x148 y53 w98 h14 %AZC%,Zoom In Camera
+	Gui Add,CheckBox,vCBLD gSubAll x148 y70 w128 h14 %ALD%,Look Down Camera
+	Gui Add,CheckBox,vCBBRC gSubAll x148 y87 w104 h14 %ABBRC%,Blur Camera
+	Gui Add,CheckBox,vCBSF gSubAll x148 y104 w136 h14 %ASF%,Shutdown After Fail Limit
+	Gui Add,Edit,vGD gSubAll x288 y33 w32 h16 Number,%GraphicsDelay%
+	Gui Add,Edit,vZD gSubAll x288 y51 w32 h16 Number,%ZoomDelay%
+	Gui Add,Edit,vLD gSubAll x288 y68 w32 h16 Number,%LookDelay%
+	Gui Add,Edit,vBD gSubAll x288 y85 w32 h16 Number,%BlurDelay%
+	Gui Add,Edit,vFL gSubAll x288 y102 w32 h16 Number,%FailLimit%
+
+	; -------------------------------- TAB Main GROUP Game --------------------------------
 	Gui Font,w600
 	Gui Add,GroupBox,x144 y126 w134 h48,Game
 	Gui Font
 	Gui Add,Button,gJG x152 y138 w120 h17,Join Game
 	Gui Add,Text,x148 y156 w41 h13,PS Link:
 	Gui Add,Edit,vPSL gSubAll x189 y155 w86 h16,%PrivateServer%
+
+	; -------------------------------- TAB Main GROUP Delays --------------------------------
 	Gui Font,w600
-	Gui Add,GroupBox,x280 y21 w168 h95,Delays
+	Gui Add,GroupBox,x326 y21 w168 h95,Delays
 	Gui Font
-	Gui Add,Text,x284 y36 w64 h14,Restart Delay
-	Gui Add,Text,x284 y56 w68 h14,Hold Rod Cast
-	Gui Add,Text,x284 y76 w94 h14,Cast Randomization
-	Gui Add,Text,x284 y96 w78 h14,Wait For Bobber
-	Gui Add,Edit,vDLRL gSubAll x387 y34 w58 h18 Number,%RestartDelay%
-	Gui Add,Edit,vDLHR gSubAll x387 y54 w58 h18 Number,%RodCastDuration%
-	Gui Add,Edit,vDLCR gSubAll x387 y74 w58 h18 Number,%CastRandomization%
-	Gui Add,Edit,vDLWB gSubAll x387 y94 w58 h18 Number,%WaitForBobber%
+	Gui Add,Text,x330 y36 w64 h14,Restart Delay
+	Gui Add,Text,x330 y56 w68 h14,Hold Rod Cast
+	Gui Add,Text,x330 y76 w94 h14,Cast Randomization
+	Gui Add,Text,x330 y96 w78 h14,Wait For Bobber
+	Gui Add,Edit,vDLRL gSubAll x433 y34 w58 h18 Number,%RestartDelay%
+	Gui Add,Edit,vDLHR gSubAll x433 y54 w58 h18 Number,%RodCastDuration%
+	Gui Add,Edit,vDLCR gSubAll x433 y74 w58 h18 Number,%CastRandomization%
+	Gui Add,Edit,vDLWB gSubAll x433 y94 w58 h18 Number,%WaitForBobber%
+	
+
+	; -------------------------------- TAB Main GROUP Settings --------------------------------
 	Gui Font,w600
-	Gui Add,GroupBox,x280 y115 w168 h60,Settings
+	Gui Add,GroupBox,x326 y115 w168 h60,Settings
 	Gui Font
-	Gui Add,Button,gSTRS x284 y130 w80 h26,Reset Settings
-	Gui Add,Button,gSTSV x366 y130 w80 h26,Save Settings
+	Gui Add,Button,gSTRS x330 y130 w80 h26,Reset Settings
+	Gui Add,Button,gSTSV x412 y130 w80 h26,Save Settings
 	ASS:=Chkd(AutosaveSettings)
-	Gui Add,CheckBox,vCBAS gSubAll x286 y158 w120 h14 %ASS%,Autosave Settings
+	Gui Add,CheckBox,vCBAS gSubAll x332 y158 w120 h14 %ASS%,Autosave Settings
+
+	; -------------------------------- TAB Webhook --------------------------------
 	Gui Tab,3
-	Gui Add,Text,x5 y24 w73 h14,Webhook URL
-	Gui Add,Edit,vWURL gSubAll x3 y36 w120 h21,%WebhookURL%
+
+	; -------------------------------- TAB Webhook GROUP Webhook URL --------------------------------
+	Gui Font,w600
+	Gui Add,GroupBox,x2 y21 w150 h153,Webhook URL
+	Gui Font
+	Gui Add,Edit,vWURL gSubAll x4 y36 w120 h21,%WebhookURL%
 	UWH:=Chkd(UseWebhook)
 	Gui Add,CheckBox,vCBWH gValidateWebhook x4 y59 w100 h14 %UWH%,Enable Webhook
 	Gui Add,Text,x4 y76 w56 h13,Notify every
-	Gui Add,Edit,vWHSK gSubAll x60 y74 w22 h18 Number,%NotifEveryN%
-	Gui Add,Text,x83 y76 w40 h13,catches.
+	Gui Add,Edit,vWHSK gSubAll x60 y74 w30 h18 Number,%NotifEveryN%
+	Gui Add,Text,x92 y76 w40 h13,catches.
 	NSI:=Chkd(NotifyImg)
 	Gui Add,CheckBox,vCBSI gSubAll x4 y92 w92 h14 %NSI%,Send Img every
-	Gui Add,Edit,vSIEN gSubAll x97 y91 w22 h18,%ImgNotifEveryN%
-	Gui Add,Text,x5 y106 w40 h13,catches.
+	Gui Add,Edit,vSIEN gSubAll x96 y90 w22 h18,%ImgNotifEveryN%
+	Gui Add,Text,x122 y92 w40 h13,catches.
+
+	; -------------------------------- TAB Webhook GROUP Options --------------------------------
 	Gui Font,w600
 	Gui Add,GroupBox,x125 y21 w322 h153,Options
 	Gui Font
@@ -113,6 +144,8 @@ InitGui:
 	Gui Add,CheckBox,vCBFTSO gSubAll x129 y155 h14 %SFWT%,Only Send if Catch Time < 
 	Gui Add,Edit,vCBFTSV gSubAll x275 y153 w26 h18 Number,%SendFishWhenTimeValue%
 	Gui Add,Text,x305 y155,seconds
+
+	; -------------------------------- TAB Minigame --------------------------------
 	Gui Tab,4
 	cnfgoptions:=ScanForConfigs(curMGFile)
 	Gui Add,DropDownList,vMGCF gMGCCF x2 y24 w100,% cnfgoptions[1]
@@ -150,16 +183,16 @@ InitGui:
 	Gui Add,Edit,vMGCO x198 y116 w52 h17 gNumberEdit,%Coefficient%
 	Gui Add,Edit,vMGXP x198 y136 w52 h17 gNumberEdit,%Exponent%
 	Gui Add,GroupBox,x255 y46 w192 h128, Misc
-	Gui Add,Text,x258 y59 w72 h14, Shake Failsafe
-	Gui Add,Edit,gSubAll vSHF x331 y56 w36 h18 Number,%ShakeFailsafe%
 	Gui Font,w600
 	Gui Add,Text,x258 y79 w96 h16, Manual Bar Size
 	Gui Font
-	Gui Add,Edit,gSubAll vBRC x294 y94 w36 h18,% ZTrim(BarControl)
+	Gui Add,Edit,gSubAll vBRC x331 y56 w36 h18,% ZTrim(BarControl)
 	Gui Add,Text,x258 y97 w36 h14,Control
 	Gui Add,Text,x333 y96 w133 h14,* Set to "Auto" for auto.
 	Gui Add,Button,gShowBar x260 y116 w80 h23,Visualize Bar
 	Gui Add,Button,gHideBar x+1 y116 w80 h23,Hide Bar
+
+	; -------------------------------- TAB Locations --------------------------------
 	Gui Tab,5
 	Gui Add,GroupBox,x2 y21 w223 h77,Cryogenic Canal
 	CFH:=Chkd(FarmLocation="cryo"),CBC:=Chkd(buyConch)
@@ -170,9 +203,11 @@ InitGui:
 	Gui Add,Text,x115 y55 w90 h14,Equip needed gear
 	Gui Add,Text,x115 y68 w106 h14,Use conch, face north
 	Gui Add,Text,x115 y81 w100 h14,Put conch at slot 9
+
+	; -------------------------------- TAB Misc --------------------------------
 	Gui Tab,6
 	AOT:=Chkd(GuiAlwaysOnTop)
-	Gui Add,CheckBox,vCBOT gSubAll x9 y24 w90 h14 %AOT%,Always On Top
+	Gui Add,CheckBox,vCBOT gSubAll x4 y24 w90 h14 %AOT%,Always On Top
 	Gui,Add,Text,x4 y44 w44 h14,Themes:
 	Gui,Add,ComboBox,vDDSL gChangeTheme x50 y40 w120 h100,
 	Loop,%SkinsPath%\*.she
@@ -181,6 +216,17 @@ InitGui:
 	Gui Add,CheckBox,vCBGS gSubAll x5 y64 w125 h13 %UAS%,Auto Sell (Gamepass)
 	Gui Add,Edit,vASIG gSubAll x60 y78 w28 h18,%AutoSellInterval%
 	Gui Add,Text,x4 y79 w56 h18,Sell Interval
+
+	; -------------------------------- TAB Misc GROUP Totem --------------------------------
+	Gui Font,w600
+	Gui Add,GroupBox,x2 y96 w120 h60,Totem
+	Gui Font
+	AA:=Chkd(AutoAurora),AN:=Chkd(AutoNight),AD:=Chkd(AutoDay)
+	Gui Add,CheckBox,vCBAA gSubAll x4 y110 w90 h14 %AA%,Auto Aurora
+	Gui Add,CheckBox,vCBAN gSubAll x4 y124 w90 h14 %AN%,Auto Night
+	Gui Add,CheckBox,vCBAD gSubAll x4 y138 w90 h14 %AD%,Auto Day
+
+	; -------------------------------- TAB Misc GROUP Tictactoe --------------------------------
 	Gui Add,GroupBox,x302 y22 w146 h154,What is this for?
 	Gui Font,s20
 	Gui Add,Button,vX1Y1 gTTT x304 y33 w48 h48
@@ -193,16 +239,23 @@ InitGui:
 	Gui Add,Button,vX2Y3 gTTT x351 y127 w48 h48
 	Gui Add,Button,vX3Y3 gTTT x398 y127 w48 h48
 	Gui Font
+
+	; -------------------------------- TAB Manual Setup --------------------------------
 	Gui Tab,7
 	Gui Add,Button,gShowBounds x2 y24 w80 h23,Show Bounds
 	Gui Add,Button,gHideBounds x83 y24 w80 h23,Hide Bounds
 	Gui Add,Button,gResetBounds x164 y24 w102 h23,Reset All Bounds
+
+	; -------------------------------- TAB Manual Setup GROUP Debugging --------------------------------
 	Gui Font,w600
-	Gui Add,GroupBox,x2 y54 w267 h120,Debugging
-	Gui Add,GroupBox,x270 y22 w179 h152,Position And Size
+	Gui Add,GroupBox,x2 y54 w266 h120,Debugging
 	Gui Font
 	STT:=Chkd(ShowTooltips)
 	Gui Add,CheckBox,vCBST gSubAll x7 y68 w82 h16 %STT%,Show tooltips
+
+		; -------------------------------- TAB Manual Setup GROUP Position And Size --------------------------------
+	Gui Add,GroupBox,x270 y22 w228 h152,Position And Size
+	Gui Font
 	Gui Add,Text,x275 y37 w68 h14,Select Bound:
 	Gui Add,ComboBox,vDDBN gSubAll x276 y51 w119,CameraCheck|FishBar|ProgBar|LvlCheck|SellProfit|CameraMode|SellButton
 	Gui Add,Text,x275 y75 w39 h23,X (Left):
@@ -218,6 +271,8 @@ InitGui:
 	Gui Add,Edit,x399 y96 w46 h18 gApplyBnd vBNH
 	Gui Add,UpDown,x428 y96 w18 h18 +0x80 Range-10000-10000 gApplyBnd vUDH
 	Gui Add,Text,vBDSC x276 y120 w166
+
+	; -------------------------------- TAB Credits --------------------------------
 	Gui Tab,8
 	Gui Add,Link,x6 y22 w276 h14,This macro is based on the <a href="https://www.youtube.com/@AsphaltCake">AsphaltCake</a> Fisch Macro V11
 	Gui Add,Text,x6 y+4 w257 h14,Gui, modified minigame, polishing, and webhook by me.
@@ -227,8 +282,9 @@ InitGui:
 	Gui Add,Text,x6 y+4 w257 h14,Fish image webhook by @b0red_man
 	Gui Add,Text,x6 y+4 w257 h14,Logo design by @grubrescue
 	Gui Add,Link,x6 y+4 w252 h14,Check out my <a href="https://github.com/LopenaFollower">GitHub</a> and <a href="https://discord.gg/Fh5rmgg27X">Discord Server</a>
-	Gui Show,w450 h175,%GuiTitle%
+	Gui Show,w500 h200,%GuiTitle%
 	Return
+
 	TTT:
 		Gui Submit,NoHide
 		c:=A_GuiControl
@@ -345,6 +401,31 @@ InitGui:
 				ShowMsg("Hotkey in use")
 			}
 		}
+		if (CBAA and !CBAN) {
+			GuiControl,, CBAN, 1
+			GuiControl,, CBAD, 0
+			GuiControl, Disable, CBAD
+			return
+		}
+		else if (CBAN) {
+			GuiControl,, CBAD, 0
+			GuiControl, Disable, CBAD
+		}
+		else if (CBAD) {
+			GuiControl,, CBAA, 0
+			GuiControl,, CBAN, 0
+			GuiControl, Disable, CBAA
+			GuiControl, Disable, CBAN
+		}
+		else {
+			GuiControl, Enable, CBAA
+			GuiControl, Enable, CBAN
+			GuiControl, Enable, CBAD
+		}
+
+		AutoAurora:=CBAA
+		AutoNight:=CBAN
+		AutoDay:=CBAD
 		ShakeMode:=DDSM
 		AutoLowerGraphics:=CBLG
 		AutoZoomInCamera:=CBZC
@@ -373,6 +454,11 @@ InitGui:
 		SendFishWhenTimeValue:=CBFTSV
 		ShowTooltips:=CBST
 		ShakeFailsafe:=SHF
+		GraphicsDelay:=GD
+		ZoomDelay:=ZD
+		LookDelay:=LD
+		BlurDelay:=BD
+		FailLimit:=FL
 		BarControl:=BRC
 		ManualBarSize:=(BRC="auto")?0:0.403691381*WW*(0.3+BRC)
 		If Trim(DDBN)!=""
