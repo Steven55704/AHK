@@ -117,11 +117,6 @@ ReadGen(ScreenshotDelay,"ScreenshotDelay")
 ReadGen(SendFishWhenTimeOn,"SendFishWhenTimeOn")
 ReadGen(SendFishWhenTimeValue,"SendFishWhenTimeValue")
 ReadGen(ShowTooltips,"ShowTooltips")
-AutoGraphicsDelay:=50
-AutoZoomDelay:=40
-AutoCameraDelay:=25
-AutoLookDelay:=50
-AutoBlurDelay:=25
 If(SelectedSkin!="none"){
 	sl:=SkinsPath "\"SelectedSkin
 	If FileExist(sl)
