@@ -105,6 +105,9 @@ ReadGen(curMGFile,"SelectedConfig")
 ReadGen(SelectedSkin,"SelectedTheme")
 ReadGen(FarmLocation,"FarmLocation")
 ReadGen(buyConch,"PurchaseConch")
+ReadGen(AutoAurora,"AutoAurora")
+ReadGen(AutoNight,"AutoNight")
+ReadGen(AutoDay,"AutoDay")
 ReadGen(GuiAlwaysOnTop,"AlwaysOnTop")
 ReadGen(AutoSell,"AutoSell")
 ReadGen(AutoSellInterval,"AutoSellInterval")
@@ -186,11 +189,16 @@ DefaultSettings:
 	RtrvGen("ReloadHotkey","F2")
 	RtrvGen("ExitHotkey","F3")
 	RtrvGen("LowerGraphics",1)
-	RtrvGen("ZoomInCamera",1)
+	RtrvGen("ZoomCamera",1)
 	RtrvGen("LookDown",1)
 	RtrvGen("BlurShake",1)
 	RtrvGen("BlurMinigame",1)
 	RtrvGen("ShutdownAfterFailLimit",1)
+	RtrvGen("GraphicsDelay",50)
+	RtrvGen("ZoomDelay",40)
+	RtrvGen("LookDelay",50)
+	RtrvGen("BlurDelay",25)
+	RtrvGen("FailLimit",5)
 	RtrvGen("PrivateServer","")
 	RtrvGen("RestartDelay",800)
 	RtrvGen("CastDelay",750)
@@ -211,6 +219,9 @@ DefaultSettings:
 	RtrvGen("SelectedTheme","none")
 	RtrvGen("FarmLocation","none")
 	RtrvGen("PurchaseConch",1)
+	ReadGen("AutoAurora",0)
+	ReadGen("AutoNight",0)
+	ReadGen("AutoDay",0)
 	RtrvGen("AlwaysOnTop",1)
 	RtrvGen("AutoSell",0)
 	RtrvGen("AutoSellInterval",25)
@@ -237,6 +248,11 @@ SaveSettings:
 	WriteGen("BlurShake",BlurShakeCamera)
 	WriteGen("BlurMinigame",BlurMinigameCamera)
 	WriteGen("ShutdownAfterFailLimit",ShutdownAfterFailLimit)
+	WriteGen("GraphicsDelay",GraphicsDelay)
+	WriteGen("ZoomDelay",ZoomDelay)
+	WriteGen("LookDelay",LookDelay)
+	WriteGen("BlurDelay",BlurDelay)
+	WriteGen("FailLimit",FailLimit)
 	WriteGen("PrivateServer",PrivateServer)
 	WriteGen("RestartDelay",RestartDelay)
 	WriteGen("CastDelay",RodCastDuration)
@@ -257,6 +273,9 @@ SaveSettings:
 	WriteGen("SelectedTheme",SelectedSkin)
 	WriteGen("FarmLocation",FarmLocation)
 	WriteGen("PurchaseConch",buyConch)
+	WriteGen("AutoAurora",AutoAurora)
+	WriteGen("AutoNight",AutoNight)
+	WriteGen("AutoDay",AutoDay)
 	WriteGen("AlwaysOnTop",GuiAlwaysOnTop)
 	WriteGen("AutoSell",AutoSell)
 	WriteGen("AutoSellInterval",AutoSellInterval)
@@ -301,59 +320,63 @@ StartMacro:
 	SendStatus(1)
 	Sleep 150
 	Gosub MoveGui
+	if AutoDay{
+		UpdateTask("Current Task: Using Sundial Totem")
+		Sleep 
+	}
 	If GuiAlwaysOnTop
 		GuiControl,Choose,Tabs,1
 	SetTimer,Failsafe3,1000
-	If AutoLowerGraphics{
+	If LowerGraphics{
 		UpdateTask("Current Task: Lower Graphics")
-		Sleep AutoGraphicsDelay/2
+		Sleep GraphicsDelay/2
 		Send {Shift}
 		Loop,20{
 			Send {Shift down}{F10}
-			Sleep AutoGraphicsDelay
+			Sleep GraphicsDelay
 		}
 		Send {Shift up}
-		Sleep AutoGraphicsDelay/2
+		Sleep GraphicsDelay/2
 	}
-	If AutoZoomInCamera{
+	If ZoomCamera{
 		UpdateTask("Current Task: Zoom Camera")
-		Sleep AutoZoomDelay
+		Sleep ZoomDelay
 		Loop,20{
 			Send {WheelUp}
-			Wait(AutoZoomDelay)
+			Wait(ZoomDelay)
 		}
 		Loop,4{
 			Send {WheelDown}
-			Wait(AutoZoomDelay)
+			Wait(ZoomDelay)
 		}
-		Sleep AutoZoomDelay*5
+		Sleep ZoomDelay*5
 	}
 	UpdateTask("Current Task: Enable Camera Mode")
 	PixelSearch,,,CameraCheckLeft,CameraCheckTop,CameraCheckRight,CameraCheckBottom,0xFFFFFF,1,Fast
 	If !ErrorLevel{
-		Sleep AutoCameraDelay
+		Sleep CameraDelay
 		Send 2
-		Sleep AutoCameraDelay
+		Sleep CameraDelay
 		Send 1
-		Sleep AutoCameraDelay
+		Sleep CameraDelay
 		CameraMode(True)
 	}
 	Goto RestartMacro
 Return
 RestartMacro:
 	WinActivate,Roblox
-	If AutoBlurShake{
+	If BlurShake{
 		UpdateTask("Current Task: Blur Camera")
 		Sleep 500
 		Send {``}
-		Sleep AutoBlurDelay
+		Sleep BlurDelay
 	}
 	If(FarmLocation=="cryo"&&!cryoCanal.CF){
 		UpdateTask("Current Task: Walking To Cryogenic Canal")
 		Click 0,500
 		Loop,6{
 			Send {WheelDown}
-			Sleep AutoZoomDelay
+			Sleep ZoomDelay
 		}
 		Send {d up}{w up}{s up}{a up}{Space up}
 		Sleep 100
@@ -410,31 +433,31 @@ RestartMacro:
 		Sleep 250
 		Loop,25{
 			Send {WheelUp}
-			Sleep AutoZoomDelay
+			Sleep ZoomDelay
 		}
 		Loop,4{
 			Send {WheelDown}
-			Sleep AutoZoomDelay
+			Sleep ZoomDelay
 		}
-		Sleep AutoZoomDelay*5
+		Sleep ZoomDelay*5
 		StopFarmingAt:=A_TickCount+36*60000
 		cryoCanal.CF:=True
 	}
 	MouseMove,LookDownX,LookDownY
-	If AutoLookDownCamera{
+	If LookDownCamera{
 		UpdateTask("Current Task: Look Down")
 		Send {RButton up}
 		Loop,5{
 			MouseMove,LookDownX,LookDownY
-			Sleep AutoLookDelay
+			Sleep LookDelay
 			Send {RButton down}
 			DllCall("mouse_event",uint,1,int,0,int,-300)
-			Sleep AutoLookDelay
+			Sleep LookDelay
 			Send {RButton up}
-			Sleep AutoLookDelay
+			Sleep LookDelay
 		}
 		MouseMove,LookDownX,LookDownY
-		Sleep AutoLookDelay
+		Sleep LookDelay
 	}
 	UpdateTask("Current Task: Cast Rod")
 	Send {LButton down}
@@ -467,7 +490,7 @@ Failsafe2:
 	}
 Return
 Failsafe3:
-	If(ShutdownAfterFailLimit&&FailsInARow>14){
+	If(ShutdownAfterFailLimit&&FailsInARow>FailLimit){
 		SetTimer,Failsafe3,Off
 		SendStatus(4,["Failsafe triggered too many times, shutting down.",FailsInARow])
 		Sleep 25
@@ -489,7 +512,7 @@ Return
 backUp:
 	cryoCanal.CF:=False
 	Sleep 200
-	If AutoBlurMinigame
+	If BlurMinigame
 		Send {``}
 	CameraMode(False)
 	Sleep 150	
@@ -510,7 +533,7 @@ backUp:
 		Sleep 400
 		Loop,5{
 			Send {WheelDown}e
-			Sleep AutoZoomDelay
+			Sleep ZoomDelay
 		}
 		Sleep 200
 		Send e

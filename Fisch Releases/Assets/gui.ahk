@@ -427,11 +427,11 @@ InitGui:
 		AutoNight:=CBAN
 		AutoDay:=CBAD
 		ShakeMode:=DDSM
-		AutoLowerGraphics:=CBLG
-		AutoZoomInCamera:=CBZC
-		AutoLookDownCamera:=CBLD
-		AutoBlurShake:=CBBS
-		AutoBlurMinigame:=CBBM
+		LowerGraphics:=CBLG
+		ZoomInCamera:=CBZC
+		LookDownCamera:=CBLD
+		BlurShake:=CBBS
+		BlurMinigame:=CBBM
 		ShutdownAfterFailLimit:=CBSF
 		WebhookURL:=Trim(WURL)
 		UseWebhook:=CBWH

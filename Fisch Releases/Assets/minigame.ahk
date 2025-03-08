@@ -55,7 +55,7 @@ BarMinigame:
 				Break
 		}
 	}
-	If AutoBlurMinigame
+	If BlurMinigame
 		Send {``}
 	UpdateTask("Current Task: Bar Minigame")
 	HalfBarSize:=WhiteBarSize/2
@@ -253,9 +253,9 @@ CheckStats:
 	Sleep 250
 	WinActivate,Roblox
 	WinMaximize,Roblox
-	Sleep AutoCameraDelay
+	Sleep CameraDelay
 	CameraMode(True)
-	Sleep AutoCameraDelay
+	Sleep CameraDelay
 Return
 SellFish:
 	CameraMode(False)
@@ -263,7 +263,7 @@ SellFish:
 	x:=WW-455
 	WinMove,%GuiTitle%,,%x%,0
 	Sleep 250
-	If AutoBlurMinigame
+	If BlurMinigame
 		Send m
 	Sleep 200
 	Send {``}
@@ -290,7 +290,7 @@ SellFish:
 	Sleep 250
 	WinActivate,Roblox
 	WinMaximize,Roblox
-	Sleep AutoCameraDelay
+	Sleep CameraDelay
 	CameraMode(True)
-	Sleep AutoCameraDelay
+	Sleep CameraDelay
 Return
