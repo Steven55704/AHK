@@ -10,7 +10,7 @@ InitGui:
 	}
 
 	Gui -MinimizeBox -MaximizeBox +AlwaysOnTop
-	Gui Add,Tab3,vTabs x0 y0 w450 h176,Info|Main|Webhook|Minigame|Locations|Misc|Manual Setup|Credits
+	Gui Add,Tab3,vTabs x0 y0 w500 h176,Info|Main|Webhook|Minigame|Locations|Misc|Manual Setup|Credits
 
 	; -------------------------------- TAB Info --------------------------------
 	Gui Tab,1
