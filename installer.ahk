@@ -3,9 +3,9 @@
 #Persistent
 
 ; added as debug
-global versionUrl:="https://raw.githubusercontent.com/Steven55704/AHK/refs/heads/main/version.txt"
-global DownloadUrl:="https://raw.githubusercontent.com/Steven55704/AHK/refs/heads/main/main.ahk"
-global AssetsUrl:="https://raw.githubusercontent.com/Steven55704/AHK/refs/heads/main/Assets/"
+global versionUrl:="https://raw.githubusercontent.com/Steven55704/AHK/refs/heads/main/Fisch%20Releases/version.txt"
+global DownloadUrl:="https://raw.githubusercontent.com/Steven55704/AHK/refs/heads/main/Fisch%20Releases/main.ahk"
+global AssetsUrl:="https://raw.githubusercontent.com/Steven55704/AHK/refs/heads/main/Fisch%20Releases/Assets/"
 
 global SkinDllUrl:=AssetsUrl "SkinHu.dll"
 Gui -MaximizeBox -MinimizeBox
