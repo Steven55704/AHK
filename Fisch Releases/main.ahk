@@ -317,7 +317,8 @@ StartMacro:
 	Gosub MoveGui
 	if AutoDay{
 		UpdateTask("Current Task: Using Sundial Totem")
-		Sleep 
+		Sleep 10
+		
 	}
 	If GuiAlwaysOnTop
 		GuiControl,Choose,Tabs,1
