@@ -75,6 +75,14 @@ Calculations:
 		WriteBnd("Top",WH//1.62,"SellButton")
 		WriteBnd("Bottom",WH//1.56,"SellButton")
 	}
+	ReadBnd(tmp,"Top","Day'n'Nite")
+	msng:=!tmp
+	If msng{
+		WriteBnd("Left",WW//2.9,"Day'n'Nite")
+		WriteBnd("Right",WW//2.47,"Day'n'Nite")
+		WriteBnd("Top",WH//1.62,"Day'n'Nite")
+		WriteBnd("Bottom",WH//1.56,"Day'n'Nite")
+	}
 	For i,j in boundNames
 		For k,v in ["Left","Right","Top","Bottom"]
 			ReadBnd(%j%%v%,v,j)
