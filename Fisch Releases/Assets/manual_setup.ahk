@@ -1,7 +1,7 @@
 ;15
 #Include ..\main.ahk
 CreateBound(n,x1,y1,x2,y2){
-	colors:={CameraCheck:"Yellow",FishBar:"Lime",ProgBar:"Red",LvlCheck:"Blue",SellProfit:"Aqua",CameraMode:"Fuchsia",SellButton:"Navy",Bar:"Gray",Day'n'Nite:"White"}
+	colors:={CameraCheck:"Yellow",FishBar:"Lime",ProgBar:"Red",LvlCheck:"Blue",SellProfit:"Aqua",CameraMode:"Fuchsia",SellButton:"Navy",Bar:"Gray",DaynNite:"White"}
 	w:=x2-x1
 	h:=y2-y1
 	Gui %n%:Destroy
@@ -75,13 +75,13 @@ Calculations:
 		WriteBnd("Top",WH//1.62,"SellButton")
 		WriteBnd("Bottom",WH//1.56,"SellButton")
 	}
-	ReadBnd(tmp,"Top","Day'n'Nite")
+	ReadBnd(tmp,"Top","DaynNite")
 	msng:=!tmp
 	If msng{
-		WriteBnd("Left",WW//2.9,"Day'n'Nite")
-		WriteBnd("Right",WW//2.47,"Day'n'Nite")
-		WriteBnd("Top",WH//1.62,"Day'n'Nite")
-		WriteBnd("Bottom",WH//1.56,"Day'n'Nite")
+		WriteBnd("Left",WW//2.9,"DaynNite")
+		WriteBnd("Right",WW//2.47,"DaynNite")
+		WriteBnd("Top",WH//1.62,"DaynNite")
+		WriteBnd("Bottom",WH//1.56,"DaynNite")
 	}
 	For i,j in boundNames
 		For k,v in ["Left","Right","Top","Bottom"]

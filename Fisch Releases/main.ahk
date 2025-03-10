@@ -162,7 +162,7 @@ runtime2:=0
 cryoCanal:={CF:False}
 XOdebounce:=True
 SelectedBound:=""
-boundNames:=["CameraCheck","FishBar","ProgBar","LvlCheck","SellProfit","CameraMode","SellButton","Day'n'Nite"]
+boundNames:=["CameraCheck","FishBar","ProgBar","LvlCheck","SellProfit","CameraMode","SellButton"]
 instructions:=FetchInstructions()
 SetTimer,GuiRuntime,1000
 Gosub Calculations
