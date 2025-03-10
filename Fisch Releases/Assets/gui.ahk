@@ -153,6 +153,8 @@ InitGui:
 	Gui Add,Button,gMGExport x143 y23 w70 h23,New Config
 	Gui Add,Button,gMGOpen x213 y23 w70 h23,Open Folder
 	Gui Add,Button,gMGRefresh x283 y23 w70 h23,Scan Folder
+
+	; -------------------------------- TAB Minigame GROUP Left --------------------------------
 	Gui Font,w600
 	Gui Add,GroupBox,x2 y46 w120 h52,Left
 	Gui Font
@@ -160,6 +162,8 @@ InitGui:
 	Gui Add,Text,x9 y77 w32 h14,Divisor
 	Gui Add,Edit,vMGLM x68 y56 w52 h17 gNumberEdit,%LeftMult%
 	Gui Add,Edit,vMGLD x68 y76 w52 h17 gNumberEdit,%LeftDiv%
+
+	; -------------------------------- TAB Minigame GROUP Right --------------------------------
 	Gui Font,w600
 	Gui Add,GroupBox,x2 y98 w120 h76,Right
 	Gui Font
@@ -169,8 +173,10 @@ InitGui:
 	Gui Add,Edit,vMGRM x68 y108 w52 h17 gNumberEdit,%RightMult%
 	Gui Add,Edit,vMGRD x68 y128 w52 h17 gNumberEdit,%RightDiv%
 	Gui Add,Edit,vMGAM x68 y148 w52 h17 gNumberEdit,%RightAnkleMult%
+
+	; -------------------------------- TAB Minigame GROUP Others --------------------------------
 	Gui Font,w600
-	Gui Add,GroupBox,x124 y46 w128 h128,Other
+	Gui Add,GroupBox,x124 y46 w128 h128,Others
 	Gui Font
 	Gui Add,Text,x128 y58 w68 h14,Stabilizer Loop
 	Gui Add,Text,x128 y78 w64 h14,Sidebar Ratio
@@ -182,18 +188,21 @@ InitGui:
 	Gui Add,Edit,vMGSW x198 y96 w52 h17 gNumberEdit,%SideBarWait%
 	Gui Add,Edit,vMGCO x198 y116 w52 h17 gNumberEdit,%Coefficient%
 	Gui Add,Edit,vMGXP x198 y136 w52 h17 gNumberEdit,%Exponent%
-	Gui Add,GroupBox,x255 y46 w192 h128, Misc
-	Gui Font,w600
-	Gui Add,Text,x258 y79 w96 h16, Manual Bar Size
-	Gui Font
-	Gui Add,Edit,gSubAll vBRC x331 y56 w36 h18,% ZTrim(BarControl)
-	Gui Add,Text,x258 y97 w36 h14,Control
-	Gui Add,Text,x333 y96 w133 h14,* Set to "Auto" for auto.
-	Gui Add,Button,gShowBar x260 y116 w80 h23,Visualize Bar
-	Gui Add,Button,gHideBar x+1 y116 w80 h23,Hide Bar
 
+	; -------------------------------- TAB Minigame GROUP Misc --------------------------------
+	Gui Font,w600
+	Gui Add,GroupBox,x255 y46 w192 h128, Misc
+	Gui Font
+	Gui Add,Text,x258 y60 w36 h14,Control
+	Gui Add,Edit,gSubAll vBRC x294 y58 w36 h18,% ZTrim(BarControl)
+	Gui Add,Text,x330 y60 w133 h14,* Set to "Auto" for auto.
+	Gui Add,Button,gShowBar x260 y78 w80 h23,Visualize Bar
+	Gui Add,Button,gHideBar x+1 y78 w80 h23,Hide Bar
+	
 	; -------------------------------- TAB Locations --------------------------------
 	Gui Tab,5
+
+	; -------------------------------- TAB Locations Group Cryogenic Canal --------------------------------
 	Gui Add,GroupBox,x2 y21 w223 h77,Cryogenic Canal
 	CFH:=Chkd(FarmLocation="cryo"),CBC:=Chkd(buyConch)
 	Gui Add,CheckBox,vCBCF gSubAll x7 y36 w64 h18 %CFH%,Farm here
@@ -257,7 +266,7 @@ InitGui:
 	Gui Add,GroupBox,x270 y22 w228 h152,Position And Size
 	Gui Font
 	Gui Add,Text,x275 y37 w68 h14,Select Bound:
-	Gui Add,ComboBox,vDDBN gSubAll x276 y51 w119,CameraCheck|FishBar|ProgBar|LvlCheck|SellProfit|CameraMode|SellButton
+	Gui Add,ComboBox,vDDBN gSubAll x276 y51 w119,CameraCheck|FishBar|ProgBar|LvlCheck|SellProfit|CameraMode|SellButton|Day'n'Nite
 	Gui Add,Text,x275 y75 w39 h23,X (Left):
 	Gui Add,Edit,x312 y75 w46 h18 gApplyBnd vBNX
 	Gui Add,UpDown,x341 y75 w18 h18 +0x80 Range-10000-10000 gApplyBnd vUDX
