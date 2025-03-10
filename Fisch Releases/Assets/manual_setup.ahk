@@ -1,7 +1,7 @@
 ;15
 #Include ..\main.ahk
 CreateBound(n,x1,y1,x2,y2){
-	colors:={CameraCheck:"Yellow",FishBar:"Lime",ProgBar:"Red",LvlCheck:"Blue",SellProfit:"Aqua",CameraMode:"Fuchsia",SellButton:"Navy",Bar:"Gray"}
+	colors:={CameraCheck:"Yellow",FishBar:"Lime",ProgBar:"Red",LvlCheck:"Blue",SellProfit:"Aqua",CameraMode:"Fuchsia",SellButton:"Navy",Bar:"Gray",Day'n'Nite:"White"}
 	w:=x2-x1
 	h:=y2-y1
 	Gui %n%:Destroy
