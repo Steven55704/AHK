@@ -269,7 +269,7 @@ InitGui:
 	Gui Add,GroupBox,x270 y22 w228 h152,Position And Size
 	Gui Font
 	Gui Add,Text,x275 y37 w68 h14,Select Bound:
-	Gui Add,ComboBox,vDDBN gSubAll x276 y51 w119,CameraCheck|FishBar|ProgBar|LvlCheck|SellProfit|CameraMode|SellButton|Day'n'Nite
+	Gui Add,ComboBox,vDDBN gSubAll x276 y51 w119,CameraCheck|FishBar|ProgBar|LvlCheck|SellProfit|CameraMode|SellButton|DaynNite
 	Gui Add,Text,x275 y75 w39 h23,X (Left):
 	Gui Add,Edit,x312 y75 w46 h18 gApplyBnd vBNX
 	Gui Add,UpDown,x341 y75 w18 h18 +0x80 Range-10000-10000 gApplyBnd vUDX
