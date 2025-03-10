@@ -22,9 +22,12 @@ InitGui:
 	Gui Add,Text,x5 y54 w90 h16,Macro Runtime
 	Gui Font
 	Gui Add,Text,vTRT2 x6 y70 w56 h13,0h 00m 00s
-	Gui Add,Text,vTTask x5 y87 w162 h14,Current Task: Idle
+	Gui Add,Text,x5 y87 w90 h16,Auto Day'n'Nite
 	Gui Font
-	Gui Add,Text,vTFC x5 y102 w100 h13,Fish Count: 0/0
+	Gui Add,Text,vTRT3 x5 y102 w56 h13,00m 00s
+	Gui Add,Text,vTTask x5 y118 w162 h14,Current Task: Idle
+	Gui Font
+	Gui Add,Text,vTFC x5 y132 w100 h13,Fish Count: 0/0
 
 	; -------------------------------- TAB Main --------------------------------
 	Gui Tab,2
@@ -198,7 +201,7 @@ InitGui:
 	Gui Add,Text,x330 y60 w133 h14,* Set to "Auto" for auto.
 	Gui Add,Button,gShowBar x260 y78 w80 h23,Visualize Bar
 	Gui Add,Button,gHideBar x+1 y78 w80 h23,Hide Bar
-	
+
 	; -------------------------------- TAB Locations --------------------------------
 	Gui Tab,5
 
