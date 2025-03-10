@@ -76,9 +76,9 @@ ReadGen(ReloadHotkey,"ReloadHotkey")
 ReadGen(ExitHotkey,"ExitHotkey")
 ReadGen(LowerGraphics,"LowerGraphics")
 ReadGen(ZoomCamera,"ZoomCamera")
-ReadGen(LookDownCamera,"LookDown")
-ReadGen(BlurShakeCamera,"BlurShake")
-ReadGen(BlurMinigameCamera, "BlurMinigame")
+ReadGen(LookDown,"LookDown")
+ReadGen(BlurShake,"BlurShake")
+ReadGen(BlurMinigame, "BlurMinigame")
 ReadGen(ShutdownAfterFailLimit,"ShutdownAfterFailLimit")
 ReadGen(GraphicsDelay,"GraphicsDelay")
 ReadGen(ZoomDelay,"ZoomDelay")
@@ -162,7 +162,7 @@ runtime2:=0
 cryoCanal:={CF:False}
 XOdebounce:=True
 SelectedBound:=""
-boundNames:=["CameraCheck","FishBar","ProgBar","LvlCheck","SellProfit","CameraMode","SellButton"]
+boundNames:=["CameraCheck","FishBar","ProgBar","LvlCheck","SellProfit","CameraMode","SellButton","Day'n'Nite"]
 instructions:=FetchInstructions()
 SetTimer,GuiRuntime,1000
 Gosub Calculations
@@ -239,9 +239,9 @@ SaveSettings:
 	WriteGen("ExitHotkey",ExitHotkey)
 	WriteGen("LowerGraphics",LowerGraphics)
 	WriteGen("ZoomCamera",ZoomCamera)
-	WriteGen("LookDown",LookDownCamera)
-	WriteGen("BlurShake",BlurShakeCamera)
-	WriteGen("BlurMinigame",BlurMinigameCamera)
+	WriteGen("LookDown",LookDown)
+	WriteGen("BlurShake",BlurShake)
+	WriteGen("BlurMinigame",BlurMinigame)
 	WriteGen("ShutdownAfterFailLimit",ShutdownAfterFailLimit)
 	WriteGen("GraphicsDelay",GraphicsDelay)
 	WriteGen("ZoomDelay",ZoomDelay)
@@ -440,7 +440,7 @@ RestartMacro:
 		cryoCanal.CF:=True
 	}
 	MouseMove,LookDownX,LookDownY
-	If LookDownCamera{
+	If LookDown{
 		UpdateTask("Current Task: Look Down")
 		Send {RButton up}
 		Loop,5{
