@@ -441,7 +441,7 @@ InitGui:
 		ShakeMode:=DDSM
 		LowerGraphics:=CBLG
 		ZoomInCamera:=CBZC
-		LookDownCamera:=CBLD
+		LookDown:=CBLD
 		BlurShake:=CBBS
 		BlurMinigame:=CBBM
 		ShutdownAfterFailLimit:=CBSF
