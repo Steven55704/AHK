@@ -70,18 +70,18 @@ Calculations:
 	ReadBnd(tmp,"Top","SellButton")
 	msng:=!tmp
 	If msng{
-		WriteBnd("Left",WW//2.9,"SellButton")
-		WriteBnd("Right",WW//2.47,"SellButton")
-		WriteBnd("Top",WH//1.62,"SellButton")
-		WriteBnd("Bottom",WH//1.56,"SellButton")
+		WriteBnd("Left",WW//2.888,"SellButton")
+		WriteBnd("Right",WW//2.473,"SellButton")
+		WriteBnd("Top",WH//1.61,"SellButton")
+		WriteBnd("Bottom",WH//1.563,"SellButton")
 	}
 	ReadBnd(tmp,"Top","DaynNite")
 	msng:=!tmp
 	If msng{
 		WriteBnd("Left",WW//1.049,"DaynNite")
 		WriteBnd("Right",WW//1.03,"DaynNite")
-		WriteBnd("Top",WH//2.023,"DaynNite")
-		WriteBnd("Bottom",WH//1.953,"DaynNite")
+		WriteBnd("Top",WH//1.138,"DaynNite")
+		WriteBnd("Bottom",WH//1.098,"DaynNite")
 	}
 	For i,j in boundNames
 		For k,v in ["Left","Right","Top","Bottom"]
